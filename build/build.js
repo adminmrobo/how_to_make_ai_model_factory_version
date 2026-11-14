@@ -62,5 +62,5 @@ if(fs.existsSync(path.join(B,'solar.src.html'))){const ss=rd('solar_sim.js'),sj=
   if(fs.existsSync(path.join(B,'kg_solar.json')))H5=attach(H5,JSON.parse(rd('kg_solar.json')),JSON.parse(rd('refs_solar.json')),JSON.parse(rd('meta_solar.json')));
   fs.writeFileSync(path.join(R,'solar.html'),H5);console.log('solar.html',(Buffer.byteLength(H5)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
-if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common);
+if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common).replace('/*@@EVENTS@@*/',()=>(fs.existsSync(path.join(B,'hub_events_data.js'))?rd('hub_events_data.js')+rd('hub_events.js'):''));
   fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}
