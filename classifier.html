@@ -360,7 +360,7 @@ section.sec.folded .foldnote{display:block}
   <h1>배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하기</h1>
   <p class="question">자율주행차에 들어가는 대용량 배터리 셀 데이터세트 하나로 불량품 판정기를 만든다면, 어떤 엔진을 달아야 하고 그 엔진은 어떻게 정비할까?</p>
   <p class="lead">이 공장이 만드는 제품은 <b>자율주행차 대용량 배터리의 불량품 판정기</b>입니다. 판정기는 차체(데이터 입출력)와 <b>엔진</b>(분류 모델)으로 나눠 봅니다. 1편에서는 배터리 셀 1,000개의 데이터세트로 엔진부를 만듭니다. <b>머신러닝 도감</b>과 <b>신경망 도감</b>에서 엔진 9종을 꺼내 판정기에 달아 보고, 시운전 벤치에서 같은 조건으로 비교합니다. 신경망 엔진은 AI 파라미터 카드 10장을 옮긴 <b>정비 작업장 10곳</b>을 거치며 속을 들여다봅니다. 고른 엔진은 출고되어 <b>2편 시뮬레이션 검증장</b>으로 갑니다.</p>
-  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v2.1 · 자매편: <a href="regression.html">수명 예측 장치 ① 엔진부</a> · 다음 편: 2편 시뮬레이션 검증 (준비 중)</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://www.ahnboat.xyz">개인 소개 페이지 · www.ahnboat.xyz</a> · 2026-11-14 · v2.1 · 자매편: <a href="regression.html">수명 예측 장치 ① 엔진부</a> · 다음 편: 2편 시뮬레이션 검증 (준비 중)</p>
   <div class="three"><b>세 줄로 먼저</b><ol>
     <li>같은 데이터세트라도 엔진(모델)마다 경계를 긋는 방식이 다르다. 곧은 평면, 계단, 투표, 여백, 신경망의 굽은 면.</li>
     <li>엔진은 같은 훈련 데이터로 학습하고 같은 검증 데이터로 시운전해야 비교가 된다. 시험 데이터는 2편까지 봉인한다.</li>
@@ -958,7 +958,7 @@ section.sec.folded .foldnote{display:block}
   <h3>예시값·설명용 모형인 것</h3>
   <ul><li>배터리 셀 1,000개(공장 A)와 400개(공장 B)의 측정값·불량 여부 — 페이지가 직접 만든 모형(시드 2026·3031). 실제 측정 데이터 아님</li><li>엔진 9종은 이 페이지가 외부 라이브러리 없이 직접 구현한 단순판(예: 부스팅은 XGBoost 자체가 아니라 같은 원리의 작은 구현). 모든 학습 결과·손실·기울기·검사 값은 페이지가 직접 계산</li><li>합격 기준(F1 0.80, BMS 메모리 8 KB, 초기 손실 ln 2 ± 0.25)은 설명용 예시값</li><li>3D 공장은 개략 모형이며 실제 공장 배치가 아님</li></ul>
   <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다. 참고한 카드의 그림은 이 페이지에 넣지 않았습니다.</p>
-  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
+  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://www.ahnboat.xyz">개인 소개 페이지 · www.ahnboat.xyz</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
 </div></footer>
 
 <script>

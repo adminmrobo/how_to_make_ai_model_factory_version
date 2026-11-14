@@ -3,7 +3,7 @@
 자율주행차에 들어가는 대용량 배터리(수십 Ah급 셀)를 다루는 연구실 해설 시리즈입니다. 공장마다 3D 모형이 있고, 같은 12칸 배치와 같은 캐릭터 자리(전신)를 씁니다. 연구실 스킬 ai-lab-explainer v1.14("낮의 연구실", 흰 배경)를 따릅니다.
 
 - 사이트(올린 뒤): https://adminmrobo.github.io/how_to_make_ai_model_factory_version/
-- 글 · 안상선 ((주)M-Robo 대표) · [저자 소개](https://adminmrobo.github.io/who_am_i/who_am_i.html)
+- 글 · 안상선 ((주)M-Robo 대표) · 개인 소개 페이지: [www.ahnboat.xyz](https://www.ahnboat.xyz)
 
 | 파일 | 공장 | 내용 |
 |---|---|---|
