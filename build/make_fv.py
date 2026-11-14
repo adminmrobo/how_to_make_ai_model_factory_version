@@ -7,6 +7,8 @@ SRC = pathlib.Path("/home/claude/fruitfly-lab-expressions")
 F = json.loads((SRC / "specs/factory/factory.json").read_text(encoding="utf-8"))["files"]
 KEY = {"doc": "doctor", "asst": "haru", "sia": "sia", "moa": "moa", "robo": "jupanbot", "fly": "fruitfly"}
 PICK = {  # 페이지 → 캐릭터 → 복장(U)·동작(P) ID
+ "classifier": {"asst": "P11", "sia": "P03", "moa": "P05", "robo": "P08", "fly": "P04", "doc": "P15"},
+ "regression": {"asst": "P02", "sia": "P13", "moa": "P05", "robo": "P08", "fly": "P04", "doc": "P10"},
  "factory": {"asst": "P02", "sia": "P03", "moa": "P07", "robo": "P08", "fly": "P04", "doc": "P09"},
  "solar":   {"asst": "P12", "sia": "U02", "moa": "U02", "robo": "U02", "fly": "U02", "doc": "P10"},
  "testlab": {"asst": "P03", "sia": "P04", "moa": "P16", "robo": "P14", "fly": "U05", "doc": "P15"},

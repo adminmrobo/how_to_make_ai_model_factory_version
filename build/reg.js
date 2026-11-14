@@ -587,7 +587,7 @@ var Fac={};
       g.fillStyle=hl?'#fff':C.text;g.font='700 10.5px '+cssv('--font');g.textAlign='center';g.textBaseline='middle';g.fillText(String(k+1),tp[0],tp[1]+0.5);g.textBaseline='alphabetic';
       if(hl||w>700||(w<600&&k===cur)){g.font=(hl?'700 ':'')+'11px '+cssv('--font');var lb=P(p.x,p.y,p.h+(p.future?2.1:p.shelf||p.mini?1.55:1.15));U.label(g,lb[0],lb[1],p.name,hl?C.gfp:p.future?'#8a95a1':C.muted,'center');}}});
       if(p.who){var fp=P(p.x+1.75,p.y,0);items.push({d:fp[2]-0.01,f:function(){var mk=WHO_SHEET[p.who[0]],hh=sc*(w<600?6.0:5.0)*WHO_H[p.who[0]];
-        if(typeof drawMotion==='function'&&mk&&drawMotion(g,mk,'idle',t,fp[0],fp[1],hh,{fps:4}))return;  /* 전신 동작 팩(서기) — 없으면 표정 그림 */
+        if(typeof FVdraw==='function'&&FVdraw(g,p.who[0],t,fp[0],fp[1],hh))return;if(typeof drawMotion==='function'&&mk&&drawMotion(g,mk,'idle',t,fp[0],fp[1],hh,{fps:4}))return;  /* 전신 동작 팩(서기) — 없으면 표정 그림 */
         var im=IM[p.id];if(!im||!im.complete||!im.naturalWidth)return;var sz=sc*(w<600?4.2:3.4)*Math.max(0.6,p.who[2]);g.drawImage(im,fp[0]-sz/2,fp[1]-sz,sz,sz);}});}});
     var pp=P(pos.x,pos.y,pos.z),hasEng=cur>=6&&pos.i>WP.findIndex(function(q){return q.st===6&&q.d!=null;});
     items.push({d:pp[2]-0.02,f:function(){var s=sc*0.8,prog=Math.min(1,pos.ep/EPL);

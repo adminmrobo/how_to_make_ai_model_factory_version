@@ -33,13 +33,13 @@ function attach(H,kg,refs,meta){
   let i=H.lastIndexOf('<footer'),j=H.lastIndexOf('</body>'),p=(i>=0&&i<j)?i:j;H=H.slice(0,p)+body+H.slice(p);
   j=H.lastIndexOf('</body>');H=H.slice(0,j)+sc+H.slice(j);return H;}
 let H=rd('page.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
-  .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@EN@@*/',()=>en.replace("if(typeof module!=='undefined')module.exports=EN;",'')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>page);
+  .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@EN@@*/',()=>en.replace("if(typeof module!=='undefined')module.exports=EN;",'')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_classifier.js'))?rd('fv_classifier.js'):'')+page);
 if(fs.existsSync(path.join(B,'kg.json')))H=attach(H,JSON.parse(rd('kg.json')),JSON.parse(rd('refs.json')),JSON.parse(rd('meta.json')));
 fs.writeFileSync(path.join(R,'classifier.html'),H);console.log('classifier.html',(Buffer.byteLength(H)/1024).toFixed(0)+' KB');
 // 회귀 편: reg.src.html + engines_reg.js + reg.js → regression.html (kg_reg.json·refs_reg.json·meta_reg.json)
 if(fs.existsSync(path.join(B,'reg.src.html'))){const er=rd('engines_reg.js'),rj=rd('reg.js');
   let H2=rd('reg.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
-    .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@ER@@*/',()=>er.replace("if(typeof module!=='undefined')module.exports=ER;",'').replace("(typeof BM!=='undefined')?BM:require('./bm.js')",'BM')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>rj);
+    .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@ER@@*/',()=>er.replace("if(typeof module!=='undefined')module.exports=ER;",'').replace("(typeof BM!=='undefined')?BM:require('./bm.js')",'BM')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_regression.js'))?rd('fv_regression.js'):'')+rj);
   if(fs.existsSync(path.join(B,'kg_reg.json')))H2=attach(H2,JSON.parse(rd('kg_reg.json')),JSON.parse(rd('refs_reg.json')),JSON.parse(rd('meta_reg.json')));
   fs.writeFileSync(path.join(R,'regression.html'),H2);console.log('regression.html',(Buffer.byteLength(H2)/1024).toFixed(0)+' KB');}
 
