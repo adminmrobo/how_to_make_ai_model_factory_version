@@ -94,7 +94,7 @@ var Plant={};
         var tp=P(p.x,p.y,p.h+0.5);g.beginPath();g.arc(tp[0],tp[1],11,0,7);g.fillStyle=sel===k?C.gfp:'#fff';g.fill();g.lineWidth=1.5;g.strokeStyle=sel===k?C.gfp:C.rule;g.stroke();
         g.fillStyle=sel===k?'#fff':C.text;g.font='700 10.5px '+cssv('--font');g.textAlign='center';g.textBaseline='middle';g.fillText(String(k+1),tp[0],tp[1]+0.5);g.textBaseline='alphabetic';
         if(sel===k||w>700){g.font=(sel===k?'700 ':'')+'11px '+cssv('--font');var lb=P(p.x,p.y,p.h+1.15);U.label(g,lb[0],lb[1],p.name,sel===k?C.gfp:C.muted,'center');}}});
-      if(WHO[k]){var fp=P(p.x+1.75,p.y,0),wh=WHO[k];items.push({d:fp[2]-0.01,f:function(){var h2=sc*(w<600?6.0:5.0)*wh[1];if(typeof drawMotion==='function')drawMotion(g,SHEET[wh[0]],'idle',t,fp[0],fp[1],h2,{fps:4});}});}});
+      if(WHO[k]){var fp=P(p.x+1.75,p.y,0),wh=WHO[k];items.push({d:fp[2]-0.01,f:function(){var h2=sc*(w<600?6.0:5.0)*wh[1];if(typeof FVdraw==='function'&&FVdraw(g,wh[0],t,fp[0],fp[1],h2))return;if(typeof drawMotion==='function')drawMotion(g,SHEET[wh[0]],'idle',t,fp[0],fp[1],h2,{fps:4});}});}});
     /* 걸러 낸 셀은 실제 비율이 너무 작아(만 분의 1 수준) 보이도록 25배 키워 그린다 — 패널에 표기 */
     var n=16;for(var c=0;c<n;c++){var u=(c/n+t*0.04)%1,pos=along(u),pp=P(pos[0],pos[1],0.55),bad=u>U11&&((c*7919+Math.floor(t*0.04+c/n))%100)/100<I.rej*25;(function(pp,bad){items.push({d:pp[2]-0.02,f:function(){cell(g,pp[0],pp[1],sc*0.36,SUPC[CFG.sup],bad);}});})(pp,bad);}
     items.sort(function(a,b){return b.d-a.d;}).forEach(function(it){it.f();});

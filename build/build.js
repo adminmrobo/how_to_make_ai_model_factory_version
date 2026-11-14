@@ -46,19 +46,19 @@ if(fs.existsSync(path.join(B,'reg.src.html'))){const er=rd('engines_reg.js'),rj=
 // 3편 배터리 생산 공장: factory.src.html + fsim.js + factory.js → factory.html (kg_fac.json·refs_fac.json·meta_fac.json)
 if(fs.existsSync(path.join(B,'factory.src.html'))){const fsim=rd('fsim.js'),fj=rd('factory.js');
   let H3=rd('factory.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>fj);
+    .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_factory.js'))?rd('fv_factory.js'):'')+fj);
   if(fs.existsSync(path.join(B,'kg_fac.json')))H3=attach(H3,JSON.parse(rd('kg_fac.json')),JSON.parse(rd('refs_fac.json')),JSON.parse(rd('meta_fac.json')));
   fs.writeFileSync(path.join(R,'factory.html'),H3);console.log('factory.html',(Buffer.byteLength(H3)/1024).toFixed(0)+' KB');}
 // 시제품 테스트 랩실: testlab.src.html + fish.json + testlab.js → testlab.html (kg_test.json·refs_test.json·meta_test.json)
 if(fs.existsSync(path.join(B,'testlab.src.html'))){const fd=rd('fish.json'),tj=rd('testlab.js');
   let H4=rd('testlab.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>tj);
+    .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_testlab.js'))?rd('fv_testlab.js'):'')+tj);
   if(fs.existsSync(path.join(B,'kg_test.json')))H4=attach(H4,JSON.parse(rd('kg_test.json')),JSON.parse(rd('refs_test.json')),JSON.parse(rd('meta_test.json')));
   fs.writeFileSync(path.join(R,'testlab.html'),H4);console.log('testlab.html',(Buffer.byteLength(H4)/1024).toFixed(0)+' KB');}
 // ④ 태양광 패널 셀 공장: solar.src.html + solar_sim.js + solar.js → solar.html (kg_solar.json·refs_solar.json·meta_solar.json)
 if(fs.existsSync(path.join(B,'solar.src.html'))){const ss=rd('solar_sim.js'),sj=rd('solar.js');
   let H5=rd('solar.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>sj);
+    .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_solar.js'))?rd('fv_solar.js'):'')+sj);
   if(fs.existsSync(path.join(B,'kg_solar.json')))H5=attach(H5,JSON.parse(rd('kg_solar.json')),JSON.parse(rd('refs_solar.json')),JSON.parse(rd('meta_solar.json')));
   fs.writeFileSync(path.join(R,'solar.html'),H5);console.log('solar.html',(Buffer.byteLength(H5)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
