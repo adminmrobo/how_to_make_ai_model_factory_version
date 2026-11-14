@@ -37,11 +37,12 @@ function drawDist(){var c=CFG,xs=[],xr=[22.0,23.8];for(var x=xr[0];x<=xr[1]+1e-9
   var g=o.g;g.fillStyle='rgba(201,48,44,.18)';g.beginPath();g.moveTo(o.X(xr[0]),o.Y(0));A.forEach(function(r){if(r[0]<=K.LSL)g.lineTo(o.X(r[0]),o.Y(r[2]));});g.lineTo(o.X(K.LSL),o.Y(0));g.closePath();g.fill();
   g.font='11.5px '+cssv('--font');g.textAlign='left';g.fillStyle='rgba(22,33,43,.6)';g.fillText('— 출하 때 측정',o.X(xr[0])+6,30);g.fillStyle=SUPC[c.sup];g.fillText('— 광열화 뒤 (빨간 면적 = 불량)',o.X(xr[0])+6,46);}
 function upd(){var c=CFG,r=RAW[key(c)],s1=ESC1[key(c)],s2=SS.stats(c,v2t(c));drawDist();
-  $('#c-minis').innerHTML=mini(r.sigma>=5.5?'g':r.sigma<4?'r':'a','공정 시그마 수준 (판정 전)',fmt(r.sigma,2)+'σ · '+dp(r.dpmo)+' DPMO')+mini(r.cpk>=1.5?'g':r.cpk<1?'r':'a','Cpk (광열화 뒤 효율)',fmt(r.cpk,2))+mini('','평균 · 표준편차 (광열화 뒤)',fmt(r.mu,2)+'% · '+fmt(r.sdf,3)+'%p')+mini('','크랙 확률 (포아송)',fmt(r.crack*1e6,1)+' ppm')+
+  $('#c-minis').innerHTML=mini(r.sigma>=5.5?'g':r.sigma<4?'r':'a','공정 시그마 수준 (판정 전)',fmt(r.sigma,2)+'σ · '+dp(r.dpmo)+' DPMO')+mini('','불량 내역 (DPMO)','효율 '+dp(r.pd*1e6)+' + 크랙 '+dp(r.crack*1e6))+mini(r.cpk>=1.5?'g':r.cpk<1?'r':'a','Ppk (장기 공정 성능, 광열화 뒤)',fmt(r.cpk,2))+mini('','평균 · 표준편차 (광열화 뒤)',fmt(r.mu,2)+'% · '+fmt(r.sdf,3)+'%p')+
     mini(s1.escDpmo>100?'r':'g','v1 판정 뒤 출하 품질',dp(s1.escDpmo)+' DPMO · '+fmt(s1.sigmaOut,2)+'σ')+mini('','v1 과잉 폐기',pct(s1.frRate,2))+mini(s2.escDpmo>100?'a':'g','v2 판정 뒤 출하 품질',dp(s2.escDpmo)+' DPMO · '+fmt(s2.sigmaOut,2)+'σ')+mini('','v2 과잉 폐기',pct(s2.frRate,2));
   var it=[];if(key(c)===key(K.base))it.push(['g','기준 조건입니다. 공정만으로 '+fmt(r.sigma,2)+'σ — 거의 6시그마예요. v1 판정기는 이 조건에서 학습했으니 여기서는 잘 맞습니다.']);
   else{it.push([s1.escDpmo>s2.escDpmo*2?'r':'a','이 조건('+cname(c)+')의 공정 시그마는 '+fmt(r.sigma,2)+'σ. 기준 조건 판정기(v1, 문턱 '+fmt(V1.t,2)+'%)를 그대로 쓰면 출하 불량 '+dp(s1.escDpmo)+' DPMO, 이 조건에 맞춘 문턱('+fmt(v2t(c),2)+'%)이면 '+dp(s2.escDpmo)+' DPMO입니다.']);
     if(s2.frRate>0.02)it.push(['a','대신 v2는 멀쩡한 셀의 '+pct(s2.frRate,1)+'를 버립니다. 판정기로는 6시그마를 살 수 없어요 — 이 조건은 공정을 고쳐야 합니다.']);}
+  if(r.crack*1e6>r.pd*1e6*0.3)it.push(['m','이 조건 불량 '+dp(r.dpmo)+' DPMO 가운데 크랙이 '+dp(r.crack*1e6)+'입니다. 효율만 보면 Ppk가 1.5를 넘어도, 크랙을 더한 전체 불량으로 계산한 시그마 수준은 6에 못 미칠 수 있어요.']);
   U.ins($('#i-control'),it);drawShift();hm();Plant.redraw&&Plant.redraw();labUpd();}
 
 /* ══ 분포 사전 ══ */
@@ -94,6 +95,7 @@ var Plant={};
         g.fillStyle=sel===k?'#fff':C.text;g.font='700 10.5px '+cssv('--font');g.textAlign='center';g.textBaseline='middle';g.fillText(String(k+1),tp[0],tp[1]+0.5);g.textBaseline='alphabetic';
         if(sel===k||w>700){g.font=(sel===k?'700 ':'')+'11px '+cssv('--font');var lb=P(p.x,p.y,p.h+1.15);U.label(g,lb[0],lb[1],p.name,sel===k?C.gfp:C.muted,'center');}}});
       if(WHO[k]){var fp=P(p.x+1.75,p.y,0),wh=WHO[k];items.push({d:fp[2]-0.01,f:function(){var h2=sc*(w<600?6.0:5.0)*wh[1];if(typeof drawMotion==='function')drawMotion(g,SHEET[wh[0]],'idle',t,fp[0],fp[1],h2,{fps:4});}});}});
+    /* 걸러 낸 셀은 실제 비율이 너무 작아(만 분의 1 수준) 보이도록 25배 키워 그린다 — 패널에 표기 */
     var n=16;for(var c=0;c<n;c++){var u=(c/n+t*0.04)%1,pos=along(u),pp=P(pos[0],pos[1],0.55),bad=u>U11&&((c*7919+Math.floor(t*0.04+c/n))%100)/100<I.rej*25;(function(pp,bad){items.push({d:pp[2]-0.02,f:function(){cell(g,pp[0],pp[1],sc*0.36,SUPC[CFG.sup],bad);}});})(pp,bad);}
     items.sort(function(a,b){return b.d-a.d;}).forEach(function(it){it.f();});
     var bw=Math.min(w-16,360);g.fillStyle='rgba(255,255,255,.9)';g.fillRect(8,8,bw,48);g.strokeStyle=C.rule;g.strokeRect(8,8,bw,48);
@@ -244,10 +246,10 @@ U.Gloss({
  '규격 하한':['규격 하한 (LSL)','품질','고객이 정한 최소 품질. 이 페이지는 광열화 뒤 효율 22.40%.'],
  '회귀 모델':['회귀 모델','AI','출하 효율로 광열화 뒤 효율(숫자)을 맞히는 모델. 간이 판정기 v1의 속.'],
  '관리도':['관리도 (SPC)','품질','공정 값을 시간 순으로 찍고 중심선 ±3σ 한계를 넘는지 보는 그림.'],
- 'Cpk':['Cpk (공정 능력 지수)','품질','(평균 − 규격 하한) ÷ (3 × 표준편차). 1.5 이상이면 6시그마 수준.'],
+ 'Ppk':['Ppk (장기 공정 성능 지수)','품질','(평균 − 규격 하한) ÷ (3 × 장기 표준편차). 시간대·로트 사이 흔들림까지 넣은 표준편차로 계산한다. 단기(군 안) 표준편차로 계산하면 Cpk.'],
  'DPMO':['DPMO','품질','100만 개당 불량 수 (Defects Per Million Opportunities).'],
  '부분 풀링':['부분 풀링','통계','칸마다 따로 추정한 값을 전체 평균 쪽으로 당겨 쓰는 방법. 라벨이 적은 칸일수록 많이 당긴다.']
-},['6시그마','광열화','규격 하한','관리도','Cpk','DPMO','부분 풀링']);
+},['6시그마','광열화','규격 하한','관리도','Ppk','DPMO','부분 풀링']);
 U.Study({quiz:{
  control:[{q:'공급사 C의 셀은 출하 효율이 A보다 높은데 불량이 더 많습니다. 까닭은?',o:['광열화가 커서 고객 지붕 위에서 효율이 더 많이 떨어지기 때문','측정기가 고장 나서','C의 셀이 더 작아서','규격 하한이 C만 다르기 때문'],a:0,why:'고객이 보는 품질은 광열화 뒤 효율입니다. 출하 효율이 높아도 광열화(0.56%p)가 A(0.30%p)보다 커서 규격 미달이 늘어납니다.',hint:'두 곡선 중 색 곡선.'},
    {q:'공정 시그마가 3.5σ인 조건에서 판정 문턱을 올리면?',o:['출하 불량은 줄지만 멀쩡한 셀도 많이 버린다 — 공정 시그마는 그대로','공정이 6시그마가 된다','아무것도 바뀌지 않는다','불량이 늘어난다'],a:0,why:'판정은 만들어진 분포에서 덜어 낼 뿐입니다. 분포 자체(공정 시그마)를 바꾸려면 공정을 고쳐야 합니다.',hint:'판정 전·후 미니 칸.'}],

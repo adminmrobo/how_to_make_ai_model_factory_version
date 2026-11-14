@@ -66,8 +66,8 @@
    "id": "lab:metric/cpk",
    "type": "Metric",
    "label": {
-    "ko": "공정 능력 지수 Cpk",
-    "en": "Process capability index"
+    "ko": "장기 공정 성능 지수 Ppk (Cpk와 구별)",
+    "en": "Process performance index Ppk"
    },
    "page": "solar",
    "anchor": "#control",

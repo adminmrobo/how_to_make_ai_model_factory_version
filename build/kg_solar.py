@@ -27,7 +27,7 @@ def edge(s, p, o, a): E.append({"s": s, "p": "lab:" + p, "o": o, "anchor": a, "c
 q0 = node("lab:question/condition-dependent-threshold", "Question", "조건마다 불량 판정 기준을 바꿔야 할까?", "Should defect thresholds depend on production conditions?", "#top")
 line = node("lab:concept/solar-cell-line", "Concept", "태양광 셀 생산 라인 12공정", "Solar cell production line", "#plant", 1, "systems")
 six = node("lab:concept/six-sigma", "Concept", "6시그마 (3.4 DPMO)", "Six Sigma", "#control", 1, d="출하 100만 개당 불량 3.4개 이하. 4.5σ 꼬리 + 관례적 1.5σ 이동.")
-cpk = node("lab:metric/cpk", "Metric", "공정 능력 지수 Cpk", "Process capability index", "#control")
+cpk = node("lab:metric/cpk", "Metric", "장기 공정 성능 지수 Ppk (Cpk와 구별)", "Process performance index Ppk", "#control")
 dpmo = node("lab:metric/dpmo", "Metric", "DPMO와 시그마 수준", "DPMO and sigma level", "#control")
 lid = node("lab:concept/light-induced-degradation", "Concept", "광열화 (LID)", "Light-induced degradation", "#control", 1, "systems", "햇빛을 처음 받을 때 효율이 떨어지는 현상. 웨이퍼 공급사마다 크기가 다르다.")
 fac = node("lab:concept/condition-factors", "Concept", "분포를 옮기는 조건 (수입처·공장·교대·계절·생산량)", "Distribution-shifting conditions", "#grid", 1, "systems")
