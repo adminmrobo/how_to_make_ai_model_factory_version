@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>태양광 패널 셀 생산 공장 — 6시그마와, 조건마다 달라지는 불량 판정 기준</title>
+<meta name="description" content="태양광 발전 패널 셀 공장 12칸을 3D로 돌려 본다. 원재료 수입처·공장·교대 방식·계절·생산량에 따라 셀 효율 분포가 미세하게 달라지고, 그래서 불량품 판정 기준도 달라진다. 한 조건에서 만든 AI 간이 판정기(HTML)를 사례로 6시그마 현장의 고충을 계산해 본다.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!--@@CSS@@-->
+<!--@@PSTYLE@@-->
+<style>
+.lb{width:100%;border-collapse:collapse;font-size:13.5px}
+.lb td,.lb th{border-bottom:1px solid var(--rule);padding:5px 7px;text-align:left;font-variant-numeric:tabular-nums}
+.lb th{color:var(--muted);font-weight:500;font-size:12.5px}
+.lb tr.me td{background:var(--gfp-soft)}
+.ctrl2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px 18px;margin:6px 0 10px}
+.ctrl2 .group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hud{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.timebar input{flex:1;min-width:160px}
+.hm{border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.hm td,.hm th{border:1px solid #fff;padding:3px 4px;text-align:center;min-width:42px}
+.hm th{font-weight:500;color:var(--muted);background:var(--panel)}
+.hm td{cursor:pointer}
+.hm td.me{outline:2.5px solid var(--text);outline-offset:-2px}
+.dev{border:2px solid #2b3a4a;border-radius:16px;background:linear-gradient(180deg,#f7fafc,#eef3f7);padding:14px 16px;max-width:860px}
+.dev .dhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;border-bottom:2px dashed #b9c4cf;padding-bottom:6px;margin-bottom:10px}
+.dev .dhead b{font-size:16px;letter-spacing:.02em}
+.dev .dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 14px}
+.dev label{font-size:13px;color:var(--muted);display:block;margin-bottom:2px}
+.dev select,.dev input[type=number]{width:100%;font:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:12px}
+.verdict{border-radius:12px;padding:10px 12px;background:#fff;border:2px solid var(--rule)}
+.verdict .vt{font-size:12.5px;color:var(--muted)}
+.verdict .vv{font-size:22px;font-weight:700;margin:2px 0}
+.verdict.ok{border-color:#9fd3ae}.verdict.ok .vv{color:#1d6b35}
+.verdict.ng{border-color:#e8b1ad}.verdict.ng .vv{color:#9b1c18}
+.verdict.hold{border-color:#ecc98f}.verdict.hold .vv{color:#7a4b00}
+.verdict .pb{height:8px;border-radius:4px;background:#eef1f5;overflow:hidden;margin:4px 0}.verdict .pb i{display:block;height:100%}
+.distc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}
+.distc a{border:1px solid var(--rule);border-radius:12px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--text)}
+.distc a:hover{border-color:var(--info)}
+.distc b{display:block;font-size:15px}.distc span{font-size:13px;color:var(--muted)}.distc p{margin:4px 0 0;font-size:13.5px}
+.pain{counter-reset:p}
+.tag2{display:inline-block;border-radius:6px;padding:0 6px;font-size:12px;border:1px solid var(--rule);margin-left:4px}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="섹션 바로가기"><div class="row">
+  <a class="logo" href="#top">태양광 패널 셀 공장 <i>④ 6시그마와 판정 기준</i></a>
+  <div class="links">
+    <a href="./index.html">공장 목록</a><a href="#plant">3D 공장</a><a href="#control">조종실</a><a href="#dist">분포 사전</a><a href="#shift">교대 방식</a><a href="#judge">간이 판정기</a><a href="#grid">조건 지도</a><a href="#spc">관리도</a><a href="#pain">현장의 고충</a><a href="#duel">대결</a><a href="#sum">정리</a>
+  </div>
+</div></nav>
+
+<!-- lab-cover -->
+<div class="cover" id="cover" data-img="cover_05"><div class="frame">
+  <canvas id="cvCover" aria-hidden="true"></canvas>
+  <span class="cap">표지 그림 자리 · cover_05 (그림을 받으면 바뀝니다)</span>
+  <div class="cast4"><img data-mood="fly_magnify" alt="" aria-hidden="true" class="s"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <span class="cover-chip">태양광 패널 셀 생산 공장 · ④ 6시그마와 판정 기준</span>
+</div></div>
+<!-- /lab-cover -->
+
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">자율주행차 배터리 AI 공장 · ④ 태양광 패널 셀 생산 공장 · <a href="./index.html">공장 목록</a></div>
+  <h1>태양광 패널 셀 생산 공장 — 6시그마와, 조건마다 달라지는 불량 판정 기준</h1>
+  <p class="question">같은 셀을 만드는데, 웨이퍼를 어디서 사 왔는지, 몇 교대로 돌렸는지, 여름인지에 따라 불량 판정 기준을 바꿔야 할까?</p>
+  <p class="lead">공장 부지 ④에 태양광 발전 패널에 들어갈 <b>셀</b> 공장을 세웁니다. 목표는 <span class="g" data-g="6시그마">6시그마</span> — 출하한 셀 100만 개 중 불량 3.4개 이하. 그런데 셀 효율의 분포는 <b>원재료 수입처 · 공장 · 교대 방식(2교대·3교대) · 생산 시기 · 생산량</b>에 따라 미세하게 달라집니다. 게다가 고객이 보는 품질은 출하 직후가 아니라 햇빛을 받아 <span class="g" data-g="광열화">광열화</span>된 뒤의 효율입니다. 그래서 출하 검사의 <b>판정 기준(문턱)</b>도 조건마다 달라져야 합니다. 한 조건의 데이터로 만든 <b>AI 간이 판정기(HTML)</b>를 사례로, 그 기준을 다른 조건에 그대로 쓸 때 생기는 일과 현장의 고충을 계산해 봅니다.</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v1.0 · 통계 분포: <a href="https://adminmrobo.github.io/probability_distribution_dictionary/">확률분포 딕셔너리와 분포표 연구실</a></p>
+  <div class="three"><b>세 줄로 먼저</b><ol>
+    <li>6시그마는 판정기가 아니라 공정이 만든다. 판정기는 공정이 만든 분포에서 불량을 덜어 낼 뿐이고, 그 대가로 멀쩡한 셀도 버린다.</li>
+    <li>분포가 조건마다 다르면 최적 판정 문턱도 다르다. 한 조건에서 학습한 판정기를 다른 조건에 쓰면 불량이 새어 나간다.</li>
+    <li>조건을 잘게 나눌수록 칸마다 라벨(광열화 시험)이 모자란다. 라벨이 적으면 묶고, 많으면 나눈다.</li></ol></div>
+  <div class="kpis" aria-label="숫자 요약">
+    <div class="kpi g"><b><span id="k-base">—</span></b><span>기준 조건의 공정 시그마 수준<sup>①</sup></span></div>
+    <div class="kpi r"><b><span id="k-worst">—</span></b><span>가장 나쁜 조건의 공정 시그마 수준<sup>①</sup></span></div>
+    <div class="kpi m"><b>144</b><span>조건 조합 (수입처 3 × 공장 2 × 교대 2 × 계절 4 × 생산량 3)</span></div>
+    <div class="kpi a"><b><span id="k-esc">—</span></b><span>기준 조건 판정기를 그대로 쓸 때 최악의 유출 (DPMO)<sup>①</sup></span></div>
+  </div>
+  <p class="muted" style="font-size:13px">① 이 페이지가 직접 만든 설명용 모형(시드 고정)의 값입니다. 실제 셀 공장·공급사·고객 규격의 숫자가 아닙니다. 공급사 이름은 가상입니다.</p>
+  <div data-dlg="hero"></div>
+</div></header>
+
+<main>
+<section class="sec" id="cast" aria-labelledby="h-cast"><div class="wrap">
+  <h2 id="h-cast">등장인물과 이 페이지 사용법</h2>
+  <div class="cast" id="castgrid"></div>
+  <div class="secret"><button class="bt" id="secretbtn" type="button" aria-expanded="false">방청석 보기 (미공개 식구)</button><div class="row" id="secretrow" hidden></div></div>
+  <div class="steps four" style="margin-top:16px">
+    <div class="step"><b>3D 공장 돌리기</b>하루 24시간을 재생합니다. 교대 인계 시각과 근무 막바지에 무엇이 흔들리는지 봅니다.</div>
+    <div class="step"><b>조건 바꾸기</b>조종실에서 수입처·공장·교대·계절·생산량을 바꾸면 분포와 시그마 수준이 다시 계산됩니다.</div>
+    <div class="step"><b>간이 판정기 써 보기</b>셀 하나의 측정값을 넣고, 기준 조건 판정기와 조건 인식 판정기의 답을 견줍니다.</div>
+    <div class="step"><b>도장 확인</b>노란 도장이 찍힌 그림·숫자는 설명용 모형입니다.</div>
+  </div>
+</div></section>
+
+<section class="sec" id="why" aria-labelledby="h-why"><div class="wrap">
+  <h2 id="h-why">왜 태양광 패널 셀 공장을 세우나</h2>
+  <div class="steps">
+    <div class="step"><b>1. 같은 판정기, 다른 공장</b>① 공장의 불량품 판정기는 한 공장의 데이터로 만들었습니다. 이번에는 공장·수입처·교대가 여럿인 현실을 넣습니다.</div>
+    <div class="step"><b>2. 6시그마는 분포의 꼬리 이야기</b>100만 개 중 3.4개는 평균이 아니라 분포의 꼬리에서 정해집니다. 꼬리가 조금만 두꺼워져도 불량이 수십 배가 됩니다.</div>
+    <div class="step"><b>3. 확률분포 사전을 공장에서 쓰기</b>정규·포아송·이항·t 분포를 <a href="https://adminmrobo.github.io/probability_distribution_dictionary/dictionary.html">확률분포 딕셔너리</a>에서 찾아 여기 숫자와 맞춰 봅니다.</div>
+  </div>
+  <div class="explain"><h4>학습 목표 — 이 페이지를 마치면</h4><ol>
+    <li>효율 분포(정규)와 규격 하한으로 공정 능력(Cpk)·DPMO·시그마 수준을 계산하고, 판정기가 바꾸는 것(출하 품질)과 못 바꾸는 것(공정 시그마)을 구별할 수 있다.</li>
+    <li>수입처·교대·계절·생산량이 분포의 평균과 퍼짐을 어떻게 옮기는지, 그래서 최적 판정 문턱이 왜 조건마다 다른지 설명할 수 있다.</li>
+    <li>조건별 판정 기준을 만들 때의 현실적 제약(조합 폭발, 라벨 지연·부족, 신규 수입처, 관리도의 사각지대)을 들고, 라벨 수에 맞는 묶기 전략을 고를 수 있다.</li></ol></div>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>수업 경로</th><th>보는 곳</th></tr></thead><tbody>
+    <tr><td>50분 (6시그마 중심)</td><td>3D 공장 → 조종실 → 분포 사전 → 간이 판정기</td></tr>
+    <tr><td>100분 (현장의 고충까지)</td><td>위 경로 + 교대 방식 → 조건 지도 → 관리도 → 현장의 고충 → 대결</td></tr>
+    <tr><td>통계 수업 연계</td><td>분포 사전 → <a href="https://adminmrobo.github.io/probability_distribution_dictionary/tables.html#s4">분포표 연구실 4장(1종·2종 오류)</a> → 간이 판정기의 과잉 폐기·유출</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<!-- 3D 공장 -->
+<section class="sec" id="plant" aria-labelledby="h-plant"><div class="wrap">
+  <h2 id="h-plant">큰 그림 — 태양광 셀 공장 12공정 (3D 모형)</h2>
+  <p class="lead">배치는 다른 공장과 같은 12칸, 캐릭터 자리도 같습니다. P1 웨이퍼 입고(수입처별 색)부터 P2~P8 셀 공정, P9 효율 측정(IV), P10 EL 크랙 검사, P11 판정·등급 분류, P12 출하. 위 띠는 지금 근무 조(색)와 교대 인계 시각, 기계 위 막대는 그 시간 효율의 퍼짐(표준편차), 컨베이어 위 빨간 셀은 판정기가 걸러 낸 셀입니다.</p>
+  <div class="panel">
+    <div class="ptitle">셀 생산 라인 — 하루 24시간 재생, 끌어서 돌리기, 공정을 누르면 설명</div>
+    <div class="fac">
+      <div><div class="cwrap"><canvas id="cvPlant" aria-label="12칸 태양광 셀 공장의 3D 그림. 웨이퍼가 컨베이어를 따라 셀 공정과 효율·EL 검사를 지나 판정·출하된다"></canvas><span class="hint">끌어서 돌리기 · 공정 누르기</span></div>
+        <div class="legend"><span style="--lc:#f6e2bf">입고·출하</span><span style="--lc:#d9e8f6">셀 공정</span><span style="--lc:#e7d3f0">측정·검사</span><span style="--lc:#3567a8">공급사 A</span><span style="--lc:#d9822b">공급사 B</span><span style="--lc:#8e62b3">공급사 C</span><span style="--lc:#c9302c">걸러 낸 셀</span></div>
+      </div>
+      <div class="pcard" aria-live="polite">
+        <div class="pc-no" id="pc-no">—</div>
+        <h3 id="pc-name">—</h3>
+        <p id="pc-desc">—</p>
+        <p class="mnote" id="pc-metric">—</p>
+        <div class="minis" id="plant-minis"></div>
+      </div>
+    </div>
+    <div class="pchips" id="pchips" role="group" aria-label="공정 고르기"></div>
+    <div class="timebar"><button class="bt primary" id="p-play" type="button">⏸ 멈춤</button><label class="glabel" for="r-time">시각</label><input type="range" id="r-time" min="0" max="23" step="1" value="6"><span class="hud" id="p-hud">—</span></div>
+    <div class="ctrl"><div class="group"><span class="glabel">재생 속도</span><span id="g-pspd"></span></div><div class="group"><span class="glabel">시점</span><span id="g-pview"></span></div></div>
+  </div>
+  <div class="explain"><h4>공정 읽는 법</h4><ol>
+    <li><b>셀 공정 (P2~P8)</b>: 웨이퍼 표면을 거칠게 만들고(텍스처링), 인을 확산해 PN 접합을 만들고, 반사방지막을 입히고, 은 전극을 인쇄해 굽습니다(소성).</li>
+    <li><b>측정 (P9·P10)</b>: 빛을 비춰 효율을 재고(IV), 전류를 흘려 빛나는 모습으로 미세 크랙을 찾습니다(EL).</li>
+    <li><b>판정 (P11)</b>: 측정 효율이 판정 문턱보다 낮거나 크랙이 보이면 걸러 냅니다. 이 문턱이 이 페이지의 주인공입니다.</li></ol>
+    <div class="lim">이 그림의 한계: 실제 셀 라인은 공정이 더 많고 셀 종류(PERC·TOPCon 등)마다 다릅니다. 이 모형은 효율 하나와 크랙 하나만 품질로 봅니다.</div></div>
+  <div data-dlg="plant"></div>
+</div></section>
+
+<!-- 조종실 -->
+<section class="sec" id="control" aria-labelledby="h-control"><div class="wrap">
+  <h2 id="h-control">조종실 — 조건을 바꾸면 분포가 움직인다</h2>
+  <p class="lead">고객 규격은 하나입니다: <b>광열화 뒤 효율 ≥ 22.40%</b>(<span class="g" data-g="규격 하한">규격 하한</span> LSL). 출하 검사는 광열화 <b>전</b> 효율만 잴 수 있습니다. 회색 곡선은 출하 때 잰 효율, 색 곡선은 광열화 뒤 효율, 세로선은 판정 문턱입니다.</p>
+  <div class="panel">
+    <div class="ctrl2">
+      <div class="group"><span class="glabel">원재료 수입처</span><span id="g-sup"></span></div>
+      <div class="group"><span class="glabel">공장</span><span id="g-plant"></span></div>
+      <div class="group"><span class="glabel">생산 방식</span><span id="g-shift"></span></div>
+      <div class="group"><span class="glabel">생산 시기</span><span id="g-season"></span></div>
+      <div class="group"><span class="glabel">생산량 (가동률)</span><span id="g-load"></span></div>
+      <div class="group"><button class="bt" id="c-reset" type="button">기준 조건으로</button></div>
+    </div>
+    <div class="cwrap tall"><canvas id="cvDist" aria-label="출하 때 효율과 광열화 뒤 효율의 분포, 규격 하한, 판정 문턱"></canvas></div>
+    <div class="minis" id="c-minis"></div>
+    <div class="insight" id="i-control"></div>
+  </div>
+  <div class="explain"><h4>숫자 읽는 법</h4><ol>
+    <li><b>DPMO</b>: 100만 개당 불량 수. <b>시그마 수준</b> = 정규분포에서 그 불량 비율에 해당하는 z값 + 1.5(장기 평균 이동을 감안한 관례)[1]. 3.4 DPMO가 6시그마입니다.</li>
+    <li><b>Cpk</b>: (평균 − 규격 하한) ÷ (3 × 표준편차). 1.5 이상이면 6시그마 수준의 공정 능력으로 봅니다[1].</li>
+    <li><b>판정 뒤 출하 품질</b>: 판정기가 걸러 낸 뒤 고객에게 간 불량의 DPMO. 대신 <b>과잉 폐기</b>(멀쩡한데 버린 셀)가 생깁니다.</li></ol></div>
+  <div data-dlg="control"></div>
+  <div class="quiz" data-quiz="control"></div>
+</div></section>
+
+<!-- 분포 사전 -->
+<section class="sec" id="dist" aria-labelledby="h-dist"><div class="wrap">
+  <h2 id="h-dist">분포 사전 — 이 공장에서 쓰는 확률분포</h2>
+  <p class="lead">분포의 모양과 모수는 <a href="https://adminmrobo.github.io/probability_distribution_dictionary/dictionary.html">확률분포 딕셔너리</a>에서 3D 관계 지도로 볼 수 있습니다. 카드를 누르면 그 분포로 갑니다.</p>
+  <div class="distc" id="distcards"></div>
+  <div class="explain"><h4>판정은 가설검정과 같다</h4><ol>
+    <li>"이 셀은 양품이다"를 기각(폐기)할지 정하는 일입니다. 멀쩡한 셀을 버리면 <b>1종 오류</b>(과잉 폐기), 불량을 내보내면 <b>2종 오류</b>(유출)입니다.</li>
+    <li>문턱을 올리면 1종 오류가 늘고 2종 오류가 줍니다. 비용 비율(폐기 1,500원 : 유출 40,000원, 예시값)로 균형점을 고릅니다. 같은 그림이 <a href="https://adminmrobo.github.io/probability_distribution_dictionary/tables.html#s4">분포표 연구실 4장</a>에 있습니다.</li></ol></div>
+  <div data-dlg="dist"></div>
+  <div class="quiz" data-quiz="dist"></div>
+</div></section>
+
+<!-- 교대 방식 -->
+<section class="sec" id="shift" aria-labelledby="h-shift"><div class="wrap">
+  <h2 id="h-shift">교대 방식 — 2교대와 3교대의 하루</h2>
+  <p class="lead">같은 조건에서 생산 방식만 바꿔, 시간대별 광열화 뒤 효율의 평균과 퍼짐을 그렸습니다. 3교대는 인계가 하루 세 번, 2교대는 두 번이지만 12시간 근무의 막바지가 깁니다.</p>
+  <div class="panel">
+    <div class="cwrap tall"><canvas id="cvShift" aria-label="2교대와 3교대의 시간대별 불량 확률"></canvas></div>
+    <div class="insight" id="i-shift"></div>
+  </div>
+  <div class="lim">한계: 인계·피로의 크기는 방향을 보여 주려고 정한 값입니다. 실제 공장에서는 교대별 데이터를 따로 모아 재야 합니다.</div>
+  <div data-dlg="shift"></div>
+</div></section>
+
+<!-- 간이 판정기 -->
+<section class="sec" id="judge" aria-labelledby="h-judge"><div class="wrap">
+  <h2 id="h-judge">간이 판정기 — AI 모델을 HTML 한 장으로 만든 사례</h2>
+  <p class="lead">현장에서 자주 보는 모습입니다. 품질팀이 <b>기준 조건</b>(공급사 A · 2공장 · 3교대 · 봄 · 가동률 85%)에서 셀 <b id="j-n">—</b>개를 골라 광열화 시험을 하고, 출하 효율로 광열화 뒤 효율을 맞히는 <span class="g" data-g="회귀 모델">회귀 모델</span>을 학습했습니다. 그 모델을 문턱 하나로 정리해 HTML 판정기로 라인에 걸었습니다(v1). 옆에는 조건을 아는 판정기(v2)를 나란히 둡니다.</p>
+  <div class="dev" role="group" aria-label="간이 판정기">
+    <div class="dhead"><b>셀 출하 간이 판정기</b><span class="muted" style="font-size:12.5px" id="j-model">—</span></div>
+    <div class="dgrid">
+      <div><label for="j-sup">웨이퍼 수입처</label><select id="j-sup"></select></div>
+      <div><label for="j-plant">공장</label><select id="j-plant"></select></div>
+      <div><label for="j-shift">생산 방식</label><select id="j-shift"></select></div>
+      <div><label for="j-season">생산 시기</label><select id="j-season"></select></div>
+      <div><label for="j-load">가동률</label><select id="j-load"></select></div>
+      <div><label for="j-eta">출하 측정 효율 (%)</label><input type="number" id="j-eta" step="0.01" min="21.5" max="24" value="22.85"></div>
+      <div><label for="j-cr">EL 크랙 (개)</label><input type="number" id="j-cr" step="1" min="0" max="5" value="0"></div>
+      <div style="display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap"><button class="bt" type="button" id="j-rand">이 조건의 셀 하나 뽑기</button></div>
+    </div>
+    <div class="verdicts" id="j-out"></div>
+  </div>
+  <div class="insight" id="i-judge"></div>
+  <div class="explain"><h4>이 판정기가 배운 것과 모르는 것</h4><ol>
+    <li><b>배운 것</b>: 광열화 뒤 효율 ≈ a + b × 출하 효율, 남는 오차의 표준편차 s. 기준 조건의 광열화 손실은 평균 약 0.30%p였습니다.</li>
+    <li><b>모르는 것</b>: 공급사 C의 웨이퍼는 광열화가 두 배 가깝게 큽니다. 학습 데이터에 C가 한 장도 없었으니 판정기는 C의 셀도 A처럼 봅니다.</li>
+    <li><b>학습 라벨에 불량이 0개</b>: 기준 조건은 거의 6시그마라, 광열화 시험 셀 가운데 불량이 하나도 없었습니다. 불량을 직접 배운 것이 아니라 분포(회귀선과 오차)로 꼬리를 추정한 것입니다.</li></ol></div>
+  <div data-dlg="judge"></div>
+  <div class="quiz" data-quiz="judge"></div>
+</div></section>
+
+<!-- 조건 지도 -->
+<section class="sec" id="grid" aria-labelledby="h-grid"><div class="wrap">
+  <h2 id="h-grid">조건 지도 — 144개 조합에서 판정기는 어떻게 되나</h2>
+  <p class="lead">줄은 수입처 × 공장 × 생산 방식(12줄), 칸은 계절 × 가동률(12칸)입니다. 칸을 누르면 조종실이 그 조건으로 바뀝니다.</p>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">색으로 볼 값</span><span id="g-hm"></span></div></div>
+    <div class="tblwrap" style="max-width:calc(100vw - 48px)"><table class="hm" id="tb-hm"></table></div>
+    <div class="insight" id="i-grid"></div>
+  </div>
+  <div data-dlg="grid"></div>
+</div></section>
+
+<!-- 관리도 -->
+<section class="sec" id="spc" aria-labelledby="h-spc"><div class="wrap">
+  <h2 id="h-spc">관리도 — 수입처를 바꾼 7주차, 무엇이 보이나</h2>
+  <p class="lead">2공장 3교대가 6주까지 공급사 A, 7주차부터 신규 공급사 C의 웨이퍼를 씁니다. 위는 매일 수천 개씩 쌓이는 <b>출하 효율</b>의 <span class="g" data-g="관리도">관리도</span>(하루 평균), 아래는 주마다 셀 10개만 보내는 <b>광열화 시험</b> 결과입니다.</p>
+  <div class="panel">
+    <div class="cwrap"><canvas id="cvSpc" aria-label="13주 관리도: 출하 효율 하루 평균"></canvas></div><div class="cwrap" style="margin-top:8px"><canvas id="cvSpc2" aria-label="13주 관리도: 주간 광열화 시험 10개의 평균 손실"></canvas></div>
+    <div class="insight" id="i-spc"></div>
+  </div>
+  <div data-dlg="spc"></div>
+  <div class="quiz" data-quiz="spc"></div>
+</div></section>
+
+<!-- 현장의 고충 -->
+<section class="sec" id="pain" aria-labelledby="h-pain"><div class="wrap">
+  <h2 id="h-pain">현장의 고충 — 조건별 판정 기준이 쉽지 않은 까닭</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>고충</th><th>무엇이 어렵나</th><th>이 페이지의 숫자</th></tr></thead><tbody>
+    <tr><td>1. 조합 폭발</td><td>조건을 다 나누면 칸이 144개. 칸마다 기준을 따로 만들면 칸당 데이터가 모자란다.</td><td>조건 지도 144칸</td></tr>
+    <tr><td>2. 라벨이 늦고 비싸다</td><td>진짜 품질(광열화 뒤 효율)은 셀을 빛에 오래 쬐어야 안다. 하루 수만 개 중 몇 개만 시험한다.</td><td>관리도 아래 그림: 주 10개</td></tr>
+    <tr><td>3. 6시그마 공장에는 불량 표본이 없다</td><td>잘 돌아가는 조건에서는 시험한 셀 수백 개 중 불량이 0개. 불량을 보고 배울 수 없다.</td><td id="p-zero">—</td></tr>
+    <tr><td>4. 신규 수입처의 첫 몇 주</td><td>라벨이 쌓이기 전에는 기존 기준을 쓸 수밖에 없다. 그 사이 불량이 샌다.</td><td>아래 슬라이더</td></tr>
+    <tr><td>5. 인라인 관리도는 조용하다</td><td>출하 효율만 보면 C의 셀이 오히려 좋아 보인다. 문제는 재지 못하는 광열화에 있다.</td><td>관리도</td></tr>
+    <tr><td>6. 기준이 바뀌면 현장이 묻는다</td><td>"어제는 양품이던 셀이 왜 오늘은 불량인가." 조건별 문턱은 근거 문서와 추적성(어느 셀이 어느 기준으로 판정됐나)을 요구한다.</td><td>간이 판정기의 v1·v2 차이</td></tr>
+    <tr><td>7. 측정기도 흔들린다</td><td>효율 측정기(IV)의 측정 잡음(이 모형 0.03%p)과 교정 드리프트가 문턱 근처 셀의 판정을 바꾼다[3].</td><td>간이 판정기 "보류" 구간</td></tr>
+  </tbody></table></div>
+  <div class="panel">
+    <div class="ptitle">신규 공급사 C — 광열화 시험 라벨이 몇 개 쌓였나</div>
+    <div class="ctrl"><div class="group"><label class="glabel" for="r-lab">C의 라벨 수</label><input type="range" id="r-lab" min="0" max="1000" step="10" value="0"><b id="v-lab">0개</b></div></div>
+    <div class="cwrap"><canvas id="cvLab" aria-label="공급사 C의 라벨 수에 따른 유출 DPMO와 판정 문턱"></canvas></div>
+    <div class="minis" id="lab-minis"></div>
+    <div class="insight" id="i-lab"></div>
+  </div>
+  <div class="explain"><h4>v2 판정기가 라벨을 쓰는 법 — 부분 풀링</h4><ol>
+    <li>효율의 퍼짐은 인라인 측정으로 매일 쌓이니 조건마다 따로 압니다(라벨 필요 없음).</li>
+    <li>광열화 손실은 라벨이 있어야 압니다. C의 라벨 평균을 기존 공급사 평균 쪽으로 당겨 씁니다: 추정 = (라벨 합 + 40 × 기존 평균) ÷ (라벨 수 + 40)[4].</li>
+    <li>라벨이 0개면 기존 평균 그대로(v1과 같음), 많아질수록 C 자신의 값에 다가갑니다. 표본이 작을 때 평균의 불확실성은 <a href="https://adminmrobo.github.io/probability_distribution_dictionary/dictionary.html#t">t 분포</a>로 봅니다.</li></ol></div>
+  <div data-dlg="pain"></div>
+  <div class="quiz" data-quiz="pain"></div>
+</div></section>
+
+<!-- 대결 -->
+<section class="sec" id="duel" aria-labelledby="h-duel"><div class="wrap">
+  <h2 id="h-duel">대결 — 판정 기준 하나냐, 조건마다 따로냐</h2>
+  <p class="lead">여름 한 분기(셀 2,000만 개)의 생산 계획: 공급사 A 50% · B 35% · C 15%, 1공장 2교대 · 2공장 3교대 반반, 가동률 70·85·100% = 20·50·30%. 조건 칸은 18개. 분기 동안 광열화 시험 라벨을 생산 비율대로 뽑습니다. 주판봇은 <b>라벨을 다 합쳐 문턱 하나</b>를 학습하고, 초파리 연구원은 <b>18칸마다 따로</b> 학습합니다. 판정 기준은 <b>분기 품질 비용</b>(과잉 폐기 + 유출). 가정 A는 라벨 60개, 가정 B는 600개.</p>
+  <div class="duel">
+    <div class="side l"><div class="head"><img id="d-fly" data-mood="fly_point" alt="" aria-hidden="true"><div><b style="color:var(--c-fly)">초파리 연구원 · 조건마다 따로</b><br><span class="muted">분포가 다르면 기준도 달라야지.</span></div></div><div data-dlg="dfly"></div></div>
+    <div class="vs">VS</div>
+    <div class="side r"><div class="head"><img id="d-robo" data-mood="robo_coin" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">주판봇 · 기준 하나로</b><br><span class="muted">라벨은 모아야 힘이 된다.</span></div></div><div data-dlg="drobo"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">먼저 맞혀 보기</span><button class="bt" data-pred="fly" type="button" aria-pressed="false">초파리가 이길 것 같다</button><button class="bt" data-pred="robo" type="button" aria-pressed="false">주판봇이 이길 것 같다</button></div>
+      <div class="group"><button class="bt primary" data-go type="button">결과 보기</button><button class="bt" data-close type="button" hidden>다시 닫기</button></div></div>
+    <div class="duel-res" hidden>
+      <div id="d-bars"></div>
+      <div id="d-say"></div>
+      <div class="score"><span id="d-score"></span><span id="d-pred"></span></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="duel"></div>
+</div></section>
+
+<section class="sec" id="sum" aria-labelledby="h-sum"><div class="wrap">
+  <h2 id="h-sum">정리 — 판정 기준을 조건에 맞추는 순서</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>단계</th><th>하는 일</th><th>이 페이지에서</th></tr></thead><tbody>
+    <tr><td>1. 공정을 먼저</td><td>Cpk·시그마 수준을 조건별로 잰다. 판정기로 시그마를 사지 않는다.</td><td>조종실 · 조건 지도</td></tr>
+    <tr><td>2. 분포가 갈리는 조건 찾기</td><td>평균·퍼짐·광열화를 옮기는 요인을 고른다(여기서는 수입처·계절이 크다).</td><td>교대 방식 · 조건 지도</td></tr>
+    <tr><td>3. 라벨 예산에 맞춰 묶기</td><td>라벨이 적으면 묶고(부분 풀링), 많으면 나눈다.</td><td>현장의 고충 · 대결</td></tr>
+    <tr><td>4. 재지 못하는 것을 감시</td><td>인라인 관리도와 별도로 광열화 시험을 꾸준히 한다. 신규 수입처는 처음에 시험을 늘린다.</td><td>관리도</td></tr>
+    <tr><td>5. 기준 변경을 기록</td><td>셀마다 어느 판정기·어느 문턱으로 판정했는지 남긴다.</td><td>간이 판정기 v1·v2</td></tr>
+  </tbody></table></div>
+  <h3>비유의 한계</h3>
+  <ul>
+    <li>실제 셀 품질은 효율 하나가 아니라 여러 특성(개방 전압, 충진율, 외관, 장기 신뢰성)으로 정해집니다.</li>
+    <li>광열화의 크기·원인(붕소-산소 결함, 고온 광열화 등)은 셀 구조와 웨이퍼마다 다릅니다[2]. 이 모형은 공급사별 평균 하나로 줄였습니다.</li>
+    <li>시그마 수준의 1.5 이동은 관례입니다. 공장마다 장기 이동을 실제로 재서 쓰는 것이 맞습니다[1].</li>
+  </ul>
+  <div class="next"><a href="./index.html"><b>공장 목록</b><br>자율주행차 배터리 AI 공장 전체</a><a href="classifier.html"><b>① 불량품 판정기</b><br>한 공장의 데이터로 만든 분류 엔진</a><a href="testlab.html"><b>시제품 테스트 랩실</b><br>만든 판정기를 실제 시료로 시험</a><a href="https://adminmrobo.github.io/probability_distribution_dictionary/"><b>확률분포 딕셔너리</b><br>이 페이지에 쓴 분포의 지도</a></div>
+</div></section>
+
+<section class="sec" id="outro" aria-labelledby="h-outro"><div class="wrap">
+  <h2 id="h-outro">아웃트로</h2>
+  <div data-dlg="outro"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <h3>출처</h3>
+  <table><thead><tr><th>#</th><th>자료</th><th>이 페이지에서 쓴 곳</th></tr></thead><tbody>
+    <tr><td>[1]</td><td>Montgomery, D. C. (2019). Introduction to Statistical Quality Control (8th ed.). Wiley.</td><td>조종실 — 공정 능력 Cpk, DPMO, 시그마 수준과 1.5σ 이동, 관리도</td></tr>
+    <tr><td>[2]</td><td>Lindroos, J., Savin, H. (2016). Review of light-induced degradation in crystalline silicon solar cells. Solar Energy Materials and Solar Cells 147, 115–126.</td><td>광열화 — 웨이퍼에 따라 크기가 다른 효율 저하</td></tr>
+    <tr><td>[3]</td><td>AIAG (2010). Measurement Systems Analysis Reference Manual (4th ed.).</td><td>현장의 고충 — 측정기의 잡음과 드리프트</td></tr>
+    <tr><td>[4]</td><td>Gelman, A., Hill, J. (2007). Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge University Press.</td><td>현장의 고충 — 부분 풀링(묶어서 당겨 쓰기)</td></tr>
+    <tr><td>[A]</td><td>안상선, 「확률분포 딕셔너리와 분포표 연구실」 (<a href="https://adminmrobo.github.io/probability_distribution_dictionary/">사이트</a>)</td><td>분포 사전 — 정규·포아송·이항·t·와이블, 1종·2종 오류</td></tr>
+    <tr><td>[B]</td><td>안상선, 「배터리 불량품 판정기 ① 엔진부」·「시제품 테스트 랩실」 (이 시리즈)</td><td>판정기를 만들고 시험하는 절차</td></tr>
+  </tbody></table>
+  <h3>예시값·설명용 모형인 것</h3>
+  <ul><li>효율 평균 23.30%, 표준편차 0.11%p, 측정 잡음 0.03%p, 규격 하한 22.40% — 설명용 값</li><li>공급사 A·B·C(가상)의 평균 이동·퍼짐·광열화(0.30·0.38·0.56%p), 공장·계절·가동률·교대의 효과 — 방향을 보여 주려고 정한 값</li><li>크랙 발생률(셀당 백만 분의 3), EL 검출률 97%, 폐기 1,500원·유출 40,000원/셀 — 예시값</li></ul>
+  <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.</p>
+  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="./index.html">공장 목록</a></p>
+</div></footer>
+
+<script>
+/*@@SPRITES@@*/
+/*@@SS@@*/
+/*@@COMMON@@*/
+/*@@PAGE@@*/
+</script>
+</body>
+</html>

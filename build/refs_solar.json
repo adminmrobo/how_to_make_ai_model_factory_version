@@ -1,0 +1,193 @@
+[
+ {
+  "id": "montgomery2019sqc",
+  "type": "book",
+  "title": "Introduction to Statistical Quality Control",
+  "author": [
+   {
+    "family": "Montgomery",
+    "given": "Douglas C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "publisher": "Wiley",
+  "edition": "8",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/montgomery2019sqc",
+   "role": "background",
+   "supports": [
+    "lab:concept/six-sigma",
+    "lab:method/control-chart"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "lindroos2016lid",
+  "type": "article-journal",
+  "title": "Review of light-induced degradation in crystalline silicon solar cells",
+  "author": [
+   {
+    "family": "Lindroos",
+    "given": "Jeanette"
+   },
+   {
+    "family": "Savin",
+    "given": "Hele"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "container-title": "Solar Energy Materials and Solar Cells",
+  "volume": "147",
+  "page": "115-126",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/lindroos2016lid",
+   "role": "background",
+   "supports": [
+    "lab:concept/light-induced-degradation"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "aiag2010msa",
+  "type": "book",
+  "title": "Measurement Systems Analysis Reference Manual",
+  "author": [
+   {
+    "literal": "AIAG"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2010
+    ]
+   ]
+  },
+  "edition": "4",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/aiag2010msa",
+   "role": "background",
+   "supports": [
+    "lab:concept/measurement-system"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "gelman2007data",
+  "type": "book",
+  "title": "Data Analysis Using Regression and Multilevel/Hierarchical Models",
+  "author": [
+   {
+    "family": "Gelman",
+    "given": "Andrew"
+   },
+   {
+    "family": "Hill",
+    "given": "Jennifer"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2007
+    ]
+   ]
+  },
+  "publisher": "Cambridge University Press",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/gelman2007data",
+   "role": "background",
+   "supports": [
+    "lab:method/partial-pooling"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ }
+]

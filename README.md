@@ -100,3 +100,14 @@ eeanimation 「AI Parameters」 카드 10장(사용자 제공), 안상선 「머
 - 다시 만들기: `python3 code/fish_lab.py && python3 build/kg_test.py && node build/build.js`
 
 공장 목록 맨 아래에는 이웃 사이트 [옆에 있는 시멘트 공장](https://adminmrobo.github.io/smart_factory_world/cement/)(스마트 팩토리 World) 카드가 있습니다.
+
+## ④ 태양광 패널 셀 생산 공장 (`solar.html`)
+
+6시그마를 목표로 하는 태양광 셀 공장. 원재료 수입처(가상 공급사 A·B·C)·공장(1·2)·생산 방식(2·3교대)·생산 시기(계절)·생산량(가동률 70·85·100%)에 따라 셀 효율 분포가 달라지고, 그래서 불량 판정 문턱도 달라져야 함을 보여 줍니다.
+
+- 품질 특성: 광열화(LID) 뒤 효율 ≥ 22.40% (설명용 규격). 출하 검사는 광열화 전 효율과 EL 크랙만 잼
+- 분포: 효율 정규(시간대 24개 혼합), 크랙 포아송, 표본 불량 이항, 작은 표본 평균 t — [확률분포 딕셔너리](https://adminmrobo.github.io/probability_distribution_dictionary/) 링크
+- AI 간이 판정기(HTML): v1 = 기준 조건(A·2공장·3교대·봄·85%) 광열화 시험 500개로 학습한 회귀 + 문턱 22.75%, v2 = 조건 인식(부분 풀링)
+- 주요 수치: 기준 조건 공정 5.94σ, 최악 조건(C·1공장·2교대·여름·100%) 3.21σ, v1을 그대로 쓸 때 최악 유출 약 4.3만 DPMO
+- 대결(여름 분기 18칸): 라벨 60개 → 무승부(26.8억 vs 27.0억, 부분 풀링 24.7억), 600개 → 조건별 승(11.7억 vs 26.2억) → C 조건부
+- 다시 만들기: `python3 build/kg_solar.py && node build/build.js` (계산 모듈 `build/solar_sim.js`)

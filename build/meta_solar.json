@@ -1,0 +1,42 @@
+{
+ "title": "태양광 패널 셀 생산 공장 — 6시그마와, 조건마다 달라지는 불량 판정 기준",
+ "series": "자율주행차 배터리 AI 공장",
+ "number": "04",
+ "creator": [
+  {
+   "name": "안상선",
+   "role": "author",
+   "affiliation": "(주)M-Robo"
+  }
+ ],
+ "contributor": [
+  {
+   "name": "AI 보조 제작",
+   "role": "assistant"
+  }
+ ],
+ "date": "2026-11-14",
+ "version": "1.0",
+ "language": [
+  "ko"
+ ],
+ "license": "",
+ "url": "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/solar.html",
+ "about": [
+  "lab:concept/six-sigma",
+  "lab:concept/condition-factors",
+  "lab:model/simple-judge-v1",
+  "lab:model/condition-aware-judge-v2",
+  "lab:method/partial-pooling"
+ ],
+ "basedOn": [
+  "montgomery2019sqc",
+  "lindroos2016lid",
+  "aiag2010msa",
+  "gelman2007data"
+ ],
+ "educationalLevel": "입문~중급",
+ "learningResourceType": "interactive explainer",
+ "registry": "KG_00_registry 0.2",
+ "suggestedCitation": "안상선 (2026). 태양광 패널 셀 생산 공장 — 6시그마와, 조건마다 달라지는 불량 판정 기준. 자율주행차 배터리 AI 공장 04, v1.0."
+}

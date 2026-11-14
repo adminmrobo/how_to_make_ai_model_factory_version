@@ -1,0 +1,719 @@
+{
+ "version": "1.0",
+ "page": "solar",
+ "nodes": [
+  {
+   "id": "lab:question/condition-dependent-threshold",
+   "type": "Question",
+   "label": {
+    "ko": "조건마다 불량 판정 기준을 바꿔야 할까?",
+    "en": "Should defect thresholds depend on production conditions?"
+   },
+   "page": "solar",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/solar-cell-line",
+   "type": "Concept",
+   "label": {
+    "ko": "태양광 셀 생산 라인 12공정",
+    "en": "Solar cell production line"
+   },
+   "page": "solar",
+   "anchor": "#plant",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/six-sigma",
+   "type": "Concept",
+   "label": {
+    "ko": "6시그마 (3.4 DPMO)",
+    "en": "Six Sigma"
+   },
+   "page": "solar",
+   "anchor": "#control",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "출하 100만 개당 불량 3.4개 이하. 4.5σ 꼬리 + 관례적 1.5σ 이동."
+   }
+  },
+  {
+   "id": "lab:metric/cpk",
+   "type": "Metric",
+   "label": {
+    "ko": "공정 능력 지수 Cpk",
+    "en": "Process capability index"
+   },
+   "page": "solar",
+   "anchor": "#control",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/dpmo",
+   "type": "Metric",
+   "label": {
+    "ko": "DPMO와 시그마 수준",
+    "en": "DPMO and sigma level"
+   },
+   "page": "solar",
+   "anchor": "#control",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/light-induced-degradation",
+   "type": "Concept",
+   "label": {
+    "ko": "광열화 (LID)",
+    "en": "Light-induced degradation"
+   },
+   "page": "solar",
+   "anchor": "#control",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "햇빛을 처음 받을 때 효율이 떨어지는 현상. 웨이퍼 공급사마다 크기가 다르다."
+   }
+  },
+  {
+   "id": "lab:concept/condition-factors",
+   "type": "Concept",
+   "label": {
+    "ko": "분포를 옮기는 조건 (수입처·공장·교대·계절·생산량)",
+    "en": "Distribution-shifting conditions"
+   },
+   "page": "solar",
+   "anchor": "#grid",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/shift-system",
+   "type": "Concept",
+   "label": {
+    "ko": "2교대·3교대와 인계·피로",
+    "en": "Two- and three-shift systems"
+   },
+   "page": "solar",
+   "anchor": "#shift",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:distribution/normal",
+   "type": "Concept",
+   "label": {
+    "ko": "정규분포 (셀 효율)",
+    "en": "Normal distribution"
+   },
+   "page": "solar",
+   "anchor": "#dist",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:distribution/poisson",
+   "type": "Concept",
+   "label": {
+    "ko": "포아송 분포 (크랙 수)",
+    "en": "Poisson distribution"
+   },
+   "page": "solar",
+   "anchor": "#dist",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:distribution/binomial",
+   "type": "Concept",
+   "label": {
+    "ko": "이항 분포 (표본 불량 수)",
+    "en": "Binomial distribution"
+   },
+   "page": "solar",
+   "anchor": "#dist",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:distribution/student-t",
+   "type": "Concept",
+   "label": {
+    "ko": "t 분포 (작은 표본 평균)",
+    "en": "Student t distribution"
+   },
+   "page": "solar",
+   "anchor": "#pain",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/type-i-ii-errors",
+   "type": "Concept",
+   "label": {
+    "ko": "1종 오류(과잉 폐기)·2종 오류(유출)",
+    "en": "Type I and II errors"
+   },
+   "page": "solar",
+   "anchor": "#dist",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:model/simple-judge-v1",
+   "type": "Model",
+   "label": {
+    "ko": "AI 간이 판정기 v1 (기준 조건 회귀 + 문턱)",
+    "en": "Simple judge v1"
+   },
+   "page": "solar",
+   "anchor": "#judge",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "기준 조건 광열화 시험 500개로 학습한 회귀 모델을 문턱 하나로 정리한 HTML 판정기."
+   }
+  },
+  {
+   "id": "lab:model/condition-aware-judge-v2",
+   "type": "Model",
+   "label": {
+    "ko": "조건 인식 판정기 v2 (부분 풀링)",
+    "en": "Condition-aware judge v2"
+   },
+   "page": "solar",
+   "anchor": "#judge",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/partial-pooling",
+   "type": "Method",
+   "label": {
+    "ko": "부분 풀링",
+    "en": "Partial pooling"
+   },
+   "page": "solar",
+   "anchor": "#pain",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/control-chart",
+   "type": "Method",
+   "label": {
+    "ko": "관리도 (SPC)",
+    "en": "Control chart"
+   },
+   "page": "solar",
+   "anchor": "#spc",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/label-scarcity",
+   "type": "Concept",
+   "label": {
+    "ko": "라벨 지연·부족 (광열화 시험)",
+    "en": "Label delay and scarcity"
+   },
+   "page": "solar",
+   "anchor": "#pain",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/combinatorial-explosion",
+   "type": "Concept",
+   "label": {
+    "ko": "조건 조합 폭발 (144칸)",
+    "en": "Combinatorial explosion of conditions"
+   },
+   "page": "solar",
+   "anchor": "#grid",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/measurement-system",
+   "type": "Concept",
+   "label": {
+    "ko": "측정 시스템 잡음·드리프트",
+    "en": "Measurement system variation"
+   },
+   "page": "solar",
+   "anchor": "#pain",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:question/pooled-vs-per-condition",
+   "type": "Question",
+   "label": {
+    "ko": "판정 기준 하나냐, 조건마다 따로냐 (라벨 수에 따라)",
+    "en": "One threshold vs per-condition thresholds"
+   },
+   "page": "solar",
+   "anchor": "#duel",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/solar-factory-3d",
+   "type": "Simulation",
+   "label": {
+    "ko": "3D 태양광 셀 공장 24시간",
+    "en": "3D solar cell factory"
+   },
+   "page": "solar",
+   "anchor": "#plant",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/single-quality-characteristic",
+   "type": "Limitation",
+   "label": {
+    "ko": "품질 특성을 효율·크랙 둘로 줄인 모형",
+    "en": "Only two quality characteristics"
+   },
+   "page": "solar",
+   "anchor": "#sum",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/montgomery2019sqc",
+   "type": "Work",
+   "label": {
+    "ko": "Introduction to Statistical Quality Cont",
+    "en": "Introduction to Statistical Quality Control"
+   },
+   "page": "solar",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/lindroos2016lid",
+   "type": "Work",
+   "label": {
+    "ko": "Review of light-induced degradation in c",
+    "en": "Review of light-induced degradation in crystalline silicon solar cells"
+   },
+   "page": "solar",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/aiag2010msa",
+   "type": "Work",
+   "label": {
+    "ko": "Measurement Systems Analysis Reference M",
+    "en": "Measurement Systems Analysis Reference Manual"
+   },
+   "page": "solar",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/gelman2007data",
+   "type": "Work",
+   "label": {
+    "ko": "Data Analysis Using Regression and Multi",
+    "en": "Data Analysis Using Regression and Multilevel/Hierarchical Models"
+   },
+   "page": "solar",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:question/condition-dependent-threshold",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/condition-factors",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/solar-cell-line",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/solar-factory-3d",
+   "anchor": "#plant",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/six-sigma",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/dpmo",
+   "anchor": "#control",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/six-sigma",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/cpk",
+   "anchor": "#control",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/condition-factors",
+   "p": "lab:raises",
+   "o": "lab:concept/light-induced-degradation",
+   "anchor": "#control",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/shift-system",
+   "p": "lab:partOf",
+   "o": "lab:concept/condition-factors",
+   "anchor": "#shift",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/condition-factors",
+   "p": "lab:raises",
+   "o": "lab:concept/combinatorial-explosion",
+   "anchor": "#grid",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/normal",
+   "p": "lab:relatedTo",
+   "o": "lab:metric/cpk",
+   "anchor": "#dist",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/poisson",
+   "p": "lab:relatedTo",
+   "o": "lab:metric/dpmo",
+   "anchor": "#dist",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/binomial",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/label-scarcity",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:distribution/student-t",
+   "p": "lab:relatedTo",
+   "o": "lab:method/partial-pooling",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/type-i-ii-errors",
+   "p": "lab:relatedTo",
+   "o": "lab:model/simple-judge-v1",
+   "anchor": "#dist",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/simple-judge-v1",
+   "p": "lab:hasLimitation",
+   "o": "lab:concept/condition-factors",
+   "anchor": "#judge",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/condition-aware-judge-v2",
+   "p": "lab:relatedTo",
+   "o": "lab:method/partial-pooling",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/condition-aware-judge-v2",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/light-induced-degradation",
+   "anchor": "#judge",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/control-chart",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/light-induced-degradation",
+   "anchor": "#spc",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/label-scarcity",
+   "p": "lab:raises",
+   "o": "lab:concept/combinatorial-explosion",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/measurement-system",
+   "p": "lab:relatedTo",
+   "o": "lab:model/simple-judge-v1",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/pooled-vs-per-condition",
+   "p": "lab:relatedTo",
+   "o": "lab:method/partial-pooling",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/pooled-vs-per-condition",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/label-scarcity",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/solar-cell-line",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/single-quality-characteristic",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:sim/solar-factory-3d",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/shift-system",
+   "anchor": "#plant",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/six-sigma",
+   "p": "lab:assertedIn",
+   "o": "lab:work/montgomery2019sqc",
+   "anchor": "#control",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/control-chart",
+   "p": "lab:assertedIn",
+   "o": "lab:work/montgomery2019sqc",
+   "anchor": "#spc",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/light-induced-degradation",
+   "p": "lab:assertedIn",
+   "o": "lab:work/lindroos2016lid",
+   "anchor": "#control",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/measurement-system",
+   "p": "lab:assertedIn",
+   "o": "lab:work/aiag2010msa",
+   "anchor": "#pain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/partial-pooling",
+   "p": "lab:assertedIn",
+   "o": "lab:work/gelman2007data",
+   "anchor": "#pain",
+   "confidence": "high"
+  }
+ ]
+}

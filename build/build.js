@@ -55,6 +55,12 @@ if(fs.existsSync(path.join(B,'testlab.src.html'))){const fd=rd('fish.json'),tj=r
     .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>tj);
   if(fs.existsSync(path.join(B,'kg_test.json')))H4=attach(H4,JSON.parse(rd('kg_test.json')),JSON.parse(rd('refs_test.json')),JSON.parse(rd('meta_test.json')));
   fs.writeFileSync(path.join(R,'testlab.html'),H4);console.log('testlab.html',(Buffer.byteLength(H4)/1024).toFixed(0)+' KB');}
+// ④ 태양광 패널 셀 공장: solar.src.html + solar_sim.js + solar.js → solar.html (kg_solar.json·refs_solar.json·meta_solar.json)
+if(fs.existsSync(path.join(B,'solar.src.html'))){const ss=rd('solar_sim.js'),sj=rd('solar.js');
+  let H5=rd('solar.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
+    .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>sj);
+  if(fs.existsSync(path.join(B,'kg_solar.json')))H5=attach(H5,JSON.parse(rd('kg_solar.json')),JSON.parse(rd('refs_solar.json')),JSON.parse(rd('meta_solar.json')));
+  fs.writeFileSync(path.join(R,'solar.html'),H5);console.log('solar.html',(Buffer.byteLength(H5)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
 if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common);
   fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}
