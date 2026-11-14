@@ -21,6 +21,16 @@
         "export": true
       },
       {
+        "path": "testlab.html",
+        "kg": true,
+        "export": true
+      },
+      {
+        "path": "solar.html",
+        "kg": true,
+        "export": true
+      },
+      {
         "path": "index.html",
         "kg": false,
         "export": false,
@@ -36,7 +46,13 @@
       "build/meta_reg.json",
       "build/kg_fac.json",
       "build/refs_fac.json",
-      "build/meta_fac.json"
+      "build/meta_fac.json",
+      "build/kg_test.json",
+      "build/refs_test.json",
+      "build/meta_test.json",
+      "build/kg_solar.json",
+      "build/refs_solar.json",
+      "build/meta_solar.json"
     ]
   },
   "i18n": {
@@ -113,6 +129,69 @@
       "source_of": null,
       "status": "pending",
       "received": null
+    },
+    {
+      "id": "cover_00",
+      "role": "cover",
+      "path": "img/cover_00.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... first page — miniature AI factory park, doc lecturing with a pointer ... No text (전체: COVER_PROMPTS_00_04_05.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null,
+      "page": "index.html"
+    },
+    {
+      "id": "cover_04",
+      "role": "cover",
+      "path": "img/cover_04.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line; fish on conveyor sorted into seven colored tin cans, one fish with a red ring ... No text (전체: COVER_PROMPTS_00_04_05.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null,
+      "page": "testlab.html"
+    },
+    {
+      "id": "cover_05",
+      "role": "cover",
+      "path": "img/cover_05.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line; dark-navy solar cells, three colored wafer crates, window half day half night, bell curve drawing ... No text (전체: COVER_PROMPTS_00_04_05.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null,
+      "page": "solar.html"
     }
   ],
   "updated": "2026-11-14"

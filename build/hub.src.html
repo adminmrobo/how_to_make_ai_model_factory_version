@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>자율주행차 배터리 AI 공장 — 공장 목록</title>
-<meta name="description" content="자율주행차 대용량 배터리를 다루는 AI 공장 시리즈의 공장 목록. ① 배터리 불량품 판정기, ② 배터리 수명 예측 장치, ③ 배터리 생산 공장, ④ 태양광 패널 셀 생산 공장, 그리고 앞으로 지을 예비 부지, 시제품 테스트 랩실(생선 통조림 분류 장비)과 이웃 시멘트 공장.">
+<meta name="description" content="제조업 AI 강의 커리큘럼의 프로그램·데이터 분석·모델 분석 내용을 쉬운 이해와 시연을 위해 다시 구성한 AI 공장 시리즈의 첫 페이지. 제작 안상선. ① 배터리 불량품 판정기, ② 배터리 수명 예측 장치, ③ 배터리 생산 공장, ④ 태양광 패널 셀 생산 공장, 그리고 앞으로 지을 예비 부지, 시제품 테스트 랩실(생선 통조림 분류 장비)과 이웃 시멘트 공장.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <!--@@CSS@@-->
@@ -38,16 +38,36 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
 </style>
 </head>
 <body>
+<!-- lab-cover -->
+<div class="cover" id="cover" data-img="cover_00"><div class="frame">
+  <canvas id="cvCover" aria-hidden="true"></canvas>
+  <span class="cap">표지 그림 자리 · cover_00 (그림을 받으면 바뀝니다)</span>
+  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <span class="cover-chip">자율주행차 배터리 AI 공장 · 제조업 AI 강의 시연용</span>
+</div></div>
+<!-- /lab-cover -->
 <header class="hero" id="top"><div class="wrap">
   <div class="eyebrow">연구실 해설 시리즈 · 공장 목록</div>
   <h1>자율주행차 배터리 AI 공장</h1>
   <p class="question">자율주행차에 들어가는 대용량 배터리를, 만들고 · 가려내고 · 수명을 맞히는 AI 공장들을 하나씩 지어 봅니다.</p>
   <p class="lead">공장마다 3D 모형이 있고, 같은 연구실 식구가 같은 자리에서 일합니다. 아래 카드를 눌러 공장에 들어가세요. 빈 부지는 앞으로 지을 공장 자리입니다.</p>
-  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14</p>
+  <div class="three" style="border-left-color:var(--info)"><b>이 사이트에 대하여</b><p style="margin:6px 0 0">이 사이트는 <b>제조업 AI 강의에 사용한 커리큘럼</b>을 바탕으로, 그 가운데 <b>"프로그램"</b>, <b>"데이터 분석"</b>, <b>"모델 분석"</b>에 쓰인 내용을 <b>쉬운 이해와 시연</b>을 위해 공장 모형으로 다시 구성한 페이지입니다. 모든 숫자는 설명용 모형이며, 실제 공장·기업의 값이 아닙니다.</p></div>
+  <p class="byline">제작 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">제작자 소개</a> · 2026-11-14</p>
   <div class="cast4" style="justify-content:flex-start;margin-top:8px"><img data-mood="fly_point" alt="" aria-hidden="true" class="s" style="width:56px"><img data-mood="doc_front" alt="" aria-hidden="true" style="width:64px"><img data-mood="asst_smile" alt="" aria-hidden="true" style="width:64px"><img data-mood="robo_coin" alt="" aria-hidden="true" style="width:60px"></div>
 </div></header>
 
 <main>
+<section class="sec" id="curriculum" aria-labelledby="h-cur"><div class="wrap">
+  <h2 id="h-cur">강의 커리큘럼과 이 사이트</h2>
+  <p class="lead">강의에서 다룬 세 갈래를 공장 하나하나에 나눠 담았습니다. 강의 시간에는 화면을 띄워 직접 조작하며 시연하고, 수업 뒤에는 학습자가 혼자 다시 돌려 볼 수 있게 만들었습니다.</p>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>커리큘럼 갈래</th><th>강의에서 다룬 것</th><th>이 사이트에서 보는 곳</th></tr></thead><tbody>
+    <tr><td><b>프로그램</b></td><td>공정을 시뮬레이션하는 프로그램, 현장에 거는 간이 판정 도구</td><td><a href="factory.html">③ 배터리 생산 공장</a>(7일 시뮬레이션·최적화 실습 키트) · <a href="solar.html">④ 태양광 셀 공장</a>(HTML 간이 판정기)</td></tr>
+    <tr><td><b>데이터 분석</b></td><td>센서·라벨 데이터, 분포와 품질 지표, 관리도</td><td><a href="factory.html#label">③ 셀 라벨 데이터</a> · <a href="solar.html#dist">④ 분포 사전·관리도</a> · <a href="testlab.html#sample">랩실 시료</a></td></tr>
+    <tr><td><b>모델 분석</b></td><td>분류·회귀 모델 만들기, 검증과 실제 테스트, 판정 기준</td><td><a href="classifier.html">① 불량품 판정기</a> · <a href="regression.html">② 수명 예측 장치</a> · <a href="testlab.html">시제품 테스트 랩실</a></td></tr>
+  </tbody></table></div>
+  <p class="mnote">캐릭터(박사·조수 하루·초파리 연구원·주판봇·인턴 시아·모아)는 모든 공장에서 같은 자리에서 일합니다. 페이지마다 퀴즈·대결·지식 색인이 있어 강의 뒤 복습에 씁니다.</p>
+</div></section>
+
 <section class="sec" id="factories" aria-labelledby="h-fac"><div class="wrap">
   <h2 id="h-fac">공장 목록</h2>
   <div class="slots">
@@ -95,12 +115,15 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
 
 <footer><div class="wrap">
   <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.</p>
-  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
+  <p>제작 · 안상선 ((주)M-Robo 대표) · 제조업 AI 강의 커리큘럼(프로그램·데이터 분석·모델 분석) 시연용 · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">제작자 소개</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
 </div></footer>
 <script>
 /*@@SPRITES@@*/
 /*@@COMMON@@*/
 U.fillImgs();
+(function(){var cv=U.$('#cvCover');if(!cv)return;U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h,gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
+  var B=[['#f3c9c7',.06],['#cfe0f8',.17],['#e7d3f0',.28],['#d9e8f6',.39],['#e3f1e6',.5]];B.forEach(function(b,i){var x=w*b[1],y=h*.1,bw=w*.09,bh=h*(.16+(i%2)*.04);g.fillStyle=b[0];g.fillRect(x,y+h*.2-bh,bw,bh);g.strokeStyle='rgba(22,33,43,.25)';g.strokeRect(x,y+h*.2-bh,bw,bh);g.fillStyle='rgba(22,33,43,.18)';g.fillRect(x+bw*.4,y+h*.2-bh-h*.03,bw*.12,h*.03);});
+  g.strokeStyle='rgba(22,33,43,.15)';g.lineWidth=3;g.beginPath();g.moveTo(w*.04,h*.32);g.lineTo(w*.62,h*.32);g.stroke();});})();
 (function(){var cv=U.$('#cvLabMini');if(!cv)return;var SC=['#8a6a2e','#d9822b','#2f8f5b','#3567a8','#c0453a','#7f93a8','#8e62b3'];U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h;g.fillStyle='#f6f9fb';g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(22,33,43,.18)';g.lineWidth=6;g.beginPath();g.moveTo(w*.05,h*.62);g.lineTo(w*.95,h*.62);g.stroke();
   for(var i=0;i<9;i++){var x=w*(.09+i*.1),s=Math.min(w,h)*.06,c=i<4?'#c9d1da':SC[i%7];g.save();g.translate(x,h*.62-s*.25);g.fillStyle=c;g.beginPath();g.ellipse(0,0,s,s*.42,0,0,7);g.fill();g.beginPath();g.moveTo(-s*.9,0);g.lineTo(-s*1.45,-s*.4);g.lineTo(-s*1.45,s*.4);g.closePath();g.fill();g.restore();if(i===6){g.beginPath();g.arc(x,h*.62-s*.25,s*1.3,0,7);g.strokeStyle='#c9302c';g.lineWidth=2;g.stroke();}}
