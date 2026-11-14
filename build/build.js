@@ -35,10 +35,20 @@ function attach(H,kg,refs,meta){
 let H=rd('page.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
   .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@EN@@*/',()=>en.replace("if(typeof module!=='undefined')module.exports=EN;",'')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>page);
 if(fs.existsSync(path.join(B,'kg.json')))H=attach(H,JSON.parse(rd('kg.json')),JSON.parse(rd('refs.json')),JSON.parse(rd('meta.json')));
-fs.writeFileSync(path.join(R,'index.html'),H);console.log('index.html',(Buffer.byteLength(H)/1024).toFixed(0)+' KB');
+fs.writeFileSync(path.join(R,'classifier.html'),H);console.log('classifier.html',(Buffer.byteLength(H)/1024).toFixed(0)+' KB');
 // 회귀 편: reg.src.html + engines_reg.js + reg.js → regression.html (kg_reg.json·refs_reg.json·meta_reg.json)
 if(fs.existsSync(path.join(B,'reg.src.html'))){const er=rd('engines_reg.js'),rj=rd('reg.js');
   let H2=rd('reg.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
     .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@ER@@*/',()=>er.replace("if(typeof module!=='undefined')module.exports=ER;",'').replace("(typeof BM!=='undefined')?BM:require('./bm.js')",'BM')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>rj);
   if(fs.existsSync(path.join(B,'kg_reg.json')))H2=attach(H2,JSON.parse(rd('kg_reg.json')),JSON.parse(rd('refs_reg.json')),JSON.parse(rd('meta_reg.json')));
   fs.writeFileSync(path.join(R,'regression.html'),H2);console.log('regression.html',(Buffer.byteLength(H2)/1024).toFixed(0)+' KB');}
+
+// 3편 배터리 생산 공장: factory.src.html + fsim.js + factory.js → factory.html (kg_fac.json·refs_fac.json·meta_fac.json)
+if(fs.existsSync(path.join(B,'factory.src.html'))){const fsim=rd('fsim.js'),fj=rd('factory.js');
+  let H3=rd('factory.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
+    .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>fj);
+  if(fs.existsSync(path.join(B,'kg_fac.json')))H3=attach(H3,JSON.parse(rd('kg_fac.json')),JSON.parse(rd('refs_fac.json')),JSON.parse(rd('meta_fac.json')));
+  fs.writeFileSync(path.join(R,'factory.html'),H3);console.log('factory.html',(Buffer.byteLength(H3)/1024).toFixed(0)+' KB');}
+// 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
+if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common);
+  fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}

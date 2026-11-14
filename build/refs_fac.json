@@ -1,0 +1,237 @@
+[
+ {
+  "id": "kwade2018current",
+  "type": "article-journal",
+  "title": "Current status and challenges for automotive battery production technologies",
+  "author": [
+   {
+    "family": "Kwade",
+    "given": "Arno"
+   },
+   {
+    "family": "Haselrieder",
+    "given": "Wolfgang"
+   },
+   {
+    "family": "Leithoff",
+    "given": "Ruben"
+   },
+   {
+    "family": "Modlinger",
+    "given": "Armin"
+   },
+   {
+    "family": "Dietrich",
+    "given": "Franz"
+   },
+   {
+    "family": "Droeder",
+    "given": "Klaus"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "container-title": "Nature Energy",
+  "volume": "3",
+  "issue": "4",
+  "page": "290-300",
+  "DOI": "10.1038/s41560-018-0130-3",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/kwade2018current",
+   "role": "background",
+   "supports": [
+    "lab:concept/automated-cell-line",
+    "lab:process/mixing",
+    "lab:process/coating",
+    "lab:process/drying",
+    "lab:process/calendering",
+    "lab:process/slitting",
+    "lab:process/stacking",
+    "lab:process/sealing",
+    "lab:process/filling",
+    "lab:process/formation",
+    "lab:process/eol"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": true,
+    "pages": true
+   },
+   "checkedBy": "웹 검색(ADS·RePEc 서지)으로 확인(2026-11-14)"
+  }
+ },
+ {
+  "id": "goldratt1984goal",
+  "type": "book",
+  "title": "The Goal: A Process of Ongoing Improvement",
+  "author": [
+   {
+    "family": "Goldratt",
+    "given": "Eliyahu M."
+   },
+   {
+    "family": "Cox",
+    "given": "Jeff"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1984
+    ]
+   ]
+  },
+  "publisher": "North River Press",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/goldratt1984goal",
+   "role": "background",
+   "supports": [
+    "lab:concept/bottleneck"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "little1961proof",
+  "type": "article-journal",
+  "title": "A proof for the queuing formula: L = λW",
+  "author": [
+   {
+    "family": "Little",
+    "given": "John D. C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1961
+    ]
+   ]
+  },
+  "container-title": "Operations Research",
+  "volume": "9",
+  "issue": "3",
+  "page": "383-387",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/little1961proof",
+   "role": "background",
+   "supports": [
+    "lab:concept/littles-law"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "ahmed2016energy",
+  "type": "article-journal",
+  "title": "Energy impact of cathode drying and solvent recovery during lithium-ion battery manufacturing",
+  "author": [
+   {
+    "family": "Ahmed",
+    "given": "Shabbir"
+   },
+   {
+    "family": "Nelson",
+    "given": "Paul A."
+   },
+   {
+    "family": "Gallagher",
+    "given": "Kevin G."
+   },
+   {
+    "family": "Dees",
+    "given": "Dennis W."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "container-title": "Journal of Power Sources",
+  "volume": "322",
+  "page": "169-178",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/ahmed2016energy",
+   "role": "background",
+   "supports": [
+    "lab:concept/dry-room-energy"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "Kwade 외(2018)의 참고문헌 목록에서 서지 확인(2026-11-14)"
+  }
+ }
+]

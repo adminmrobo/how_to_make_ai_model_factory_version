@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배터리 생산 공장 — 완전 자동화 라인 시뮬레이션과 최적화 실습 키트</title>
+<meta name="description" content="자율주행차용 대용량 배터리 셀을 만드는 완전 자동화 공장 10공정을 3D로 돌려 본다. 기계마다 잰 센서 값이 배터리 라벨에 기록되고, 증산하면 병목과 불량이 생기며, 24시간 가동하면 고열로 센서 값이 잘못 기재된다. 전기료까지 따져 최적 운전을 찾는 실습 키트.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!--@@CSS@@-->
+<!--@@PSTYLE@@-->
+<style>
+.lead2{font-size:14px;color:var(--muted)}
+.lb{width:100%;border-collapse:collapse;font-size:13.5px}
+.lb td,.lb th{border-bottom:1px solid var(--rule);padding:5px 7px;text-align:left;font-variant-numeric:tabular-nums}
+.lb th{color:var(--muted);font-weight:500;font-size:12.5px}
+.lb tr.bad td{background:#fff3e0}
+.lb tr.me td{background:var(--gfp-soft)}
+.lb .bar{display:inline-block;height:10px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.ctrl2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px 18px;margin:6px 0 10px}
+.ctrl2 .group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ctrl2 input[type=range]{flex:1;min-width:120px}
+.mach{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mach .bt{min-width:32px;padding:3px 8px}
+.tag2{display:inline-block;border-radius:6px;padding:0 6px;font-size:12px;border:1px solid var(--rule);margin-left:4px}
+.tag2.hot{background:#fdecea;border-color:#e8b1ad;color:#9b1c18}
+.tag2.bn{background:#fff3d6;border-color:#ecc98f;color:#7a4b00}
+.labelcard{border:2px solid var(--text);border-radius:10px;padding:10px 14px;background:#fff;font-variant-numeric:tabular-nums;max-width:560px}
+.labelcard .lh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px dashed var(--rule);padding-bottom:6px;margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.labelcard .lh b{font-size:17px;letter-spacing:.04em}
+.labelcard .bc{height:28px;background:repeating-linear-gradient(90deg,#16212b 0 2px,#fff 2px 4px,#16212b 4px 5px,#fff 5px 8px,#16212b 8px 11px,#fff 11px 12px);margin:4px 0 8px;border-radius:2px}
+.labelcard table{width:100%;border-collapse:collapse;font-size:13px}
+.labelcard td{padding:2px 4px;border-bottom:1px dotted var(--rule)}
+.labelcard td.v{text-align:right;font-weight:700}
+.labelcard tr.wrong td{background:#fff3e0;color:#9b1c18}
+.labelcard .stamp2{display:inline-block;border:2px solid;border-radius:6px;padding:0 8px;font-weight:700;font-size:13px}
+.kitgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}
+.kitc{border:1px solid var(--rule);border-radius:12px;padding:10px 12px;background:#fff}
+.kitc h4{margin:0 0 4px;font-size:15px}
+.kitc p{margin:4px 0;font-size:13.5px}
+.kitc .goal{font-size:13px;color:var(--muted)}
+.kitc .st{margin-top:6px;font-size:13px}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.hud{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.timebar input{flex:1;min-width:160px}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="섹션 바로가기"><div class="row">
+  <a class="logo" href="#top">배터리 생산 공장 <i>③ 자동화 라인</i></a>
+  <div class="links">
+    <a href="./index.html">공장 목록</a><a href="#plant">3D 공장</a><a href="#control">조종실</a><a href="#line">공정 10곳</a><a href="#label">라벨</a><a href="#bottleneck">병목</a><a href="#defect">불량</a><a href="#heat">24시간·열</a><a href="#power">전기료</a><a href="#optimize">최적화</a><a href="#kit">실습 키트</a><a href="#duel">대결</a><a href="#sum">정리</a><a href="#kg">색인</a><a href="#export">꾸러미</a>
+  </div>
+</div></nav>
+
+<!-- lab-cover -->
+<div class="cover" id="cover" data-img="cover_03"><div class="frame">
+  <canvas id="cvCover" aria-hidden="true"></canvas>
+  <span class="cap">표지 그림 자리 · cover_03 (그림을 받으면 바뀝니다)</span>
+  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_front" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <span class="cover-chip">배터리 생산 공장 · ③ 자동화 라인과 최적화</span>
+</div></div>
+<!-- /lab-cover -->
+
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">자율주행차 배터리 AI 공장 · ③ 배터리 생산 공장 · 실습 키트 · <a href="./index.html">공장 목록</a></div>
+  <h1>배터리 생산 공장 — 완전 자동화 라인 시뮬레이션과 최적화 실습 키트</h1>
+  <p class="question">사람 없이 돌아가는 배터리 공장에서 생산량을 늘리면 무엇이 먼저 막히고, 24시간 돌리면 무엇이 망가지며, 전기료까지 따지면 어떻게 돌려야 가장 남을까?</p>
+  <p class="lead">이 공장은 자율주행차 배터리 팩에 들어갈 대용량 셀을 만듭니다. 믹싱부터 에이징·검사까지 <b>10공정</b>이 모두 자동으로 돌고, 기계마다 잰 <b>센서 값이 셀 하나하나의 라벨</b>에 기록됩니다. 그 라벨은 <a href="classifier.html">불량품 판정기</a>와 <a href="regression.html">수명 예측 장치</a>가 배우는 데이터가 됩니다. 속도를 올리면 <b>병목</b>과 <b>불량</b>이, 24시간 돌리면 <b>고열</b>로 센서 값이 잘못 적히고 불량이 늘어납니다. 시간대마다 다른 <b>전기료</b>까지 따져 하루 이익을 최대로 만드는 운전을 직접 찾아봅니다.</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v1.0 · 함께 보기: <a href="classifier.html">① 불량품 판정기</a> · <a href="regression.html">② 수명 예측 장치</a></p>
+  <div class="three"><b>세 줄로 먼저</b><ol>
+    <li>라인의 생산량은 가장 느린 공정(병목)이 정한다. 병목이 아닌 곳을 빠르게 하면 재공품만 쌓이고 돈이 묶인다.</li>
+    <li>기계를 빠르게, 오래 돌리면 열이 쌓인다. 열은 불량을 늘리고 센서 값을 틀리게 적어, 라벨 데이터까지 오염시킨다.</li>
+    <li>최적 운전은 생산량 하나가 아니라 불량·유출·전기료·설비비를 함께 본 이익으로 고른다. 꼭대기는 평평해서 비슷하게 좋은 답이 여럿이다.</li></ol></div>
+  <div class="kpis" aria-label="숫자 요약">
+    <div class="kpi r"><b>10</b><span>자동화 공정 (믹싱 → 에이징·검사)</span></div>
+    <div class="kpi m"><b>18</b><span>셀 라벨에 기록되는 센서 값</span></div>
+    <div class="kpi a"><b><span id="k-good">—</span></b><span>지금 설정의 하루 양품 셀<sup>①</sup></span></div>
+    <div class="kpi g"><b><span id="k-profit">—</span></b><span>지금 설정의 하루 이익<sup>①</sup></span></div>
+  </div>
+  <p class="muted" style="font-size:13px">① 이 페이지가 직접 만든 설명용 모형(7일 시뮬레이션, 시드 7)의 값입니다. 실제 공장·설비·요금표의 숫자가 아닙니다.</p>
+  <div data-dlg="hero"></div>
+</div></header>
+
+<main>
+<section class="sec" id="cast" aria-labelledby="h-cast"><div class="wrap">
+  <h2 id="h-cast">등장인물과 이 페이지 사용법</h2>
+  <div class="cast" id="castgrid"></div>
+  <div class="secret"><button class="bt" id="secretbtn" type="button" aria-expanded="false">방청석 보기 (미공개 식구)</button><div class="row" id="secretrow" hidden></div></div>
+  <div class="steps four" style="margin-top:16px">
+    <div class="step"><b>3D 공장 돌려 보기</b>7일을 시간 단위로 재생합니다. 밤에 쉬는지, 어느 기계가 뜨거운지, 어디에 셀이 쌓이는지 봅니다.</div>
+    <div class="step"><b>조종실에서 바꾸기</b>속도·가동 시간·시작 시각·냉각·설비 대수를 바꾸면 7일이 다시 계산됩니다.</div>
+    <div class="step"><b>실습 키트 풀기</b>미션 5개에 램프가 있습니다. 기록지에 시도를 남기고 CSV로 내려받습니다.</div>
+    <div class="step"><b>도장 확인</b>노란 도장이 찍힌 그림·숫자는 설명용 모형입니다.</div>
+  </div>
+</div></section>
+
+<section class="sec" id="why" aria-labelledby="h-why"><div class="wrap">
+  <h2 id="h-why">왜 배터리 생산 공장을 만드나</h2>
+  <div class="steps">
+    <div class="step"><b>1. 데이터는 공장에서 나온다</b>판정기와 예측 장치가 배우는 측정값은 공장 기계의 센서가 적은 값입니다. 공장이 흔들리면 데이터도 흔들립니다.</div>
+    <div class="step"><b>2. 최적화는 모델만의 일이 아니다</b>1·2편은 모델의 파라미터를 최적화했습니다. 3편은 공장 운전 조건을 최적화합니다. 목표 함수와 제약을 세우는 방식은 같습니다.</div>
+    <div class="step"><b>3. 손으로 해 보고, 자동으로 확인한다</b>조종실에서 직접 설정을 찾은 뒤, 자동 최적화(격자 탐색) 결과와 견줍니다.</div>
+  </div>
+  <div class="explain"><h4>학습 목표 — 이 페이지를 마치면</h4><ol>
+    <li>생산량을 늘릴 때 병목이 어디서 생기는지 가동률과 대기열로 찾고, 병목이 아닌 곳을 늘려도 소용없는 이유를 말할 수 있다.</li>
+    <li>속도·가동 시간·열이 불량률과 센서 라벨 오기율을 어떻게 올리는지, 그것이 AI 학습 데이터에 어떤 문제를 주는지 설명할 수 있다.</li>
+    <li>전기료(시간대 요금)와 설비비까지 넣은 이익 함수를 세우고, 제약(라벨 오기율 3% 이하) 아래에서 운전 조건을 최적화할 수 있다.</li></ol></div>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>수업 경로</th><th>보는 곳</th><th>실습 키트 미션</th></tr></thead><tbody>
+    <tr><td>50분 (병목·열 중심)</td><td>3D 공장 → 조종실 → 병목 → 24시간·열</td><td>K1 · K2 · K3</td></tr>
+    <tr><td>100분 (최적화까지)</td><td>위 경로 + 라벨 → 전기료 → 최적화 → 대결</td><td>K1 ~ K5, 기록지 제출</td></tr>
+    <tr><td>데이터 수업 연계</td><td>라벨 → 라벨 CSV 내려받기 → <a href="classifier.html">① 판정기</a></td><td>K3 + 라벨 오염 토론</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<!-- 3D 공장 -->
+<section class="sec" id="plant" aria-labelledby="h-plant"><div class="wrap">
+  <h2 id="h-plant">큰 그림 — 배터리 생산 공장 12공정 (3D 모형)</h2>
+  <p class="lead">공장 배치는 <a href="classifier.html">판정기</a>·<a href="regression.html">예측 장치</a> 공장과 같습니다(같은 12칸, 같은 캐릭터 자리). P1 원료 입고, P2~P11이 자동화 10공정, P12가 출하입니다. 기계 위 막대는 온도, 앞에 쌓인 상자는 대기열(재공품), 주황 점은 센서 오기 위험, 노란 점선은 <b>병목</b>입니다.</p>
+  <div class="panel">
+    <div class="ptitle">배터리 셀 자동화 라인 — 7일 재생, 끌어서 돌리기, 공정을 누르면 설명</div>
+    <div class="fac">
+      <div><div class="cwrap"><canvas id="cvPlant" aria-label="12칸으로 된 배터리 셀 생산 공장의 3D 그림. 셀이 컨베이어를 따라 10개 자동화 공정을 지나며 라벨에 센서 값이 기록된다"></canvas><span class="hint">끌어서 돌리기 · 공정 누르기</span></div>
+        <div class="legend"><span style="--lc:#f6e2bf">입고·출하</span><span style="--lc:#f3c9c7">전극 공정</span><span style="--lc:#e7d3f0">조립 공정</span><span style="--lc:#cfe0f8">화성·검사</span><span style="--lc:#c9302c">온도 막대</span><span style="--lc:#a35c00">대기열</span></div>
+      </div>
+      <div class="pcard" aria-live="polite">
+        <div class="pc-no" id="pc-no">P1 / 12</div>
+        <h3 id="pc-name">—</h3>
+        <p id="pc-desc">—</p>
+        <p class="mnote" id="pc-metric">—</p>
+        <div id="pc-link"></div>
+        <div class="minis" id="plant-minis"></div>
+      </div>
+    </div>
+    <div class="pchips" id="pchips" role="group" aria-label="공정 고르기"></div>
+    <div class="timebar"><button class="bt primary" id="p-play" type="button">⏸ 멈춤</button><label class="glabel" for="r-time">시각</label><input type="range" id="r-time" min="0" max="167" step="1" value="0"><span class="hud" id="p-hud">—</span></div>
+    <div class="ctrl">
+      <div class="group"><span class="glabel">재생 속도</span><span id="g-pspd"></span></div>
+      <div class="group"><span class="glabel">시점</span><span id="g-pview"></span></div>
+    </div>
+  </div>
+  <div class="explain"><h4>공정 읽는 법</h4><ol>
+    <li><b>전극 공정 (P2~P6)</b>: 활물질을 섞고(믹싱), 얇게 바르고(코팅), 말리고(건조), 눌러 두께를 맞추고(압연), 폭에 맞게 자릅니다(슬리팅)[1].</li>
+    <li><b>조립 공정 (P7~P9)</b>: 전극을 쌓고(적층), 파우치에 넣어 봉하고(조립·실링), 전해액을 넣습니다. 습기를 막는 드라이룸에서 합니다[1].</li>
+    <li><b>화성·검사 (P10~P11)</b>: 처음으로 충·방전해 셀을 활성화하고(화성), 며칠 묵혀 전압 변화를 본 뒤(에이징) 마지막 검사를 하고 라벨을 붙입니다. 화성은 셀 한 개에 오래 걸려 기계를 여러 대 둡니다[1].</li></ol>
+    <div class="lim">이 그림의 한계: 실제 공장은 공정마다 수십 단계가 더 있고, 화성·에이징은 하루를 넘기기도 합니다. 이 모형은 공정을 10개로 줄이고, 화성을 "기계 10대가 시간당 30셀씩" 처리하는 것으로 단순화했습니다.</div></div>
+  <div data-dlg="plant"></div>
+</div></section>
+
+<!-- 조종실 -->
+<section class="sec" id="control" aria-labelledby="h-control"><div class="wrap">
+  <h2 id="h-control">조종실 — 운전 조건을 바꾸면 7일이 다시 계산된다</h2>
+  <div class="tags"><span class="tag nn">모델: 1시간 단위 흐름 시뮬레이션 · 7일</span><span class="tag fly">현장: 중앙 통제실</span></div>
+  <div class="panel">
+    <div class="ptitle">운전 조건</div>
+    <div class="ctrl2">
+      <div class="group"><label class="glabel" for="r-speed">라인 속도 배율</label><input type="range" id="r-speed" min="0.8" max="1.4" step="0.05" value="1"><span class="val" id="v-speed">1.00×</span></div>
+      <div class="group"><label class="glabel" for="r-hours">하루 가동 시간</label><input type="range" id="r-hours" min="8" max="24" step="4" value="16"><span class="val" id="v-hours">16시간</span></div>
+      <div class="group"><label class="glabel" for="r-start">가동 시작 시각</label><input type="range" id="r-start" min="0" max="23" step="1" value="6"><span class="val" id="v-start">6시</span></div>
+      <div class="group"><label class="glabel" for="r-cool">냉각 설비 단계</label><input type="range" id="r-cool" min="0" max="3" step="1" value="1"><span class="val" id="v-cool">1단</span></div>
+      <div class="group mach"><span class="glabel">화성 설비 추가</span><button class="bt" type="button" data-mach="8" data-d="-1">−</button><span class="val" id="v-m8">+0대</span><button class="bt" type="button" data-mach="8" data-d="1">+</button></div>
+      <div class="group mach"><span class="glabel">적층 설비 추가</span><button class="bt" type="button" data-mach="5" data-d="-1">−</button><span class="val" id="v-m5">+0대</span><button class="bt" type="button" data-mach="5" data-d="1">+</button></div>
+      <div class="group"><span class="glabel">라벨 이중 검증 (센서 중복)</span><span id="g-verify"></span></div>
+      <div class="group"><button class="bt" id="c-reset" type="button">기본 설정으로</button><button class="bt primary" id="c-log" type="button">기록지에 남기기</button></div>
+    </div>
+    <div class="minis" id="c-minis"></div>
+    <div class="insight" id="i-control" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>이익은 이렇게 셉니다 (하루 평균, 예시값)</h4><ol>
+    <li><b>매출</b> = 출하한 셀 × 25,000원. <b>재료비</b> = 믹싱에 들어간 셀 × 22,000원. 불량으로 버린 셀과 아직 라인 위에 있는 재공품도 재료비는 이미 썼습니다.</li>
+    <li><b>유출 비용</b> = 검사를 빠져나간 불량 셀 × 150,000원 (리콜·보증 대응을 흉내 낸 값).</li>
+    <li><b>전기료</b> = 시간마다 쓴 전력(kWh) × 그 시간의 요금. <b>설비비</b> = 더 들인 설비의 하루 감가상각.</li>
+    <li>하루 이익 = 매출 − 재료비 − 유출 비용 − 전기료 − 설비비. 사람이 없는 완전 자동화 공장이라 인건비는 넣지 않았습니다.</li></ol>
+    <div class="lim">이 칸의 한계: 모든 금액은 관계를 보여 주려고 정한 예시값입니다. 실제 셀 가격·재료비·요금표와 다릅니다.</div></div>
+  <div data-dlg="control"></div>
+</div></section>
+
+<!-- 공정 10곳 -->
+<section class="sec" id="line" aria-labelledby="h-line"><div class="wrap">
+  <h2 id="h-line">공정 10곳 — 기계, 센서, 처리량</h2>
+  <p class="lead">표의 가동률·최고 온도·불량률은 지금 조종실 설정으로 7일 돌린 결과입니다. 처리량은 "설비 대수 × 1대 처리량 × 속도(최대 속도까지)"입니다.</p>
+  <div class="tblwrap"><table class="lb" id="line-tb"></table></div>
+  <div class="explain"><h4>읽는 법</h4><ol>
+    <li><b>최대 속도</b>: 화성은 셀을 천천히 충전해야 해서 속도를 거의 못 올립니다(1.05×). 적층은 1.2×까지, 나머지는 1.4×까지 올라갑니다.</li>
+    <li><b>라벨 센서</b>: 이 공정에서 잰 값이 셀 라벨에 그대로 적힙니다. 기계가 뜨거워지면 이 값이 틀리게 적힐 수 있습니다.</li></ol></div>
+</div></section>
+
+<!-- 라벨 -->
+<section class="sec" id="label" aria-labelledby="h-label"><div class="wrap">
+  <h2 id="h-label">배터리 라벨 — 셀 하나에 센서 값 18개</h2>
+  <div class="tags"><span class="tag nn">모델: 판정기·예측 장치의 학습 데이터</span><span class="tag fly">현장: 셀 이력 라벨(디지털 이력)</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>셀이 공정을 지날 때마다 그 기계의 센서 값이 셀 번호에 묶여 기록됩니다. 나중에 불량이 나면 라벨을 거꾸로 따라가 어느 기계에서 무엇이 달랐는지 찾습니다.</div>
+    <div><div class="tr">모델에서는</div>라벨 한 장이 데이터세트의 한 줄입니다. 판정기와 예측 장치는 이 값으로 배웁니다. 라벨이 틀리게 적히면 <b>모델은 틀린 데이터로 배웁니다</b>.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">라벨 표본 — 출하 셀 25개마다 한 장 (지금 설정, 7일)</div>
+    <div class="ctrl"><div class="group"><button class="bt" id="l-prev" type="button">◀ 이전</button><button class="bt" id="l-next" type="button">다음 ▶</button><button class="bt" id="l-bad" type="button">잘못 기재된 라벨로 건너뛰기</button></div>
+      <div class="group"><button class="bt" id="l-csv" type="button">라벨 CSV 내려받기</button><span class="val" id="l-count"></span></div></div>
+    <div class="twin"><div id="labelcard"></div><div><div class="minis" id="l-minis"></div><p class="mnote">주황 줄 = 센서 값이 잘못 적힌 칸. 괄호 안은 실제 값입니다(현장에서는 실제 값을 모릅니다). 잘못 적히는 방식: <b>치우침</b>(값이 크게 벗어남), <b>멈춤</b>(늘 같은 값), <b>자리 바뀜</b>(단위·자릿수 오류).</p></div></div>
+    <div class="insight" id="i-label" aria-live="polite"></div>
+  </div>
+  <div class="bridge field"><b>판정기와 이어 보면</b> <a href="classifier.html">① 판정기</a>의 입력 4개(내부저항·초기 용량·온도 상승·전압 편차)는 이 라벨의 에이징·검사, 화성 칸에서 옵니다. 라벨 오기율이 10%면 학습 셀 10개 중 1개꼴로 입력이 틀려 있는 셈입니다.<div class="lim">비유의 한계: 1·2편의 데이터세트는 라벨 오기 없이 만든 모형입니다. 오염된 데이터로 엔진을 다시 학습하는 실험은 2편 검증장에서 다룹니다.</div></div>
+  <div data-dlg="label"></div>
+  <div class="quiz" data-quiz="label"></div>
+</div></section>
+
+<!-- 병목 -->
+<section class="sec" id="bottleneck" aria-labelledby="h-bn"><div class="wrap">
+  <h2 id="h-bn">병목 — 생산량을 늘리면 어디가 먼저 막히나</h2>
+  <div class="tags"><span class="tag nn">모델: 가동률 · 대기열(재공품)</span><span class="tag fly">현장: 제약 이론(가장 약한 고리)</span></div>
+  <div class="panel">
+    <div class="ptitle">공정별 가동률(막대)과 앞 대기열 최대치(점) — 지금 설정</div>
+    <div class="cwrap"><canvas id="cvBn" class="wide" style="height:260px" aria-label="공정 10곳의 가동률 막대와 대기열 점"></canvas></div>
+    <div class="ptitle" style="margin-top:12px">속도를 바꾸면 — 하루 양품과 병목 가동률 (다른 설정은 그대로)</div>
+    <div class="cwrap"><canvas id="cvBn2" class="wide" style="height:240px" aria-label="라인 속도에 따른 하루 양품과 화성 가동률"></canvas></div>
+    <div class="insight" id="i-bn" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>라인 전체의 처리량은 가장 느린 공정의 처리량을 넘지 못합니다. 그 공정이 <b>병목</b>입니다[2].</li>
+    <li>병목 앞에는 셀이 쌓입니다(재공품). 재공품은 재료비를 이미 쓴 돈이 묶인 것입니다. 대기열이 길수록 셀이 공장 안에 머무는 시간도 길어집니다(리틀의 법칙[3]).</li>
+    <li>병목을 풀면(화성 설비 추가) 병목이 다음으로 느린 공정(적층)으로 옮겨 갑니다. 병목이 아닌 곳의 설비를 늘리면 생산량은 그대로이고 설비비만 듭니다.</li></ol>
+    <div class="lim">이 칸의 한계: 기계 고장·자재 부족·품종 교체처럼 실제 병목을 옮기는 사건은 넣지 않았습니다.</div></div>
+  <div data-dlg="bottleneck"></div>
+  <div class="quiz" data-quiz="bottleneck"></div>
+</div></section>
+
+<!-- 불량 -->
+<section class="sec" id="defect" aria-labelledby="h-defect"><div class="wrap">
+  <h2 id="h-defect">불량 — 빠르게 돌리면 불량이 는다</h2>
+  <div class="tags"><span class="tag nn">모델: 공정 불량률 · 검사 유출</span><span class="tag fly">현장: 수율 관리</span></div>
+  <div class="panel">
+    <div class="ptitle">속도에 따른 공정 불량률·출하 유출률·하루 이익 (다른 설정은 그대로)</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvDef" aria-label="라인 속도에 따른 불량률과 유출률"></canvas></div><div class="cwrap tall"><canvas id="cvDef2" aria-label="라인 속도에 따른 하루 이익"></canvas></div></div>
+    <div class="minis" id="def-minis"></div>
+    <div class="insight" id="i-def" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>이 모형에서 공정마다 불량률은 "기준 불량률 × e<sup>2×(속도−1)</sup> + 열 때문에 늘어난 몫"입니다. 속도를 1.3배로 올리면 열이 없어도 불량이 약 1.8배가 됩니다.</li>
+    <li>코팅·압연·실링 뒤의 비전 검사가 불량의 절반을 걸러 내고, 나머지는 마지막 검사에서 97%를 걸러 냅니다. 라벨이 잘못 적힌 셀은 검사가 40%밖에 못 잡아 <b>유출</b>이 늘어납니다.</li></ol>
+    <div class="lim">이 칸의 한계: 불량을 한 종류로 묶었습니다. 실제로는 두께 불량·실링 불량·내부 단락처럼 원인과 검사 방법이 다릅니다.</div></div>
+  <div data-dlg="defect"></div>
+  <div class="quiz" data-quiz="defect"></div>
+</div></section>
+
+<!-- 24시간·열 -->
+<section class="sec" id="heat" aria-labelledby="h-heat"><div class="wrap">
+  <h2 id="h-heat">24시간 가동과 열 — 센서가 틀리게 적기 시작한다</h2>
+  <div class="tags"><span class="tag nn">모델: 열 누적 · 센서 오기율</span><span class="tag fly">현장: 설비 과열</span></div>
+  <div class="panel">
+    <div class="ptitle">가장 뜨거운 공정 3곳의 온도와 라벨 오기율 — 7일</div>
+    <div class="cwrap"><canvas id="cvHeat" class="wide" style="height:250px" aria-label="7일 동안 공정 온도 곡선"></canvas></div>
+    <div class="cwrap"><canvas id="cvHeat2" class="wide" style="height:200px" aria-label="7일 동안 라벨 오기율 곡선"></canvas></div>
+    <div class="ctrl"><div class="group"><span class="glabel">비교해 보기</span><button class="bt" id="h-16" type="button">16시간 · 냉각 1단</button><button class="bt" id="h-24" type="button">24시간 · 냉각 1단</button><button class="bt" id="h-24c" type="button">24시간 · 냉각 2단</button></div></div>
+    <div class="insight" id="i-heat" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>가동 중에는 기계 온도가 "발열(가동률 × 속도<sup>1.5</sup>) − 냉각"만큼 오르고, 쉬는 시간에는 빠르게 식습니다. 24시간 가동하면 식을 틈이 없어 높은 온도에서 버팁니다.</li>
+    <li>55 °C를 넘으면 불량이 늘고, 60 °C를 넘으면 센서 한 개가 잘못 적힐 확률이 5 °C마다 2%p씩 오릅니다. 라벨에는 센서가 18개라, 한 개만 틀려도 그 라벨은 오염됩니다.</li>
+    <li><b>라벨 이중 검증</b>(같은 값을 다른 센서로 한 번 더 재기)을 켜면 잘못 적힌 라벨의 80%를 잡아 검사 유출을 줄이지만, 전력과 설비비가 듭니다.</li></ol>
+    <div class="lim">이 칸의 한계: 실제 센서 오류는 열 말고도 진동·먼지·전자파·보정 주기 때문에 생깁니다. 이 모형은 열 하나로 묶었습니다.</div></div>
+  <div data-dlg="heat"></div>
+  <div class="quiz" data-quiz="heat"></div>
+</div></section>
+
+<!-- 전기료 -->
+<section class="sec" id="power" aria-labelledby="h-power"><div class="wrap">
+  <h2 id="h-power">전기료 — 같은 16시간이라도 언제 돌리느냐</h2>
+  <div class="tags"><span class="tag nn">모델: 시간대별 요금 × 전력</span><span class="tag fly">현장: 전력 관리</span></div>
+  <div class="panel">
+    <div class="ptitle">시간대별 전력(막대)과 요금(선) — 첫 2일</div>
+    <div class="cwrap"><canvas id="cvPow" class="wide" style="height:250px" aria-label="시간별 전력 사용량과 전기 요금 단가"></canvas></div>
+    <div class="ptitle" style="margin-top:12px">시작 시각에 따른 하루 전기료 (가동 시간·속도·냉각은 그대로)</div>
+    <div class="cwrap"><canvas id="cvPow2" class="wide" style="height:220px" aria-label="가동 시작 시각에 따른 하루 전기료"></canvas></div>
+    <div class="minis" id="pow-minis"></div>
+    <div class="insight" id="i-pow" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>이 모형의 요금표는 시간대를 셋으로 나눈 예시값입니다: 경부하(23~8시) 95원, 중간부하 140원, 최대부하(11~12시, 13~18시) 210원/kWh.</li>
+    <li>드라이룸·공조 같은 기본 부하(150 kW)는 라인이 쉬어도 24시간 켜져 있습니다. 건조 오븐과 드라이룸은 배터리 공장에서 전력을 많이 쓰는 곳으로 알려져 있습니다[4].</li>
+    <li>24시간 가동이면 시작 시각을 바꿀 수 없습니다. 이때 전기료를 줄이는 길은 속도·냉각·설비를 고르는 것뿐입니다.</li></ol>
+    <div class="lim">이 칸의 한계: 실제 산업용 요금은 계절·계약 전력·기본요금에 따라 다르고, 최대 수요 전력에 붙는 요금도 있습니다. 이 모형은 시간대 단가만 넣었습니다.</div></div>
+  <div data-dlg="power"></div>
+  <div class="quiz" data-quiz="power"></div>
+</div></section>
+
+<!-- 최적화 -->
+<section class="sec" id="optimize" aria-labelledby="h-opt"><div class="wrap">
+  <h2 id="h-opt">자동 최적화 — 11,440가지 운전 조건을 다 돌려 보기</h2>
+  <div class="tags"><span class="tag nn">모델: 격자 탐색 · 목표 함수 = 하루 이익 · 제약 = 라벨 오기율 3% 이하</span><span class="tag fly">현장: 생산 계획</span></div>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><button class="bt primary" id="o-run" type="button">▶ 자동 최적화 돌리기</button><span class="val" id="o-prog"></span></div><div class="group"><button class="bt" id="o-apply" type="button" disabled>최적 설정을 조종실에 적용</button></div></div>
+    <div class="tblwrap"><table class="lb" id="o-tb"></table></div>
+    <div class="ptitle" style="margin-top:12px">상위 10개 설정 — 꼭대기가 얼마나 평평한가</div>
+    <div class="tblwrap"><table class="lb" id="o-top"></table></div>
+    <div class="insight" id="i-opt" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>훑는 범위: 속도 0.85~1.35(11가지) × 가동 시간 8·12·16·20·24 × 시작 시각 0·6·22시(24시간은 하나) × 냉각 0~3단 × 화성 추가 0~4대 × 적층 추가 0~1대 × 이중 검증 끔·켬.</li>
+    <li><b>목표 함수</b>는 하루 이익, <b>제약</b>은 라벨 오기율 3% 이하입니다. 1·2편의 손실 함수처럼, 무엇을 최적화하느냐를 사람이 정해야 합니다.</li>
+    <li>격자 탐색은 빠짐없이 보지만, 칸 사이의 답은 놓칩니다. 칸이 늘면 시간이 곱으로 늘어(차원의 저주), 실제 공장 최적화는 베이즈 최적화·시뮬레이션 기반 최적화 같은 방법을 씁니다.</li></ol>
+    <div class="lim">이 칸의 한계: 7일·시드 하나의 모형으로 고른 답입니다. 실제로는 수요·설비 고장·원료 품질이 바뀌어, 최적 운전도 계속 다시 찾아야 합니다.</div></div>
+  <div data-dlg="optimize"></div>
+  <div class="quiz" data-quiz="optimize"></div>
+</div></section>
+
+<!-- 실습 키트 -->
+<section class="sec" id="kit" aria-labelledby="h-kit"><div class="wrap">
+  <h2 id="h-kit">실습 키트 — 미션 5개, 기록지, 데이터</h2>
+  <p class="lead">미션마다 램프가 있습니다. 조종실에서 설정을 바꾸면 램프가 다시 판정됩니다. 시도할 때마다 "기록지에 남기기"를 누르고, 끝나면 기록지 CSV를 제출합니다.</p>
+  <div class="kitgrid" id="kitgrid"></div>
+  <div class="ptitle" style="margin-top:10px">K1 답 고르기 — 속도 1.2× 이상에서 병목은 어느 공정일까?</div>
+  <div class="ctrl"><div class="group" id="g-k1"></div></div>
+  <div class="shipbar" aria-hidden="true"><i id="kitbar"></i></div>
+  <p class="mnote" id="kittxt">완료 0 / 5</p>
+  <div class="panel">
+    <div class="ptitle">기록지 — 시도한 설정과 결과</div>
+    <div class="ctrl"><div class="group"><button class="bt" id="k-csv" type="button">기록지 CSV 내려받기</button><button class="bt" id="k-clear" type="button">기록지 비우기</button><span class="val" id="k-n"></span></div></div>
+    <div class="tblwrap"><table class="lb" id="k-tb"></table></div>
+  </div>
+  <details class="fold"><summary>교사용 메모 (정답 범위·토론 질문)</summary>
+    <ul>
+      <li>K1: 기본 설정에서도 화성이 가동률 약 98%로 병목입니다. 속도를 올리면 100%에 붙고 앞 대기열이 600셀(대기열 한도)까지 찹니다.</li>
+      <li>K2: 속도 1.2×에서 화성 +2대면 화성 가동률이 93% 근처로 내려가 하루 양품이 약 4,900 → 5,500셀로 늘지만, 열 때문에 불량과 라벨 오기가 함께 늡니다. "생산량은 늘었는데 이익은?"을 묻습니다.</li>
+      <li>K3: 24시간 · 냉각 1단은 라벨 오기율 약 10%로 실패, 냉각 2단부터 약 1.8%로 통과합니다.</li>
+      <li>K4: 16시간 가동을 22시 시작으로 옮기면 하루 전기료가 약 2,500,000 → 2,040,000원(약 −18%)으로 줄고 생산량은 같습니다.</li>
+      <li>K5: 자동 최적값은 하루 약 1,330만 원(24시간 · 속도 1.0× · 냉각 2단). 상위 10개가 2% 안에 몰려 있어, "정답이 하나"가 아님을 토론합니다.</li>
+      <li>토론 질문: ① 라벨 오기율 제약을 1%로 조이면 답이 어떻게 바뀌나? ② 유출 비용을 두 배로 하면? ③ 오염된 라벨로 판정기를 학습하면 무슨 일이 생길까?</li>
+    </ul></details>
+  <div data-dlg="kit"></div>
+</div></section>
+
+<!-- 대결 -->
+<section class="sec" id="duel" aria-labelledby="h-duel"><div class="wrap">
+  <h2 id="h-duel">대결 — 밤에 쉬는 공장이냐, 24시간 공장이냐</h2>
+  <p class="lead">초파리 연구원은 <b>16시간 가동 · 밤 22시 시작 · 속도 1.0×</b>(값싼 밤 전기, 식을 시간 확보), 주판봇은 <b>24시간 가동 · 속도 1.1× · 화성 +1대</b>를 고릅니다. 판정 기준은 <b>하루 이익</b>, 단 <b>라벨 오기율이 3%를 넘으면 실격</b>입니다(라벨은 판정기의 학습 데이터이므로). 냉각 설비가 상황마다 달라 가정이 둘입니다: <b>가정 A</b> 냉각 1단, <b>가정 B</b> 냉각 2단.</p>
+  <div class="duel">
+    <div class="side l"><div class="head"><img id="d-fly" data-mood="fly_point" alt="" aria-hidden="true"><div><b style="color:var(--c-fly)">초파리 연구원 · 밤 16시간</b><br><span class="muted">식혀 가며, 싼 전기로.</span></div></div><div data-dlg="dfly"></div></div>
+    <div class="vs">VS</div>
+    <div class="side r"><div class="head"><img id="d-robo" data-mood="robo_coin" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">주판봇 · 24시간 풀가동</b><br><span class="muted">설비는 쉬면 손해.</span></div></div><div data-dlg="drobo"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">먼저 맞혀 보기</span><button class="bt" data-pred="fly" type="button" aria-pressed="false">초파리가 이길 것 같다</button><button class="bt" data-pred="robo" type="button" aria-pressed="false">주판봇이 이길 것 같다</button></div>
+      <div class="group"><button class="bt primary" data-go type="button">결과 보기</button><button class="bt" data-close type="button" hidden>다시 닫기</button></div></div>
+    <div class="duel-res" hidden>
+      <div id="d-bars"></div>
+      <div id="d-say"></div>
+      <div class="score"><span id="d-score"></span><span id="d-pred"></span></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="duel"></div>
+</div></section>
+
+<section class="sec" id="sum" aria-labelledby="h-sum"><div class="wrap">
+  <h2 id="h-sum">정리 — 공장 최적화와 모델 최적화</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>공장에서</th><th>모델에서 (1·2편)</th><th>이 페이지에서</th></tr></thead><tbody>
+    <tr><td>운전 조건 (속도·시간·냉각·설비)</td><td>하이퍼파라미터</td><td>7가지 손잡이, 11,440가지 조합</td></tr>
+    <tr><td>하루 이익</td><td>목표 함수 (손실의 반대)</td><td>매출 − 재료 − 유출 − 전기 − 설비</td></tr>
+    <tr><td>라벨 오기율 3% 이하</td><td>제약 · 데이터 품질 기준</td><td>대결 실격 규칙</td></tr>
+    <tr><td>병목</td><td>계산에서 가장 느린 단계</td><td>화성 (설비 추가 → 적층으로 이동)</td></tr>
+    <tr><td>셀 라벨의 센서 값</td><td>데이터세트의 특징(입력)</td><td>셀당 18개, 표본 CSV</td></tr>
+    <tr><td>고열로 잘못 적힌 라벨</td><td>잘못된 데이터(데이터 오염)</td><td>치우침 · 멈춤 · 자리 바뀜</td></tr>
+  </tbody></table></div>
+  <h3>비유의 한계</h3>
+  <ul>
+    <li>이 공장은 흐름을 1시간 단위 평균으로 계산합니다. 셀 하나하나의 대기 순서, 기계 고장, 교대 인계 같은 일은 없습니다.</li>
+    <li>열·불량·센서 오기의 관계식은 방향을 보여 주려고 정한 것입니다. 실제 공정에서는 설비마다 다르게 측정해야 합니다.</li>
+    <li>여기서 찾은 최적 운전은 이 모형의 답입니다. 실제 공장에 그대로 옮기면 안 됩니다.</li>
+  </ul>
+  <div class="next"><a href="./index.html"><b>공장 목록</b><br>자율주행차 배터리 AI 공장 전체</a><a href="classifier.html"><b>① 불량품 판정기</b><br>라벨 데이터로 불량을 가리는 엔진</a><a href="regression.html"><b>② 수명 예측 장치</b><br>라벨 데이터로 수명을 맞히는 엔진</a></div>
+</div></section>
+
+<section class="sec" id="outro" aria-labelledby="h-outro"><div class="wrap">
+  <h2 id="h-outro">아웃트로</h2>
+  <div data-dlg="outro"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <h3>출처</h3>
+  <table><thead><tr><th>#</th><th>자료</th><th>이 페이지에서 쓴 곳</th></tr></thead><tbody>
+    <tr><td>[1]</td><td>Kwade, A., Haselrieder, W., Leithoff, R., Modlinger, A., Dietrich, F., Droeder, K. (2018). Current status and challenges for automotive battery production technologies. Nature Energy 3, 290–300. doi:10.1038/s41560-018-0130-3</td><td>3D 공장 — 전극·조립·화성 공정의 순서</td></tr>
+    <tr><td>[2]</td><td>Goldratt, E. M., Cox, J. (1984). The Goal: A Process of Ongoing Improvement. North River Press.</td><td>병목 — 가장 약한 고리가 전체를 정한다(제약 이론)</td></tr>
+    <tr><td>[3]</td><td>Little, J. D. C. (1961). A proof for the queuing formula: L = λW. Operations Research 9(3), 383–387.</td><td>병목 — 대기열 길이와 머무는 시간</td></tr>
+    <tr><td>[4]</td><td>Ahmed, S., Nelson, P. A., Gallagher, K. G., Dees, D. W. (2016). Energy impact of cathode drying and solvent recovery during lithium-ion battery manufacturing. Journal of Power Sources 322, 169–178.</td><td>전기료 — 건조·드라이룸의 에너지</td></tr>
+    <tr><td>[A]</td><td>안상선, 「배터리 불량품 판정기 ① 엔진부」·「배터리 수명 예측 장치 ① 엔진부」 (이 시리즈)</td><td>라벨 데이터가 쓰이는 곳</td></tr>
+  </tbody></table>
+  <h3>예시값·설명용 모형인 것</h3>
+  <ul><li>공정 10곳의 처리량·전력·불량률·발열 계수, 열·센서 오기 관계식, 대기열 한도 600셀 — 페이지가 정한 설명용 값</li><li>셀 가격 25,000원, 재료비 22,000원, 유출 비용 150,000원, 설비비, 시간대 요금(95·140·210원/kWh) — 예시값이며 실제 시장 가격·요금표가 아님</li><li>라벨 센서 값 18개와 오기 방식(치우침·멈춤·자리 바뀜) — 시드 7로 만든 모형</li></ul>
+  <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.</p>
+  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="./index.html">공장 목록</a></p>
+</div></footer>
+
+<script>
+/*@@SPRITES@@*/
+/*@@FS@@*/
+/*@@COMMON@@*/
+/*@@PAGE@@*/
+</script>
+</body>
+</html>

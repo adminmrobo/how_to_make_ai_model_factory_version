@@ -1,13 +1,32 @@
-# 자율주행차 배터리 AI 공장 ① 엔진부 제작 — 불량품 판정기(분류) · 수명 예측 장치(회귀)
+# 자율주행차 배터리 AI 공장
 
-> **이 공장의 두 제품** — 자율주행차에 들어가는 대용량 배터리(수십 Ah급 셀)를 다룹니다. 분류 모델을 엔진으로 단 **배터리 불량품 판정기**(`index.html`)와 회귀 모델을 엔진으로 단 **배터리 수명 예측 장치**(`regression.html`). 두 페이지의 3D 공장은 같은 12공정 배치·같은 캐릭터 자리를 쓰고, 컨베이어 위 제품 앞면만 다릅니다(판정기 = 초록·빨강 표시등, 예측 장치 = 바늘 계기판). 표지 두 장도 같은 장면에서 제품 앞면만 바꿉니다. 셀 측정값(내부저항 1.2 mΩ, 용량 60 Ah 근처)은 설명용 값이며, 모델은 표준화한 값만 쓰므로 단위를 바꿔도 결과 수치는 같습니다.
-
-배터리 셀 데이터세트로 **불량품 판정기**를 만드는 연구실 해설 시리즈의 1편입니다. 데이터세트를 만들고, **머신러닝 도감**과 **신경망 도감**에서 엔진(모델) 9종을 꺼내 판정기에 달아 시운전·비교합니다. 신경망 엔진은 AI 파라미터 카드 10장을 옮긴 **정비 작업장 10곳**에서 분해 정비합니다. 고른 엔진은 출고되어 **2편 시뮬레이션 검증**(봉인 시험 셀, 라인 시뮬레이션)으로 넘어갑니다. 연구실 스킬 ai-lab-explainer v1.14("낮의 연구실", 흰 배경)를 따릅니다.
+자율주행차에 들어가는 대용량 배터리(수십 Ah급 셀)를 다루는 연구실 해설 시리즈입니다. 공장마다 3D 모형이 있고, 같은 12칸 배치와 같은 캐릭터 자리(전신)를 씁니다. 연구실 스킬 ai-lab-explainer v1.14("낮의 연구실", 흰 배경)를 따릅니다.
 
 - 사이트(올린 뒤): https://adminmrobo.github.io/how_to_make_ai_model_factory_version/
 - 글 · 안상선 ((주)M-Robo 대표) · [저자 소개](https://adminmrobo.github.io/who_am_i/who_am_i.html)
 
-## 구성 (`index.html` 한 파일)
+| 파일 | 공장 | 내용 |
+|---|---|---|
+| `index.html` | 공장 목록 | 공장 6칸: ①·②·③ 가동, ④·⑤·⑥ 예비 부지 |
+| `classifier.html` | ① 배터리 불량품 판정기 | 분류 모델 엔진부 제작 — 도감 엔진 9종, 정비 작업장 10곳 |
+| `regression.html` | ② 배터리 수명 예측 장치 | 회귀 모델 엔진부 제작 — 회귀 엔진 9종, 잡음 바닥, 과대예측 비용 |
+| `factory.html` | ③ 배터리 생산 공장 | 완전 자동화 10공정 3D 시뮬레이션과 최적화 실습 키트 |
+
+## ③ 배터리 생산 공장 (`factory.html`)
+
+셀을 만드는 완전 자동화 라인(믹싱 → 코팅 → 건조 → 압연 → 슬리팅 → 적층 → 조립·실링 → 전해액 주입 → 화성 → 에이징·검사·라벨)을 1시간 단위로 7일 돌립니다(`build/fsim.js`).
+
+- **라벨**: 기계마다 잰 센서 값 18개가 셀 라벨에 기록됩니다. 라벨 CSV를 내려받아 ①·②의 학습 데이터로 이어 볼 수 있습니다.
+- **증산 → 병목·불량**: 속도를 올리면 화성(최대 속도 1.05×)이 병목이 되어 앞에 재공품이 쌓이고, 불량률은 e^{2(속도−1)}배로 늡니다. 화성 설비를 늘리면 병목이 적층으로 옮겨 갑니다.
+- **24시간 → 고열**: 쉬는 시간이 없으면 기계 온도가 오르고, 55 °C부터 불량이, 60 °C부터 센서 오기(치우침·멈춤·자리 바뀜)가 늡니다. 오기 라벨은 검사 유출도 늘립니다.
+- **전기료**: 시간대 3단계 예시 요금(95·140·210원/kWh), 기본 부하 150 kW(드라이룸 등), 냉각·이중 검증 전력.
+- **최적화**: 목표 함수 = 하루 이익(매출 − 재료 − 유출 − 전기 − 설비), 제약 = 라벨 오기율 3% 이하. 자동 최적화는 11,440가지 격자 탐색(상위 10개가 2% 안 — 평평한 꼭대기).
+- **실습 키트**: 미션 K1 병목 찾기 · K2 병목 풀어 증산 · K3 24시간 열 관리 · K4 전기료 줄이기 · K5 종합 최적화(자동 최적값의 97%), 기록지 CSV, 교사용 메모.
+- **대결**: 밤 16시간(초파리) vs 24시간·속도 1.1×·화성 +1(주판봇) → 냉각 1단이면 초파리(주판봇 라벨 오기율 14.8% 실격), 2단이면 주판봇 → **C 조건부**.
+- 기본 설정(16시간 · 6시 시작 · 냉각 1단): 하루 양품 4,658셀, 불량률 2.95%, 라벨 오기율 2.48%, 하루 이익 약 797만 원. 자동 최적: 24시간 · 속도 1.0× · 냉각 2단, 하루 약 1,327만 원 (모두 설명용 예시값).
+
+## ① 배터리 불량품 판정기 (`classifier.html`)
+
 
 | 섹션 | 내용 |
 |---|---|
@@ -53,17 +72,19 @@ python3 build/kg_defs.py       # kg.json · refs.json · meta.json
 python3 build/kg_reg.py        # kg_reg.json · refs_reg.json · meta_reg.json (회귀 편)
 python3 build/reg_make.py      # page.src.html → reg.src.html (회귀 편 본문)
 python3 build/reg_js_make.py   # page.js → reg.js (회귀 편 스크립트)
-node build/build.js            # → index.html · regression.html
+python3 build/kg_fac.py        # kg_fac.json · refs_fac.json · meta_fac.json (배터리 생산 공장)
+node build/build.js            # → classifier.html · regression.html · factory.html · index.html(공장 목록)
 node code/check_numbers.js     # 기대 수치 확인 (분류)
 node code/check_reg.js         # 기대 수치 확인 (회귀)
+node code/check_fsim.js        # 기대 수치 확인 (배터리 생산 공장)
 python3 code/browser_check.py  # (선택) 헤드리스 브라우저 점검 · PAGE=regression.html 로 회귀 편
 ```
 `build/`: page.src.html(본문) · page.style.html · page.js(페이지 스크립트) · bm.js(데이터·신경망) · engines.js(분류 엔진 9종) · engines_reg.js(회귀 엔진 9종) · reg.src.html · reg.js · common.css/common.js(공용 모듈) · kgx.js(지식 색인·꾸러미) · sprites96.js(캐릭터 팩 38장).
 
 ## 그림
-표지 `cover_01`(판정기)·`cover_01r`(예측 장치)은 **생성 대기**. 지시문 `COVER_01_battery_model_factory.md`·`COVER_01r_battery_life_regressor.md`, 명세 `IMG_01_battery_model_factory.md`, 현황 `cover_manifest.json`.
+표지 `cover_01`(판정기)·`cover_01r`(예측 장치)·`cover_03`(생산 공장)은 **생성 대기**. 지시문 `COVER_03_battery_production_factory.md` 포함. 지시문 `COVER_01_battery_model_factory.md`·`COVER_01r_battery_life_regressor.md`, 명세 `IMG_01_battery_model_factory.md`, 현황 `cover_manifest.json`.
 
 ## 출처
-eeanimation 「AI Parameters」 카드 10장(사용자 제공), 안상선 「머신러닝 모델 도감」·「신경망 도감」, Rumelhart 외 1986, Kingma·Ba 2015, Goodfellow 외 2016, Hu 외 2022, Ba 외 2016, Zhang·Sennrich 2019, Vaswani 외 2017, Rajbhandari 외 2020, Ouyang 외 2022, Prechelt 1998, Breiman 2001, Friedman 2001, Cortes·Vapnik 1995, Severson 외 2019, (회귀 편) Hoerl·Kennard 1970, Tibshirani 1996, Rasmussen·Williams 2006. 자세한 표는 페이지 바닥글.
+eeanimation 「AI Parameters」 카드 10장(사용자 제공), 안상선 「머신러닝 모델 도감」·「신경망 도감」, Rumelhart 외 1986, Kingma·Ba 2015, Goodfellow 외 2016, Hu 외 2022, Ba 외 2016, Zhang·Sennrich 2019, Vaswani 외 2017, Rajbhandari 외 2020, Ouyang 외 2022, Prechelt 1998, Breiman 2001, Friedman 2001, Cortes·Vapnik 1995, Severson 외 2019, (회귀 편) Hoerl·Kennard 1970, Tibshirani 1996, Rasmussen·Williams 2006. (생산 공장) Kwade 외 2018, Goldratt·Cox 1984, Little 1961, Ahmed 외 2016. 자세한 표는 페이지 바닥글.
 
 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.

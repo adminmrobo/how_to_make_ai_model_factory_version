@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자율주행차 배터리 AI 공장 — 공장 목록</title>
+<meta name="description" content="자율주행차 대용량 배터리를 다루는 AI 공장 시리즈의 공장 목록. ① 배터리 불량품 판정기, ② 배터리 수명 예측 장치, ③ 배터리 생산 공장, 그리고 앞으로 지을 예비 부지.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!--@@CSS@@-->
+<!--@@PSTYLE@@-->
+<style>
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.slot{border:1px solid var(--rule);border-radius:14px;padding:14px 16px;background:#fff;display:flex;flex-direction:column;gap:6px;position:relative;text-decoration:none;color:var(--text)}
+a.slot:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08)}
+.slot .no{font-size:13px;color:var(--muted)}
+.slot h3{margin:0;font-size:18px}
+.slot p{margin:0;font-size:14px;line-height:1.6}
+.slot .st{position:absolute;right:12px;top:12px}
+.slot.empty{border:2px dashed var(--rule);background:var(--panel);color:var(--muted)}
+.slot .face{display:flex;gap:6px;align-items:flex-end;margin-top:6px}
+.slot .face img{width:40px;height:40px}
+.slot .kind{display:inline-block;font-size:12.5px;border:1px solid var(--rule);border-radius:6px;padding:0 7px;margin-right:4px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;font-size:14px}
+.flow .nd{border:1px solid var(--rule);border-radius:10px;padding:8px 12px;background:#fff}
+.flow .nd b{display:block}
+.flow .ar{color:var(--muted);font-size:18px}
+</style>
+</head>
+<body>
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">연구실 해설 시리즈 · 공장 목록</div>
+  <h1>자율주행차 배터리 AI 공장</h1>
+  <p class="question">자율주행차에 들어가는 대용량 배터리를, 만들고 · 가려내고 · 수명을 맞히는 AI 공장들을 하나씩 지어 봅니다.</p>
+  <p class="lead">공장마다 3D 모형이 있고, 같은 연구실 식구가 같은 자리에서 일합니다. 아래 카드를 눌러 공장에 들어가세요. 빈 부지는 앞으로 지을 공장 자리입니다.</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14</p>
+  <div class="cast4" style="justify-content:flex-start;margin-top:8px"><img data-mood="fly_point" alt="" aria-hidden="true" class="s" style="width:56px"><img data-mood="doc_front" alt="" aria-hidden="true" style="width:64px"><img data-mood="asst_smile" alt="" aria-hidden="true" style="width:64px"><img data-mood="robo_coin" alt="" aria-hidden="true" style="width:60px"></div>
+</div></header>
+
+<main>
+<section class="sec" id="factories" aria-labelledby="h-fac"><div class="wrap">
+  <h2 id="h-fac">공장 목록</h2>
+  <div class="slots">
+    <a class="slot" href="classifier.html"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ① · 엔진부 제작</span><h3>배터리 불량품 판정기</h3>
+      <p><span class="kind">분류 모델</span>셀 측정값으로 불량을 가립니다. 머신러닝·신경망 도감에서 엔진 9종을 달아 벤치에 올리고, 신경망 엔진은 정비 작업장 10곳에서 손봅니다.</p>
+      <div class="face"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_chart" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="regression.html"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ② · 엔진부 제작</span><h3>배터리 수명 예측 장치</h3>
+      <p><span class="kind">회귀 모델</span>셀이 충·방전을 몇 번 견딜지 숫자로 맞힙니다. 회귀 엔진 9종, 잡음 바닥, 과대예측 비용, 예측 구간.</p>
+      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="factory.html"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ③ · 생산 라인</span><h3>배터리 생산 공장</h3>
+      <p><span class="kind">3D 시뮬레이션</span><span class="kind">최적화 실습 키트</span>완전 자동화 10공정. 센서 값이 라벨에 기록되고, 증산하면 병목·불량, 24시간 가동하면 고열로 센서 오기. 전기료까지 따져 최적 운전을 찾습니다.</p>
+      <div class="face"><img data-mood="sia_guide" alt="" aria-hidden="true"><img data-mood="moa_report" alt="" aria-hidden="true"></div></a>
+    <div class="slot empty"><span class="st"><span class="lamp">예비 부지</span></span><span class="no">공장 ④</span><h3>예비 부지</h3><p>다음 공장을 지을 자리입니다. 준비 중.</p></div>
+    <div class="slot empty"><span class="st"><span class="lamp">예비 부지</span></span><span class="no">공장 ⑤</span><h3>예비 부지</h3><p>다음 공장을 지을 자리입니다. 준비 중.</p></div>
+    <div class="slot empty"><span class="st"><span class="lamp">예비 부지</span></span><span class="no">공장 ⑥</span><h3>예비 부지</h3><p>다음 공장을 지을 자리입니다. 준비 중.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="map" aria-labelledby="h-map"><div class="wrap">
+  <h2 id="h-map">공장끼리 어떻게 이어지나</h2>
+  <div class="flow">
+    <div class="nd"><b>③ 배터리 생산 공장</b>셀을 만들고 센서 값을 라벨에 기록</div><span class="ar">→</span>
+    <div class="nd"><b>라벨 데이터</b>셀마다 센서 값 18개</div><span class="ar">→</span>
+    <div class="nd"><b>① 불량품 판정기 · ② 수명 예측 장치</b>라벨로 엔진(모델)을 학습</div><span class="ar">→</span>
+    <div class="nd"><b>2편 시뮬레이션 검증장</b>봉인 시험 셀 · 자율주행차 시험대 (준비 중)</div>
+  </div>
+  <p class="mnote">모든 공장의 숫자는 설명용 모형입니다. 실제 공장·셀·요금표의 값이 아닙니다.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.</p>
+  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
+</div></footer>
+<script>
+/*@@SPRITES@@*/
+/*@@COMMON@@*/
+U.fillImgs();
+</script>
+</body>
+</html>

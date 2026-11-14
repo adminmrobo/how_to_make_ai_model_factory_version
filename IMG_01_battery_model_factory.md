@@ -7,14 +7,15 @@
 
 | 키 | 판 | 쓰는 곳 | 상태 |
 |---|---|---|---|
-| `cover_01` | L | index.html 맨 위 | **생성 대기** — 지금은 대체 표지(벌집 무늬 + 네 캐릭터 한 줄) |
+| `cover_01` | L | classifier.html 맨 위 | **생성 대기** — 지금은 대체 표지(벌집 무늬 + 네 캐릭터 한 줄) |
+| `cover_03` | L | factory.html 맨 위 (배터리 생산 공장) | **생성 대기** — 지금은 대체 표지. 지시문 `COVER_03_battery_production_factory.md` |
 | `cover_01r` | L | regression.html 맨 위 (회귀 편) | **생성 대기** — 지금은 대체 표지. 지시문 `COVER_01r_battery_life_regressor.md` |
-| 말풍선·등장인물·대결 머리·3D 공장 캐릭터 표정 38종 | A~D | index.html | 기본 팩에 있음 (새로 그리지 않음) |
+| 말풍선·등장인물·대결 머리·3D 공장 캐릭터 표정 38종 | A~D | classifier.html | 기본 팩에 있음 (새로 그리지 않음) |
 
 페이지에 쓰는 표정 키: `doc_front` `doc_think` `doc_magic` `doc_judge` `doc_board` · `asst_smile` `asst_report` `asst_firm` `asst_spark` `asst_shock` `asst_proud` · `fly_point` `fly_magnify` `fly_arms` `fly_coffee` `fly_clip` `fly_cry` · `robo_smile` `robo_coin` `robo_calc` `robo_happy` `robo_sigh` `robo_blush` `robo_wow` `robo_meh` `robo_chart` · `sia_explain` `sia_signal` `sia_smile` `sia_guide` · `moa_tea` `moa_cheer` `moa_report` `moa_smile` · `x1_hint` `x2_hint` `x3_hint`
 
 ## 2-1. 3D 공장의 전신 캐릭터 (두 페이지 공통)
-캐릭터 팩 동작 팩(C8) fight 1.2의 서기(idle) 시트 6장을 128px로 넣는다: 박사 `D1` · 조수 `A1` · 시아 `S1` · 모아 `M1` · 초파리 `F1` · 주판봇 `R1` (합계 약 159 KB, 동작 그림 예산 600 KB 안). 자리: P2 조수, P3 시아, P4 모아, P6 주판봇, P8 초파리, P11 박사 — 판정기·예측 장치 두 공장이 같다. 키 비율은 C3(박사 1.00 · 조수 0.90 · 주판봇 0.72 · 초파리 0.41), 인턴은 조수에 맞춤. 박사·조수 좌우 반전 없음. 동작 팩을 못 읽으면 표정 그림(상반신)으로 대체한다.
+캐릭터 팩 동작 팩(C8) fight 1.2의 서기(idle) 시트 6장을 128px로 넣는다: 박사 `D1` · 조수 `A1` · 시아 `S1` · 모아 `M1` · 초파리 `F1` · 주판봇 `R1` (합계 약 159 KB, 동작 그림 예산 600 KB 안). 자리: P2 조수, P3 시아, P4 모아, P6 주판봇, P8 초파리, P11 박사 — 판정기·예측 장치·배터리 생산 공장 세 공장이 같다. 키 비율은 C3(박사 1.00 · 조수 0.90 · 주판봇 0.72 · 초파리 0.41), 인턴은 조수에 맞춤. 박사·조수 좌우 반전 없음. 동작 팩을 못 읽으면 표정 그림(상반신)으로 대체한다.
 
 ## 3. 새로 그릴 그림
 표지 두 장뿐이다(판정기 `cover_01`, 예측 장치 `cover_01r`). 프롬프트·포즈·alt는 `COVER_01_battery_model_factory.md`, `COVER_01r_battery_life_regressor.md`.

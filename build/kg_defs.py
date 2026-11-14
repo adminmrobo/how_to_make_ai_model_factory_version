@@ -2,8 +2,8 @@
 형식: ahnboat_lab_explainer onto-retrofit templates + 본편 O1·O2.  실행: python3 build/kg_defs.py → node build/build.js"""
 import json, pathlib
 B = pathlib.Path(__file__).resolve().parent
-PG = "index"; TODAY = "2026-11-14"
-URL = "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/"
+PG = "classifier"; TODAY = "2026-11-14"
+URL = "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/classifier.html"
 
 def ref(id_, type_, title, authors, year=None, container=None, extra=None, role="background", verified=None, checked="", note=""):
     r = {"id": id_, "type": type_, "title": title, "author": authors}

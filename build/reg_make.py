@@ -374,5 +374,6 @@ R('<p class="muted" style="font-size:13.5px;margin:0">막대 = 10번 나눈 검�
 R('<div class="quiz" data-quiz="w7"></div>', '')
 R('<h2 id="h-factory">큰 그림 — 배터리 불량품 판정기 공장 12공정 (3D 모형)</h2>', '<h2 id="h-factory">큰 그림 — 배터리 수명 예측 장치 공장 12공정 (3D 모형)</h2>')
 R('/*@@EN@@*/', '/*@@ER@@*/')
+h = h.replace('href="index.html', 'href="classifier.html')
 (B / 'reg.src.html').write_text(h, encoding='utf-8')
 print('reg.src.html', len(h))

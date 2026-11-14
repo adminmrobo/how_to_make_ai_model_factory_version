@@ -6,7 +6,7 @@
   "ontology": {
     "pages": [
       {
-        "path": "index.html",
+        "path": "classifier.html",
         "kg": true,
         "export": true
       },
@@ -14,6 +14,17 @@
         "path": "regression.html",
         "kg": true,
         "export": true
+      },
+      {
+        "path": "factory.html",
+        "kg": true,
+        "export": true
+      },
+      {
+        "path": "index.html",
+        "kg": false,
+        "export": false,
+        "note": "공장 목록(허브)"
       }
     ],
     "files": [
@@ -22,7 +33,10 @@
       "build/meta.json",
       "build/kg_reg.json",
       "build/refs_reg.json",
-      "build/meta_reg.json"
+      "build/meta_reg.json",
+      "build/kg_fac.json",
+      "build/refs_fac.json",
+      "build/meta_fac.json"
     ]
   },
   "i18n": {
@@ -30,7 +44,7 @@
       "ko"
     ],
     "pages": {
-      "ko": 2
+      "ko": 4
     },
     "readme_langs": [
       "ko"
@@ -76,6 +90,26 @@
       ],
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... same scene as cover_01; device chassis with an analog dial gauge ... No text (전체: COVER_01r_battery_life_regressor.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null
+    },
+    {
+      "id": "cover_03",
+      "role": "cover",
+      "path": "img/cover_03.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line as cover_01; automated machines, labeled EV battery modules, a hot machine with a red thermometer bar ... No text (전체: COVER_03_battery_production_factory.md)",
       "source_of": null,
       "status": "pending",
       "received": null

@@ -42,7 +42,7 @@ section.sec.folded .foldnote{display:block}
 <nav class="top" aria-label="섹션 바로가기"><div class="row">
   <a class="logo" href="#top">배터리 수명 예측 장치 <i>① 엔진부</i></a>
   <div class="links">
-    <a href="#factory">3D 공장</a><a href="#board">현황판</a><a href="#data">데이터세트</a><a href="#atlas">엔진 창고</a><a href="#mount">장착·시운전</a><a href="#bench">벤치</a><a href="#tune">정비 ①~⑩</a><a href="#duel">대결</a><a href="#ship">출고</a><a href="#sum">정리</a><a href="#kg">색인</a><a href="#export">꾸러미</a>
+    <a href="./index.html">공장 목록</a><a href="#factory">3D 공장</a><a href="#board">현황판</a><a href="#data">데이터세트</a><a href="#atlas">엔진 창고</a><a href="#mount">장착·시운전</a><a href="#bench">벤치</a><a href="#tune">정비 ①~⑩</a><a href="#duel">대결</a><a href="#ship">출고</a><a href="#sum">정리</a><a href="#kg">색인</a><a href="#export">꾸러미</a>
   </div>
 </div></nav>
 
@@ -56,11 +56,11 @@ section.sec.folded .foldnote{display:block}
 <!-- /lab-cover -->
 
 <header class="hero" id="top"><div class="wrap">
-  <div class="eyebrow">배터리 수명 예측 장치 · 1편 엔진부 제작 · 교과서 모드 · <a href="index.html">불량품 판정기 편</a>의 자매편</div>
+  <div class="eyebrow">배터리 수명 예측 장치 · 1편 엔진부 제작 · 교과서 모드 · <a href="classifier.html">불량품 판정기 편</a>의 자매편</div>
   <h1>배터리 수명 예측 장치 ① 엔진부 제작 — 도감에서 회귀 엔진을 골라 장착하기</h1>
   <p class="question">자율주행차 대용량 배터리 셀이 충·방전을 몇 번 견딜지 숫자로 맞히려면, 어떤 엔진을 달아야 하고 수명 시험 데이터가 적을 때는 무엇이 달라질까?</p>
   <p class="lead">불량품 판정기 편은 "불량이냐 아니냐"를 가렸습니다. 이번에 이 공장이 만드는 제품은 <b>자율주행차 대용량 배터리의 수명 예측 장치</b>입니다. 같은 셀 1,000개로 <b>수명(충·방전 횟수)</b>이라는 숫자를 맞히는 <b>회귀 모델</b>을 엔진으로 답니다. 머신러닝 도감에서 회귀 엔진 8종, 신경망 도감에서 DFF 1종을 꺼내 달고, 같은 조건으로 벤치를 돌립니다. 신경망 엔진은 카드 10장의 <b>정비 작업장 10곳</b>을 회귀용으로 다시 거칩니다. 수명 시험은 몇 달이 걸려 정답 셀이 적을 때가 많다는 점도 대결에서 다룹니다.</p>
-  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v1.0 · 자매편: <a href="index.html">불량품 판정기 ① 엔진부</a> · 다음 편: 2편 시뮬레이션 검증 (준비 중)</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v1.0 · 자매편: <a href="classifier.html">불량품 판정기 ① 엔진부</a> · 다음 편: 2편 시뮬레이션 검증 (준비 중)</p>
   <div class="three"><b>세 줄로 먼저</b><ol>
     <li>회귀 엔진은 확률 대신 숫자를 낸다. 손실은 (예측 − 정답)², 성적은 평균 오차(회)로 잰다.</li>
     <li>수명처럼 굽은 관계가 있으면 직선 엔진은 한계가 있지만, 정답 셀이 적을 때는 단순한 엔진이 오히려 낫다.</li>
@@ -81,7 +81,7 @@ section.sec.folded .foldnote{display:block}
   <div class="cast" id="castgrid"></div>
   <div class="secret"><button class="bt" id="secretbtn" type="button" aria-expanded="false">방청석 보기 (미공개 식구)</button><div class="row" id="secretrow" hidden></div></div>
   <div class="steps four" style="margin-top:16px">
-    <div class="step"><b>판정기 편과 나란히</b>섹션 순서가 <a href="index.html">불량품 판정기 편</a>과 같습니다. 두 탭을 열어 견줘 보세요.</div>
+    <div class="step"><b>판정기 편과 나란히</b>섹션 순서가 <a href="classifier.html">불량품 판정기 편</a>과 같습니다. 두 탭을 열어 견줘 보세요.</div>
     <div class="step"><b>엔진을 골라 달기</b>엔진 창고에서 카드를 누르면 예측 장치에 장착되고 바로 시운전됩니다.</div>
     <div class="step"><b>현황판 불 켜기</b>정비 작업장마다 검사 하나. 처음엔 빨간불도 있어요. 직접 고쳐 보세요.</div>
     <div class="step"><b>도장 확인</b>노란 도장이 찍힌 그림·숫자는 설명용 모형입니다.</div>
@@ -312,7 +312,7 @@ section.sec.folded .foldnote{display:block}
   </div>
   <div class="explain"><h4>풀이</h4><ol>
     <li>카드 02 그대로 계산하면 z = 0.5×2 − 1×3 + 0.2 = −1.8입니다. 수명 점수가 음수, 곧 "수명이 짧다"입니다. 이번엔 맞습니다.</li>
-    <li><a href="index.html#w2">판정기 편</a>에서는 같은 숫자가 "불량 확률 14%"라는 틀린 판정이었습니다. 같은 부품도 무엇을 맞히느냐(불량 점수냐 수명 점수냐)에 따라 맞기도 틀리기도 합니다. 온도에 붙은 w₂ = −1.0은 "뜨거울수록 수명이 짧다"에는 맞는 부호입니다.</li>
+    <li><a href="classifier.html#w2">판정기 편</a>에서는 같은 숫자가 "불량 확률 14%"라는 틀린 판정이었습니다. 같은 부품도 무엇을 맞히느냐(불량 점수냐 수명 점수냐)에 따라 맞기도 틀리기도 합니다. 온도에 붙은 w₂ = −1.0은 "뜨거울수록 수명이 짧다"에는 맞는 부호입니다.</li>
     <li>선형 회귀 엔진이 바로 이 뉴런 하나(입력 4개, 파라미터 5개)짜리 엔진입니다.</li></ol>
     <div class="lim">이 칸의 한계: 뉴런 하나는 평평한 비탈 하나입니다. "저항과 온도가 함께 높을 때 더 짧아진다" 같은 굽은 관계는 뉴런 여러 개가 필요합니다. → ③</div></div>
   <div data-dlg="w2"></div>
@@ -614,7 +614,7 @@ section.sec.folded .foldnote{display:block}
     <li>부품 비유는 파라미터 하나하나에 뜻이 있는 것처럼 보이게 합니다. 신경망의 가중치는 여럿이 함께 일해서, 하나만 떼어 해석하기 어렵습니다.</li>
     <li>여기서 나온 순위와 숫자는 이 장난감 데이터세트의 답입니다. 실제 배터리 데이터에서는 다시 벤치를 돌려야 합니다.</li>
   </ul>
-  <div class="next"><a href="index.html"><b>불량품 판정기 ① 엔진부</b><br>같은 셀로 불량을 가리는 자매편</a><a href="https://adminmrobo.github.io/machine_learning_model_atlas/"><b>머신러닝 모델 도감</b><br>엔진 7종의 원래 카드</a><a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html"><b>신경망 도감</b><br>DFF·오토인코더의 원래 카드</a><a href="https://adminmrobo.github.io/optimization_3d_map/"><b>좌표축 위의 그릇</b><br>손실 지형과 학습률·배치</a></div>
+  <div class="next"><a href="classifier.html"><b>불량품 판정기 ① 엔진부</b><br>같은 셀로 불량을 가리는 자매편</a><a href="factory.html"><b>③ 배터리 생산 공장</b><br>라벨 데이터가 만들어지는 곳</a><a href="https://adminmrobo.github.io/machine_learning_model_atlas/"><b>머신러닝 모델 도감</b><br>엔진 7종의 원래 카드</a><a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html"><b>신경망 도감</b><br>DFF·오토인코더의 원래 카드</a><a href="https://adminmrobo.github.io/optimization_3d_map/"><b>좌표축 위의 그릇</b><br>손실 지형과 학습률·배치</a></div>
 </div></section>
 
 <section class="sec" id="outro" aria-labelledby="h-outro"><div class="wrap">
