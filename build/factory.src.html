@@ -56,9 +56,10 @@
 
 <!-- lab-cover -->
 <div class="cover" id="cover" data-img="cover_03"><div class="frame">
-  <canvas id="cvCover" aria-hidden="true"></canvas>
-  <span class="cap">표지 그림 자리 · cover_03 (그림을 받으면 바뀝니다)</span>
-  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_front" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <picture>
+    <source type="image/webp" srcset="img/cover_03_960.webp 960w, img/cover_03.webp 1600w" sizes="(max-width:1080px) 100vw, 1080px">
+    <img class="art" src="img/cover_03.webp" width="1600" height="900" alt="연구실 자동화 배터리 라인에서 연구실 식구 넷이 라벨 붙은 배터리 모듈과 뜨거워진 기계를 살피는 장면" fetchpriority="high" decoding="async">
+  </picture>
   <span class="cover-chip">배터리 생산 공장 · ③ 자동화 라인과 최적화</span>
 </div></div>
 <!-- /lab-cover -->

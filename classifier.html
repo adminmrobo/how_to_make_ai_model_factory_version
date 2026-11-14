@@ -347,9 +347,10 @@ section.sec.folded .foldnote{display:block}
 
 <!-- lab-cover -->
 <div class="cover" id="cover" data-img="cover_01"><div class="frame">
-  <canvas id="cvCover" aria-hidden="true"></canvas>
-  <span class="cap">표지 그림 자리 · cover_01 (그림을 받으면 바뀝니다)</span>
-  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_front" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <picture>
+    <source type="image/webp" srcset="img/cover_01_960.webp 960w, img/cover_01.webp 1600w" sizes="(max-width:1080px) 100vw, 1080px">
+    <img class="art" src="img/cover_01.webp" width="1600" height="900" alt="연구실 엔진 조립 라인에서 연구실 식구 넷이 진열장의 엔진 블록 하나를 골라, 표시등 두 개가 달린 배터리 불량품 판정기 차체에 끼우려는 장면" fetchpriority="high" decoding="async">
+  </picture>
   <span class="cover-chip">배터리 불량품 판정기 · ① 엔진부 제작</span>
 </div></div>
 <!-- /lab-cover -->
@@ -1504,7 +1505,7 @@ $('#secretbtn').onclick=function(){var r=$('#secretrow');r.hidden=!r.hidden;this
 U.fillImgs();
 
 /* ══ 표지 대체 그림 ══ */
-(function(){var cv=$('#cvCover');U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
+(function(){var cv=$('#cvCover');if(!cv)return;U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(15,127,134,.10)';g.lineWidth=1;var s=Math.max(14,w/40);for(var y=0;y<h+s;y+=s*1.5)for(var x=0;x<w+s;x+=s*1.732){var ox=((y/(s*1.5))%2)?s*.866:0;hexP(g,x+ox,y,s*.95);}
   for(var i=0;i<9;i++){var bx=w*(0.08+i*0.105),by=h*0.18+Math.sin(i)*h*0.04;batt(g,bx,by,w*0.035,i%4===2);}});
   function hexP(g,x,y,r){g.beginPath();for(var k=0;k<6;k++){var a=Math.PI/3*k+Math.PI/6;g.lineTo(x+r*Math.cos(a)*.6,y+r*Math.sin(a)*.6);}g.closePath();g.stroke();}

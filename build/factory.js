@@ -181,7 +181,7 @@ U.fillImgs();
 /* ══ 표지 대체 그림 ══ */
 function batt(g,x,y,s,bad){g.save();var w=s*1.8,h=s*1.1,x0=x-w/2,y0=y-h/2;g.fillStyle=bad?'#f3c9c7':'#d8eef0';g.strokeStyle=bad?C.eye:C.terrain;g.lineWidth=1.5;g.beginPath();g.roundRect?g.roundRect(x0,y0,w,h,s*.12):g.rect(x0,y0,w,h);g.fill();g.stroke();
   g.lineWidth=1;g.globalAlpha=0.55;for(var k=1;k<5;k++){g.beginPath();g.moveTo(x0+w*k/5,y0+h*0.15);g.lineTo(x0+w*k/5,y0+h*0.85);g.stroke();}g.globalAlpha=1;g.fillStyle=bad?C.eye:C.terrain;g.fillRect(x0+w*0.15,y0-s*0.18,s*0.28,s*0.18);g.fillRect(x0+w*0.85-s*0.28,y0-s*0.18,s*0.28,s*0.18);g.restore();}
-(function(){var cv=$('#cvCover');U.reg(cv,function(dt){if(dt)return;var R0=U.setup(cv),g=R0.g,w=R0.w,h=R0.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
+(function(){var cv=$('#cvCover');if(!cv)return;U.reg(cv,function(dt){if(dt)return;var R0=U.setup(cv),g=R0.g,w=R0.w,h=R0.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(22,33,43,.12)';g.lineWidth=2;g.beginPath();g.moveTo(w*0.04,h*0.3);g.lineTo(w*0.96,h*0.3);g.stroke();
   for(var i=0;i<10;i++){var bx=w*(0.06+i*0.098);g.fillStyle=['#f3c9c7','#f3c9c7','#f3c9c7','#f3c9c7','#f3c9c7','#e7d3f0','#e7d3f0','#e7d3f0','#cfe0f8','#cfe0f8'][i];g.fillRect(bx-w*0.03,h*0.12,w*0.06,h*0.14);batt(g,bx+w*0.045,h*0.3,w*0.012,i===6);}});})();
 

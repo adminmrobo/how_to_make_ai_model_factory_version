@@ -156,7 +156,7 @@ $('#secretbtn').onclick=function(){var r=$('#secretrow');r.hidden=!r.hidden;this
 U.fillImgs();
 
 /* ══ 표지 대체 그림 ══ */
-(function(){var cv=$('#cvCover');U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
+(function(){var cv=$('#cvCover');if(!cv)return;U.reg(cv,function(dt){if(dt)return;var R=U.setup(cv),g=R.g,w=R.w,h=R.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(15,127,134,.10)';g.lineWidth=1;var s=Math.max(14,w/40);for(var y=0;y<h+s;y+=s*1.5)for(var x=0;x<w+s;x+=s*1.732){var ox=((y/(s*1.5))%2)?s*.866:0;hexP(g,x+ox,y,s*.95);}
   for(var i=0;i<9;i++){var bx=w*(0.08+i*0.105),by=h*0.18+Math.sin(i)*h*0.04;batt(g,bx,by,w*0.035,i%4===2);}});
   function hexP(g,x,y,r){g.beginPath();for(var k=0;k<6;k++){var a=Math.PI/3*k+Math.PI/6;g.lineTo(x+r*Math.cos(a)*.6,y+r*Math.sin(a)*.6);}g.closePath();g.stroke();}

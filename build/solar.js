@@ -235,7 +235,7 @@ $('#secretbtn').onclick=function(){var r=$('#secretrow');r.hidden=!r.hidden;this
 U.fillImgs();
 
 /* ══ 표지 대체 그림 ══ */
-(function(){var cv=$('#cvCover');U.reg(cv,function(dt){if(dt)return;var R0=U.setup(cv),g=R0.g,w=R0.w,h=R0.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
+(function(){var cv=$('#cvCover');if(!cv)return;U.reg(cv,function(dt){if(dt)return;var R0=U.setup(cv),g=R0.g,w=R0.w,h=R0.h;var gr=g.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#eef4f8');gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,w,h);
   for(var i=0;i<6;i++)for(var j=0;j<3;j++){var x=w*(0.5+i*0.07),y=h*(0.08+j*0.09);g.fillStyle='#1e2f4a';g.fillRect(x,y,w*0.06,h*0.08);g.strokeStyle='rgba(255,255,255,.5)';g.strokeRect(x,y,w*0.06,h*0.08);}
   g.strokeStyle=C.eye;g.lineWidth=2;g.beginPath();var x0=w*0.06,y0=h*0.32;for(var k=0;k<=60;k++){var z=-3+6*k/60,x=x0+w*0.36*k/60,y=y0-h*0.2*Math.exp(-z*z/2);k?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();});})();
 

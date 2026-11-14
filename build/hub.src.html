@@ -40,9 +40,10 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
 <body>
 <!-- lab-cover -->
 <div class="cover" id="cover" data-img="cover_00"><div class="frame">
-  <canvas id="cvCover" aria-hidden="true"></canvas>
-  <span class="cap">표지 그림 자리 · cover_00 (그림을 받으면 바뀝니다)</span>
-  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <picture>
+    <source type="image/webp" srcset="img/cover_00_960.webp 960w, img/cover_00.webp 1600w" sizes="(max-width:1080px) 100vw, 1080px">
+    <img class="art" src="img/cover_00.webp" width="1600" height="900" alt="연구실 식구 넷이 작은 공장 건물들이 모인 AI 공장 단지 모형 앞에서 강의하듯 공장을 소개하는 장면" fetchpriority="high" decoding="async">
+  </picture>
   <span class="cover-chip">자율주행차 배터리 AI 공장 · 제조업 AI 강의 시연용</span>
 </div></div>
 <!-- /lab-cover -->

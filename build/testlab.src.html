@@ -39,9 +39,10 @@
 
 <!-- lab-cover -->
 <div class="cover" id="cover" data-img="cover_04"><div class="frame">
-  <canvas id="cvCover" aria-hidden="true"></canvas>
-  <span class="cap">표지 그림 자리 · cover_04 (그림을 받으면 바뀝니다)</span>
-  <div class="cast4"><img data-mood="fly_magnify" alt="" aria-hidden="true" class="s"><img data-mood="doc_front" alt="" aria-hidden="true"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_calc" alt="" aria-hidden="true"></div>
+  <picture>
+    <source type="image/webp" srcset="img/cover_04_960.webp 960w, img/cover_04.webp 1600w" sizes="(max-width:1080px) 100vw, 1080px">
+    <img class="art" src="img/cover_04.webp" width="1600" height="900" alt="연구실 시험 라인에서 연구실 식구 넷이 물고기 분류 장비를 시험하며 통조림 통으로 갈라지는 물고기를 살피는 장면" fetchpriority="high" decoding="async">
+  </picture>
   <span class="cover-chip">시제품 테스트 랩실 · 생선 통조림 분류 장비</span>
 </div></div>
 <!-- /lab-cover -->
@@ -286,7 +287,7 @@
     <tr><td>[5]</td><td>Kaufman, S., Rosset, S., Perlich, C., Stitelman, O. (2012). Leakage in data mining: Formulation, detection, and avoidance. ACM TKDD 6(4), 15.</td><td>랩 점수의 함정 — 데이터 누수</td></tr>
     <tr><td>[6]</td><td>Pedregosa, F. 외 (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research 12, 2825–2830.</td><td>장비 34대 계산</td></tr>
     <tr><td>[A]</td><td>안상선, 「Fish Market Data로 배우는 머신러닝 핵심 개념 2」 교안 · fish_market_ml_practice 노트북 (사용자 제공 자료)</td><td>엔진 셋, 분할·교차검증·20번 분할 절차</td></tr>
-    <tr><td>[B]</td><td>안상선, 「좌표축 위의 그릇 — 3D 지도로 본 모델 최적화」 (github.com/adminmrobo/optimization_3d_map)</td><td>판정 지형 3D — Surf3D 코드</td></tr>
+    <tr><td>[B]</td><td>안상선, 「좌표축 위의 그릇 — 3D 지도로 본 모델 최적화」 (<a href="https://github.com/adminmrobo/optimization_3d_map">저장소</a>)</td><td>판정 지형 3D — Surf3D 코드</td></tr>
   </tbody></table>
   <h3>예시값·설명용 모형인 것</h3>
   <ul><li>3D 시험 라인의 칸 배치·컨베이어·통조림 통 — 그림. 판정 결과(맞음·틀림)는 실제 계산값</li><li>늘린 1,422마리는 받은 파일 그대로 썼고, 만든 방법은 확인하지 못했습니다</li><li>"이웃 통조림 공장", "무게를 재지 않는 장비" — 이야기를 위한 설정</li></ul>

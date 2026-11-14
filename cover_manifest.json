@@ -87,8 +87,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... shared lab assembly line, EV battery modules, self-driving car model; device chassis with green and red indicator lamps ... No text (전체: COVER_01_battery_model_factory.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null
+      "status": "done",
+      "received": "2026-11-14"
     },
     {
       "id": "cover_01r",
@@ -107,8 +107,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... same scene as cover_01; device chassis with an analog dial gauge ... No text (전체: COVER_01r_battery_life_regressor.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null
+      "status": "done",
+      "received": "2026-11-14"
     },
     {
       "id": "cover_03",
@@ -127,8 +127,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line as cover_01; automated machines, labeled EV battery modules, a hot machine with a red thermometer bar ... No text (전체: COVER_03_battery_production_factory.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null
+      "status": "done",
+      "received": "2026-11-14"
     },
     {
       "id": "cover_00",
@@ -147,8 +147,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... first page — miniature AI factory park, doc lecturing with a pointer ... No text (전체: COVER_PROMPTS_00_04_05.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null,
+      "status": "done",
+      "received": "2026-11-14",
       "page": "index.html"
     },
     {
@@ -168,8 +168,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line; fish on conveyor sorted into seven colored tin cans, one fish with a red ring ... No text (전체: COVER_PROMPTS_00_04_05.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null,
+      "status": "done",
+      "received": "2026-11-14",
       "page": "testlab.html"
     },
     {
@@ -189,8 +189,8 @@
       "robot": "jupanbot-v2",
       "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line; dark-navy solar cells, three colored wafer crates, window half day half night, bell curve drawing ... No text (전체: COVER_PROMPTS_00_04_05.md)",
       "source_of": null,
-      "status": "pending",
-      "received": null,
+      "status": "done",
+      "received": "2026-11-14",
       "page": "solar.html"
     }
   ],
