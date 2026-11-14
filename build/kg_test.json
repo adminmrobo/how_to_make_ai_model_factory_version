@@ -1,0 +1,750 @@
+{
+ "version": "1.0",
+ "page": "testlab",
+ "nodes": [
+  {
+   "id": "lab:question/lab-vs-field-score",
+   "type": "Question",
+   "label": {
+    "ko": "랩 점수 99%는 진짜 물고기 앞에서 몇 점일까?",
+    "en": "How does a lab score hold up in a field test?"
+   },
+   "page": "testlab",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:task/fish-species-sorter",
+   "type": "Task",
+   "label": {
+    "ko": "생선 통조림 분류 장비 (7어종 다중 분류)",
+    "en": "Fish species sorter for a cannery"
+   },
+   "page": "testlab",
+   "anchor": "#line",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "길이·대각선·높이·두께로 7어종을 가려 통조림 라인으로 보내는 장비."
+   }
+  },
+  {
+   "id": "lab:dataset/fish-market",
+   "type": "Dataset",
+   "label": {
+    "ko": "Fish Market (원본 158 + 늘린 1,422)",
+    "en": "Fish Market dataset, augmented x10"
+   },
+   "page": "testlab",
+   "anchor": "#sample",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/data-augmentation",
+   "type": "Concept",
+   "label": {
+    "ko": "데이터 증강",
+    "en": "Data augmentation"
+   },
+   "page": "testlab",
+   "anchor": "#sample",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "원본을 조금씩 바꿔 시료를 늘리는 것. 늘린 시료는 원본과 닮았다."
+   }
+  },
+  {
+   "id": "lab:method/train-validation-test-split",
+   "type": "Method",
+   "label": {
+    "ko": "훈련·검증·봉인 시험 나누기",
+    "en": "Train/validation/test split"
+   },
+   "page": "testlab",
+   "anchor": "#sum",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/cross-validation",
+   "type": "Method",
+   "label": {
+    "ko": "5겹 교차검증 (랩 점수)",
+    "en": "Five-fold cross-validation"
+   },
+   "page": "testlab",
+   "anchor": "#build",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/held-out-field-test",
+   "type": "Method",
+   "label": {
+    "ko": "봉인 시료 실제 테스트",
+    "en": "Held-out field test"
+   },
+   "page": "testlab",
+   "anchor": "#test",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/confusion-matrix",
+   "type": "Metric",
+   "label": {
+    "ko": "혼동 행렬",
+    "en": "Confusion matrix"
+   },
+   "page": "testlab",
+   "anchor": "#test",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/log-loss",
+   "type": "Metric",
+   "label": {
+    "ko": "로그 손실",
+    "en": "Log loss"
+   },
+   "page": "testlab",
+   "anchor": "#test",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/accuracy",
+   "type": "Metric",
+   "label": {
+    "ko": "정확도",
+    "en": "Accuracy"
+   },
+   "page": "testlab",
+   "anchor": "#test",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/data-leakage",
+   "type": "Concept",
+   "label": {
+    "ko": "데이터 누수",
+    "en": "Data leakage"
+   },
+   "page": "testlab",
+   "anchor": "#gap",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "검증에 쓰면 안 되는 정보(닮은 형제 시료)가 학습에 섞여 점수가 부푸는 일."
+   }
+  },
+  {
+   "id": "lab:concept/selection-bias",
+   "type": "Concept",
+   "label": {
+    "ko": "모델 선택의 선택 편향",
+    "en": "Selection bias in model selection"
+   },
+   "page": "testlab",
+   "anchor": "#gap",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "여러 후보 중 최고 점수를 고르면 그 점수에 운이 섞여 부푼다."
+   }
+  },
+  {
+   "id": "lab:model/logistic-regression",
+   "type": "Model",
+   "label": {
+    "ko": "로지스틱 회귀",
+    "en": "Logistic regression"
+   },
+   "page": "testlab",
+   "anchor": "#build",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:model/knn",
+   "type": "Model",
+   "label": {
+    "ko": "KNN",
+    "en": "k-nearest neighbors"
+   },
+   "page": "testlab",
+   "anchor": "#build",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:model/svc",
+   "type": "Model",
+   "label": {
+    "ko": "SVC (linear · rbf)",
+    "en": "Support vector classifier"
+   },
+   "page": "testlab",
+   "anchor": "#build",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/standard-scaler",
+   "type": "Method",
+   "label": {
+    "ko": "표준화 (StandardScaler)",
+    "en": "Standardization"
+   },
+   "page": "testlab",
+   "anchor": "#build",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/fish-test-line-3d",
+   "type": "Simulation",
+   "label": {
+    "ko": "3D 시험 라인 12칸",
+    "en": "3D fish test line"
+   },
+   "page": "testlab",
+   "anchor": "#line",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/decision-confidence-terrain",
+   "type": "Simulation",
+   "label": {
+    "ko": "판정 확신도 3D 지형 (Surf3D)",
+    "en": "Decision confidence terrain"
+   },
+   "page": "testlab",
+   "anchor": "#terrain",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:question/peek-vs-cv-selection",
+   "type": "Question",
+   "label": {
+    "ko": "시험지를 엿보고 고르기 vs 랩 점수로 고르기",
+    "en": "Peeking vs cross-validated selection"
+   },
+   "page": "testlab",
+   "anchor": "#duel",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:task/defect-judge-field-test",
+   "type": "Task",
+   "label": {
+    "ko": "① 배터리 불량품 판정기의 실제 테스트",
+    "en": "Field test of the battery defect judge"
+   },
+   "page": "testlab",
+   "anchor": "#next",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/augmented-similarity",
+   "type": "Limitation",
+   "label": {
+    "ko": "봉인 시료도 늘린 시료와 닮아 실제 테스트가 쉬워질 수 있음",
+    "en": "Held-out originals resemble augmented rows"
+   },
+   "page": "testlab",
+   "anchor": "#sum",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/pyae2019fishmarket",
+   "type": "Work",
+   "label": {
+    "ko": "Fish Market",
+    "en": "Fish Market"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/park2020honggong",
+   "type": "Work",
+   "label": {
+    "ko": "혼자 공부하는 머신러닝+딥러닝",
+    "en": "혼자 공부하는 머신러닝+딥러닝"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/kohavi1995study",
+   "type": "Work",
+   "label": {
+    "ko": "A study of cross-validation and bootstra",
+    "en": "A study of cross-validation and bootstrap for accuracy estimation and model selection"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/cawley2010overfitting",
+   "type": "Work",
+   "label": {
+    "ko": "On over-fitting in model selection and s",
+    "en": "On over-fitting in model selection and subsequent selection bias in performance evaluation"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/kaufman2012leakage",
+   "type": "Work",
+   "label": {
+    "ko": "Leakage in data mining: Formulation, det",
+    "en": "Leakage in data mining: Formulation, detection, and avoidance"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/pedregosa2011scikit",
+   "type": "Work",
+   "label": {
+    "ko": "Scikit-learn: Machine learning in Python",
+    "en": "Scikit-learn: Machine learning in Python"
+   },
+   "page": "testlab",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:question/lab-vs-field-score",
+   "p": "lab:relatedTo",
+   "o": "lab:method/held-out-field-test",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/fish-species-sorter",
+   "p": "lab:evaluatedBy",
+   "o": "lab:method/held-out-field-test",
+   "anchor": "#line",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/fish-species-sorter",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/fish-test-line-3d",
+   "anchor": "#line",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/fish-market",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/data-augmentation",
+   "anchor": "#sample",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/train-validation-test-split",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/cross-validation",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/train-validation-test-split",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/held-out-field-test",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/cross-validation",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/data-leakage",
+   "anchor": "#gap",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/data-augmentation",
+   "p": "lab:raises",
+   "o": "lab:concept/data-leakage",
+   "anchor": "#gap",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/cross-validation",
+   "p": "lab:raises",
+   "o": "lab:concept/selection-bias",
+   "anchor": "#gap",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/held-out-field-test",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/confusion-matrix",
+   "anchor": "#test",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/held-out-field-test",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/accuracy",
+   "anchor": "#test",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/held-out-field-test",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/log-loss",
+   "anchor": "#test",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/logistic-regression",
+   "p": "lab:partOf",
+   "o": "lab:task/fish-species-sorter",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/standard-scaler",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:model/logistic-regression",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/knn",
+   "p": "lab:partOf",
+   "o": "lab:task/fish-species-sorter",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/standard-scaler",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:model/knn",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/svc",
+   "p": "lab:partOf",
+   "o": "lab:task/fish-species-sorter",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/standard-scaler",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:model/svc",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:sim/decision-confidence-terrain",
+   "p": "lab:relatedTo",
+   "o": "lab:model/logistic-regression",
+   "anchor": "#terrain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:sim/decision-confidence-terrain",
+   "p": "lab:relatedTo",
+   "o": "lab:metric/confusion-matrix",
+   "anchor": "#terrain",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/peek-vs-cv-selection",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/selection-bias",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/peek-vs-cv-selection",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/data-leakage",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/defect-judge-field-test",
+   "p": "lab:relatedTo",
+   "o": "lab:method/held-out-field-test",
+   "anchor": "#next",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/held-out-field-test",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/augmented-similarity",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/fish-market",
+   "p": "lab:partOf",
+   "o": "lab:task/fish-species-sorter",
+   "anchor": "#sample",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/fish-market",
+   "p": "lab:assertedIn",
+   "o": "lab:work/pyae2019fishmarket",
+   "anchor": "#sample",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/fish-market",
+   "p": "lab:assertedIn",
+   "o": "lab:work/park2020honggong",
+   "anchor": "#sample",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/cross-validation",
+   "p": "lab:assertedIn",
+   "o": "lab:work/kohavi1995study",
+   "anchor": "#build",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/selection-bias",
+   "p": "lab:assertedIn",
+   "o": "lab:work/cawley2010overfitting",
+   "anchor": "#gap",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/data-leakage",
+   "p": "lab:assertedIn",
+   "o": "lab:work/kaufman2012leakage",
+   "anchor": "#gap",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/fish-species-sorter",
+   "p": "lab:assertedIn",
+   "o": "lab:work/pedregosa2011scikit",
+   "anchor": "#build",
+   "confidence": "high"
+  }
+ ]
+}

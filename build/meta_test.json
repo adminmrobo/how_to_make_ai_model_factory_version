@@ -1,0 +1,44 @@
+{
+ "title": "시제품 테스트 랩실 — 생선 통조림 분류 장비를 만들고 진짜 물고기로 시험하기",
+ "series": "자율주행차 배터리 AI 공장",
+ "number": "L1",
+ "creator": [
+  {
+   "name": "안상선",
+   "role": "author",
+   "affiliation": "(주)M-Robo"
+  }
+ ],
+ "contributor": [
+  {
+   "name": "AI 보조 제작",
+   "role": "assistant"
+  }
+ ],
+ "date": "2026-11-14",
+ "version": "1.0",
+ "language": [
+  "ko"
+ ],
+ "license": "",
+ "url": "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/testlab.html",
+ "about": [
+  "lab:task/fish-species-sorter",
+  "lab:method/held-out-field-test",
+  "lab:method/cross-validation",
+  "lab:concept/data-leakage",
+  "lab:concept/selection-bias"
+ ],
+ "basedOn": [
+  "pyae2019fishmarket",
+  "park2020honggong",
+  "kohavi1995study",
+  "cawley2010overfitting",
+  "kaufman2012leakage",
+  "pedregosa2011scikit"
+ ],
+ "educationalLevel": "입문~중급",
+ "learningResourceType": "interactive explainer",
+ "registry": "KG_00_registry 0.2",
+ "suggestedCitation": "안상선 (2026). 시제품 테스트 랩실 — 생선 통조림 분류 장비를 만들고 진짜 물고기로 시험하기. 자율주행차 배터리 AI 공장 시제품 테스트 랩실 1, v1.0."
+}

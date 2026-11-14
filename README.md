@@ -88,3 +88,15 @@ python3 code/browser_check.py  # (선택) 헤드리스 브라우저 점검 · PA
 eeanimation 「AI Parameters」 카드 10장(사용자 제공), 안상선 「머신러닝 모델 도감」·「신경망 도감」, Rumelhart 외 1986, Kingma·Ba 2015, Goodfellow 외 2016, Hu 외 2022, Ba 외 2016, Zhang·Sennrich 2019, Vaswani 외 2017, Rajbhandari 외 2020, Ouyang 외 2022, Prechelt 1998, Breiman 2001, Friedman 2001, Cortes·Vapnik 1995, Severson 외 2019, (회귀 편) Hoerl·Kennard 1970, Tibshirani 1996, Rasmussen·Williams 2006. (생산 공장) Kwade 외 2018, Goldratt·Cox 1984, Little 1961, Ahmed 외 2016. 자세한 표는 페이지 바닥글.
 
 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다.
+
+## 시제품 테스트 랩실 (`testlab.html`)
+
+공장 목록 바로 아래의 랩실입니다. 첫 시제품은 **생선 통조림 분류 장비**(7어종 다중 분류).
+
+- 시료: Fish Market 10배 증강 파일(`build/fish_market_10x.csv`, 1,580마리). 늘린 1,422마리로만 장비를 만들고, 원본 158마리는 봉인해 실제 테스트에 씀
+- 장비 34대: 로지스틱 회귀 · KNN · SVC(linear · rbf) × 설정값 × 입력 4개/6개, 5겹 교차검증(랩 점수)
+- 3D 시험 라인 12칸(다른 공장과 같은 배치·캐릭터 자리), 판정 확신도 3D 지형(optimization_3d_map의 Surf3D)
+- 주요 수치: 랩 점수 1등 SVC linear C=100 입력 4개 — 교차검증 99.2%, 실제 테스트 89.9%. 대결(1차 시험 엿보고 고르기 vs 랩 점수로 고르기, 반 나누기 20번): 2차 검수 평균 90.3% vs 90.5%, 보고 점수 부풀림 3.2%p vs 8.7%p
+- 다시 만들기: `python3 code/fish_lab.py && python3 build/kg_test.py && node build/build.js`
+
+공장 목록 맨 아래에는 이웃 사이트 [옆에 있는 시멘트 공장](https://adminmrobo.github.io/smart_factory_world/cement/)(스마트 팩토리 World) 카드가 있습니다.

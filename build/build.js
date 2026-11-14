@@ -49,6 +49,12 @@ if(fs.existsSync(path.join(B,'factory.src.html'))){const fsim=rd('fsim.js'),fj=r
     .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>fj);
   if(fs.existsSync(path.join(B,'kg_fac.json')))H3=attach(H3,JSON.parse(rd('kg_fac.json')),JSON.parse(rd('refs_fac.json')),JSON.parse(rd('meta_fac.json')));
   fs.writeFileSync(path.join(R,'factory.html'),H3);console.log('factory.html',(Buffer.byteLength(H3)/1024).toFixed(0)+' KB');}
+// 시제품 테스트 랩실: testlab.src.html + fish.json + testlab.js → testlab.html (kg_test.json·refs_test.json·meta_test.json)
+if(fs.existsSync(path.join(B,'testlab.src.html'))){const fd=rd('fish.json'),tj=rd('testlab.js');
+  let H4=rd('testlab.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
+    .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>tj);
+  if(fs.existsSync(path.join(B,'kg_test.json')))H4=attach(H4,JSON.parse(rd('kg_test.json')),JSON.parse(rd('refs_test.json')),JSON.parse(rd('meta_test.json')));
+  fs.writeFileSync(path.join(R,'testlab.html'),H4);console.log('testlab.html',(Buffer.byteLength(H4)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
 if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common);
   fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}

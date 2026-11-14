@@ -1,0 +1,295 @@
+[
+ {
+  "id": "pyae2019fishmarket",
+  "type": "dataset",
+  "title": "Fish Market",
+  "author": [
+   {
+    "family": "Pyae",
+    "given": "Aung"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "container-title": "Kaggle",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/pyae2019fishmarket",
+   "role": "background",
+   "supports": [
+    "lab:dataset/fish-market"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "사용자 제공 교안·노트북의 데이터 출처 표기(2026-11-14)"
+  }
+ },
+ {
+  "id": "park2020honggong",
+  "type": "book",
+  "title": "혼자 공부하는 머신러닝+딥러닝",
+  "author": [
+   {
+    "family": "박",
+    "given": "해선"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "publisher": "한빛미디어",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/park2020honggong",
+   "role": "background",
+   "supports": [
+    "lab:dataset/fish-market"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "사용자 제공 교안의 출처 표기(2026-11-14)"
+  }
+ },
+ {
+  "id": "kohavi1995study",
+  "type": "paper-conference",
+  "title": "A study of cross-validation and bootstrap for accuracy estimation and model selection",
+  "author": [
+   {
+    "family": "Kohavi",
+    "given": "Ron"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1995
+    ]
+   ]
+  },
+  "container-title": "Proceedings of IJCAI 1995",
+  "page": "1137-1143",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/kohavi1995study",
+   "role": "background",
+   "supports": [
+    "lab:method/cross-validation"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "cawley2010overfitting",
+  "type": "article-journal",
+  "title": "On over-fitting in model selection and subsequent selection bias in performance evaluation",
+  "author": [
+   {
+    "family": "Cawley",
+    "given": "Gavin C."
+   },
+   {
+    "family": "Talbot",
+    "given": "Nicola L. C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2010
+    ]
+   ]
+  },
+  "container-title": "Journal of Machine Learning Research",
+  "volume": "11",
+  "page": "2079-2107",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/cawley2010overfitting",
+   "role": "background",
+   "supports": [
+    "lab:concept/selection-bias"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "kaufman2012leakage",
+  "type": "article-journal",
+  "title": "Leakage in data mining: Formulation, detection, and avoidance",
+  "author": [
+   {
+    "family": "Kaufman",
+    "given": "Shachar"
+   },
+   {
+    "family": "Rosset",
+    "given": "Saharon"
+   },
+   {
+    "family": "Perlich",
+    "given": "Claudia"
+   },
+   {
+    "family": "Stitelman",
+    "given": "Ori"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2012
+    ]
+   ]
+  },
+  "container-title": "ACM Transactions on Knowledge Discovery from Data",
+  "volume": "6",
+  "issue": "4",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/kaufman2012leakage",
+   "role": "background",
+   "supports": [
+    "lab:concept/data-leakage"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ },
+ {
+  "id": "pedregosa2011scikit",
+  "type": "article-journal",
+  "title": "Scikit-learn: Machine learning in Python",
+  "author": [
+   {
+    "family": "Pedregosa",
+    "given": "Fabian"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2011
+    ]
+   ]
+  },
+  "container-title": "Journal of Machine Learning Research",
+  "volume": "12",
+  "page": "2825-2830",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/pedregosa2011scikit",
+   "role": "background",
+   "supports": [
+    "lab:task/fish-species-sorter"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). 쪽 미대조"
+  }
+ }
+]
