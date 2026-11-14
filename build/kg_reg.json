@@ -1,0 +1,3363 @@
+{
+ "version": "1.0",
+ "page": "regression",
+ "nodes": [
+  {
+   "id": "lab:concept/parameter",
+   "type": "Concept",
+   "label": {
+    "ko": "파라미터",
+    "en": "Parameter"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "모델 안에서 데이터로부터 배우는 숫자. 가중치와 편향."
+   }
+  },
+  {
+   "id": "lab:concept/weight",
+   "type": "Concept",
+   "label": {
+    "ko": "가중치",
+    "en": "Weight"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "입력 신호를 몇 배로 키울지(부호 포함) 정하는 숫자."
+   }
+  },
+  {
+   "id": "lab:concept/bias",
+   "type": "Concept",
+   "label": {
+    "ko": "편향",
+    "en": "Bias"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "가중합에 더해 출력을 밀어 올리거나 내리는 숫자."
+   }
+  },
+  {
+   "id": "lab:concept/hyperparameter",
+   "type": "Concept",
+   "label": {
+    "ko": "하이퍼파라미터",
+    "en": "Hyperparameter"
+   },
+   "page": "regression",
+   "anchor": "#sum",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "학습 전에 사람이 정하는 숫자. 학습률, 배치 크기, 에포크, 은닉 뉴런 수."
+   }
+  },
+  {
+   "id": "lab:concept/single-neuron",
+   "type": "Concept",
+   "label": {
+    "ko": "뉴런 하나",
+    "en": "Single neuron"
+   },
+   "page": "regression",
+   "anchor": "#w2",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "가중합 z = Σwx + b를 만들고 활성화 함수를 거쳐 내보내는 단위. 파라미터 3개(입력 2개일 때)."
+   }
+  },
+  {
+   "id": "lab:concept/activation-value",
+   "type": "Concept",
+   "label": {
+    "ko": "활성값",
+    "en": "Activation (value)"
+   },
+   "page": "regression",
+   "anchor": "#w3",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "입력이 들어올 때마다 층을 지나며 새로 계산되는 값. 저장된 파라미터가 아니다."
+   }
+  },
+  {
+   "id": "lab:concept/input-normalization",
+   "type": "Concept",
+   "label": {
+    "ko": "표준화",
+    "en": "Standardization"
+   },
+   "page": "regression",
+   "anchor": "#w3",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "훈련 데이터의 평균·표준편차로 특징의 눈금을 맞추는 일. 배우는 값이 아니라 계산한 값."
+   }
+  },
+  {
+   "id": "lab:concept/norm-scale-shift",
+   "type": "Concept",
+   "label": {
+    "ko": "정규화 층의 γ·β",
+    "en": "Normalization gain and bias"
+   },
+   "page": "regression",
+   "anchor": "#w3",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "정규화 층의 학습되는 크기(γ)와 이동(β). RMSNorm은 γ만 둔다."
+   },
+   "source": [
+    {
+     "ref": "ba2016layer",
+     "loc": ""
+    },
+    {
+     "ref": "zhang2019root",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/parameter-count",
+   "type": "Concept",
+   "label": {
+    "ko": "파라미터 개수",
+    "en": "Parameter count"
+   },
+   "page": "regression",
+   "anchor": "#w4",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "완전 연결층 하나 = 입력 수 × 출력 수 + 출력 수."
+   }
+  },
+  {
+   "id": "lab:concept/weight-memory",
+   "type": "Concept",
+   "label": {
+    "ko": "가중치 메모리",
+    "en": "Weight memory"
+   },
+   "page": "regression",
+   "anchor": "#w4",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "파라미터 수 × 숫자 하나의 바이트 수. 학습 때는 기울기·옵티마이저 상태가 더 든다."
+   }
+  },
+  {
+   "id": "lab:concept/loss",
+   "type": "Concept",
+   "label": {
+    "ko": "손실",
+    "en": "Loss"
+   },
+   "page": "regression",
+   "anchor": "#w5",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "예측이 정답에서 벗어난 정도를 재는 벌점."
+   }
+  },
+  {
+   "id": "lab:method/backpropagation",
+   "type": "Method",
+   "label": {
+    "ko": "역전파",
+    "en": "Backpropagation"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "손실에서 거꾸로 층을 지나며 연쇄 법칙으로 모든 파라미터의 기울기를 구하는 방법."
+   },
+   "source": [
+    {
+     "ref": "rumelhart1986learning",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/gradient",
+   "type": "Concept",
+   "label": {
+    "ko": "기울기",
+    "en": "Gradient"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "파라미터를 아주 조금 바꿀 때 손실이 변하는 비율 ∂L/∂w."
+   }
+  },
+  {
+   "id": "lab:method/gradient-check",
+   "type": "Method",
+   "label": {
+    "ko": "기울기 검사",
+    "en": "Gradient check"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "역전파 기울기와 중심 차분으로 잰 기울기를 비교해 미분 코드를 확인하는 일."
+   }
+  },
+  {
+   "id": "lab:method/gradient-descent",
+   "type": "Method",
+   "label": {
+    "ko": "경사하강법",
+    "en": "Gradient descent"
+   },
+   "page": "regression",
+   "anchor": "#w7",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "기울기 반대 방향으로 학습률만큼 움직여 손실을 줄이는 방법."
+   }
+  },
+  {
+   "id": "lab:concept/learning-rate",
+   "type": "Concept",
+   "label": {
+    "ko": "학습률",
+    "en": "Learning rate"
+   },
+   "page": "regression",
+   "anchor": "#w7",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "한 걸음에 기울기의 몇 배만큼 움직일지 정하는 하이퍼파라미터 η."
+   }
+  },
+  {
+   "id": "lab:method/adam",
+   "type": "Method",
+   "label": {
+    "ko": "Adam",
+    "en": "Adam"
+   },
+   "page": "regression",
+   "anchor": "#w7",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "기울기의 1·2차 모멘트를 기억해 파라미터마다 보폭을 맞추는 옵티마이저."
+   },
+   "source": [
+    {
+     "ref": "kingma2015adam",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:method/minibatch-sgd",
+   "type": "Method",
+   "label": {
+    "ko": "미니배치 학습",
+    "en": "Mini-batch training"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "훈련 데이터를 묶음(배치)으로 나눠 묶음마다 한 걸음씩 고치는 학습."
+   }
+  },
+  {
+   "id": "lab:concept/epoch",
+   "type": "Concept",
+   "label": {
+    "ko": "에포크",
+    "en": "Epoch"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "훈련 데이터를 한 바퀴 다 도는 일."
+   }
+  },
+  {
+   "id": "lab:concept/batch-size",
+   "type": "Concept",
+   "label": {
+    "ko": "배치 크기",
+    "en": "Batch size"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "한 스텝에 쓰는 데이터 수."
+   }
+  },
+  {
+   "id": "lab:concept/validation-set",
+   "type": "Concept",
+   "label": {
+    "ko": "검증 데이터",
+    "en": "Validation set"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "학습에 쓰지 않고 설정과 멈출 때를 고르는 데 쓰는 데이터."
+   }
+  },
+  {
+   "id": "lab:concept/test-set",
+   "type": "Concept",
+   "label": {
+    "ko": "시험 데이터",
+    "en": "Test set"
+   },
+   "page": "regression",
+   "anchor": "#ship",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "마지막 점수를 한 번만 재기 위해 봉인해 두는 데이터."
+   }
+  },
+  {
+   "id": "lab:method/early-stopping",
+   "type": "Method",
+   "label": {
+    "ko": "조기 종료",
+    "en": "Early stopping"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "검증 손실이 가장 낮던 때의 파라미터를 고르는 방법."
+   },
+   "source": [
+    {
+     "ref": "prechelt1998early",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/pretraining",
+   "type": "Concept",
+   "label": {
+    "ko": "사전학습",
+    "en": "Pretraining"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "generative",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "큰 데이터로 먼저 배워 두는 단계. 미세조정의 출발점."
+   }
+  },
+  {
+   "id": "lab:method/full-fine-tuning",
+   "type": "Method",
+   "label": {
+    "ko": "전체 미세조정",
+    "en": "Full fine-tuning"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "generative",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "사전학습한 파라미터 전부를 새 데이터로 조금 더 고치는 방법."
+   }
+  },
+  {
+   "id": "lab:method/lora",
+   "type": "Method",
+   "label": {
+    "ko": "어댑터(LoRA 방식)",
+    "en": "LoRA-style adapter"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "generative",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "원래 가중치는 잠그고 낮은 순위의 보정 행렬만 배우는 미세조정."
+   },
+   "altLabel": {
+    "ko": [
+     "LoRA"
+    ]
+   },
+   "source": [
+    {
+     "ref": "hu2022lora",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/preference-training",
+   "type": "Concept",
+   "label": {
+    "ko": "선호 학습",
+    "en": "Preference training"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "generative",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "두 답 중 사람이 고른 쪽을 따르도록 모델을 고치는 단계."
+   },
+   "source": [
+    {
+     "ref": "ouyang2022training",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/overfitting",
+   "type": "Concept",
+   "label": {
+    "ko": "과적합",
+    "en": "Overfitting"
+   },
+   "page": "regression",
+   "anchor": "#w10",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "훈련 데이터를 외워 처음 보는 데이터에서 오히려 틀리는 상태."
+   }
+  },
+  {
+   "id": "lab:concept/model-capacity",
+   "type": "Concept",
+   "label": {
+    "ko": "모델 용량",
+    "en": "Model capacity"
+   },
+   "page": "regression",
+   "anchor": "#w10",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "모델이 표현할 수 있는 모양의 폭. 이 페이지에서는 은닉 뉴런 수로 바꾼다."
+   }
+  },
+  {
+   "id": "lab:concept/frozen-inference",
+   "type": "Concept",
+   "label": {
+    "ko": "추론 중 가중치 고정",
+    "en": "Fixed weights at inference"
+   },
+   "page": "regression",
+   "anchor": "#w10",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "배포 후 추론은 파라미터를 읽기만 하고, 입력에 따라 활성값만 바뀐다."
+   }
+  },
+  {
+   "id": "lab:method/dff-engine",
+   "type": "Method",
+   "label": {
+    "ko": "DFF (MLP) 엔진",
+    "en": "DFF / MLP engine"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "입력 4, 은닉 8(tanh), 출력 1(활성화 없음)의 회귀 신경망 엔진. 파라미터 49개. 정비 작업장 ①~⑩의 주인공."
+   },
+   "altLabel": {
+    "ko": [
+     "다층 퍼셉트론",
+     "4 → 8 → 1 신경망"
+    ]
+   }
+  },
+  {
+   "id": "lab:method/random-forest",
+   "type": "Method",
+   "label": {
+    "ko": "랜덤 포레스트",
+    "en": "Random forest"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "ensemble",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "부트스트랩으로 키운 회귀 트리 여러 그루의 평균."
+   }
+  },
+  {
+   "id": "lab:method/gradient-boosting",
+   "type": "Method",
+   "label": {
+    "ko": "그래디언트 부스팅",
+    "en": "Gradient boosting"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "ensemble",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "앞 트리가 남긴 잔차를 다음 트리가 맞히며 더하는 앙상블. XGBoost·LightGBM·CatBoost의 원리."
+   }
+  },
+  {
+   "id": "lab:method/knn",
+   "type": "Method",
+   "label": {
+    "ko": "k-최근접 이웃",
+    "en": "k-nearest neighbors"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "가장 비슷한 셀 k개의 평균 수명. 훈련 셀을 통째로 저장."
+   }
+  },
+  {
+   "id": "lab:concept/model-as-engine",
+   "type": "Concept",
+   "label": {
+    "ko": "엔진 (모델)",
+    "en": "Model as engine"
+   },
+   "page": "regression",
+   "anchor": "#why",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "예측 장치에서 갈아 끼울 수 있는 예측 부분. 이 페이지에서는 도감의 회귀 모델 9종."
+   }
+  },
+  {
+   "id": "lab:concept/dataset",
+   "type": "Concept",
+   "label": {
+    "ko": "데이터세트",
+    "en": "Dataset"
+   },
+   "page": "regression",
+   "anchor": "#data",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "모델이 배우고 평가받는 표. 셀 1,000개 × 측정값 4개 + 수명(충·방전 횟수)."
+   }
+  },
+  {
+   "id": "lab:sim/engine-bench",
+   "type": "Simulation",
+   "label": {
+    "ko": "엔진 벤치 9종",
+    "en": "Engine bench of nine models"
+   },
+   "page": "regression",
+   "anchor": "#bench",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/ahn_ml_atlas",
+   "type": "Work",
+   "label": {
+    "ko": "머신러닝 모델 도감",
+    "en": "Machine learning model atlas"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/ahn_nn_atlas",
+   "type": "Work",
+   "label": {
+    "ko": "신경망 도감",
+    "en": "Neural network atlas"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:question/simulation-validation",
+   "type": "Question",
+   "label": {
+    "ko": "출고한 예측 장치는 봉인 시험과 라인 시뮬레이션에서도 통할까? (2편)",
+    "en": "Will the shipped engine pass simulation validation? (part 2)"
+   },
+   "page": "regression",
+   "anchor": "#ship",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/validation-loss",
+   "type": "Metric",
+   "label": {
+    "ko": "검증 손실",
+    "en": "Validation loss"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/initial-loss",
+   "type": "Metric",
+   "label": {
+    "ko": "초기 손실",
+    "en": "Initial loss"
+   },
+   "page": "regression",
+   "anchor": "#w5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "학습 전 모델의 손실. 회귀에서는 늘 평균만 말하는 기준선의 2배 이하인지 본다."
+   }
+  },
+  {
+   "id": "lab:metric/gradient-relative-error",
+   "type": "Metric",
+   "label": {
+    "ko": "기울기 상대 오차",
+    "en": "Gradient relative error"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:dataset/battery-cells-a",
+   "type": "Dataset",
+   "label": {
+    "ko": "배터리 셀 데이터세트 1,000개와 수명 (공장 A, 설명용 모형)",
+    "en": "Synthetic battery cells, factory A"
+   },
+   "page": "regression",
+   "anchor": "#data",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:dataset/battery-cells-b",
+   "type": "Dataset",
+   "label": {
+    "ko": "배터리 셀 400개와 수명 (공장 B, 설명용 모형)",
+    "en": "Synthetic battery cells, factory B"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/hand-tuning",
+   "type": "Limitation",
+   "label": {
+    "ko": "손으로는 파라미터를 못 맞춤",
+    "en": "Hand tuning does not scale"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/single-line",
+   "type": "Limitation",
+   "label": {
+    "ko": "뉴런 하나는 평평한 비탈 하나만 그림",
+    "en": "One neuron draws one plane"
+   },
+   "page": "regression",
+   "anchor": "#w2",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/loss-no-direction",
+   "type": "Limitation",
+   "label": {
+    "ko": "손실 크기만으로는 고칠 방향을 모름",
+    "en": "Loss alone gives no direction"
+   },
+   "page": "regression",
+   "anchor": "#w5",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/no-step-size",
+   "type": "Limitation",
+   "label": {
+    "ko": "기울기만으로는 보폭을 모름",
+    "en": "Gradient gives no step size"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/distribution-shift",
+   "type": "Limitation",
+   "label": {
+    "ko": "다른 공장(분포)에서는 틀림",
+    "en": "Fails under distribution shift"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/size-without-data",
+   "type": "Limitation",
+   "label": {
+    "ko": "데이터가 적으면 큰 모델이 외움",
+    "en": "Large models memorize small data"
+   },
+   "page": "regression",
+   "anchor": "#w10",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:claim/backprop-1986",
+   "type": "Claim",
+   "label": {
+    "ko": "역전파는 층마다의 기울기를 뒤에서부터 전해 가중치를 고친다",
+    "en": "Backpropagation"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "rumelhart1986learning",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/adam-adaptive",
+   "type": "Claim",
+   "label": {
+    "ko": "Adam은 기울기의 1·2차 모멘트 추정으로 매개변수마다 보폭을 맞춘다",
+    "en": "Adam adapts step sizes"
+   },
+   "page": "regression",
+   "anchor": "#w7",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "kingma2015adam",
+     "loc": "Algorithm 1"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/zero-16-bytes",
+   "type": "Claim",
+   "label": {
+    "ko": "혼합 정밀도 Adam 학습은 파라미터당 약 16바이트의 모델 상태 메모리가 든다",
+    "en": "Mixed-precision Adam needs ~16 bytes per parameter"
+   },
+   "page": "regression",
+   "anchor": "#w4",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "rajbhandari2020zero",
+     "loc": "3장"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/lora-fewer-params",
+   "type": "Claim",
+   "label": {
+    "ko": "LoRA는 사전학습 가중치를 잠그고 낮은 순위 행렬만 학습해 학습할 값을 크게 줄인다",
+    "en": "LoRA reduces trainable parameters"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "hu2022lora",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/rmsnorm-gain-only",
+   "type": "Claim",
+   "label": {
+    "ko": "RMSNorm은 평균 이동 없이 크기 γ만 둔다",
+    "en": "RMSNorm uses gain only"
+   },
+   "page": "regression",
+   "anchor": "#w3",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "zhang2019root",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/early-cycle-prediction",
+   "type": "Claim",
+   "label": {
+    "ko": "초기 충·방전 곡선의 특징으로 배터리 수명을 용량이 줄기 전에 예측할 수 있다",
+    "en": "Early-cycle data predict battery cycle life"
+   },
+   "page": "regression",
+   "anchor": "#data",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "severson2019data",
+     "loc": "초록"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/early-stopping-validation",
+   "type": "Claim",
+   "label": {
+    "ko": "검증 오차로 멈출 시점을 고르고 최종 성능은 따로 둔 데이터로 잰다",
+    "en": "Early stopping with held-out test"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "prechelt1998early",
+     "loc": ""
+    },
+    {
+     "ref": "goodfellow2016deep",
+     "loc": "7.8"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/preference-training",
+   "type": "Claim",
+   "label": {
+    "ko": "사람이 고른 답을 따르도록 미세조정하면 언어 모델이 지시를 더 잘 따른다",
+    "en": "Preference training improves instruction following"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 3,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "source": [
+    {
+     "ref": "ouyang2022training",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:question/battery-factory",
+   "type": "Question",
+   "label": {
+    "ko": "배터리 셀 데이터세트로 수명 예측 장치를 만든다면 어떤 엔진을 달고 어떻게 정비할까?",
+    "en": "Which engine should a battery cycle-life regressor mount?"
+   },
+   "page": "regression",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:question/duel-size-vs-data",
+   "type": "Question",
+   "label": {
+    "ko": "정답 셀이 적을 때 단순한 엔진(릿지)이냐, 굽은 엔진(부스팅)이냐",
+    "en": "Ridge vs boosting by labeled-cell count"
+   },
+   "page": "regression",
+   "anchor": "#duel",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:analogy/parts-shelf",
+   "type": "Analogy",
+   "label": {
+    "ko": "부품 선반 ↔ 파라미터",
+    "en": "Parts shelf ↔ parameters"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:analogy/factory-line",
+   "type": "Analogy",
+   "label": {
+    "ko": "엔진 조립 공장 ↔ 예측 장치 제작 절차",
+    "en": "Engine assembly plant ↔ regressor build"
+   },
+   "page": "regression",
+   "anchor": "#factory",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:analogy/root-cause-trace",
+   "type": "Analogy",
+   "label": {
+    "ko": "불량 원인 거꾸로 추적 ↔ 역전파",
+    "en": "Root-cause trace ↔ backpropagation"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:analogy/sealed-sample",
+   "type": "Analogy",
+   "label": {
+    "ko": "봉인된 출고 표본 ↔ 시험 데이터",
+    "en": "Sealed shipping sample ↔ test set"
+   },
+   "page": "regression",
+   "anchor": "#ship",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/factory-3d",
+   "type": "Simulation",
+   "label": {
+    "ko": "3D 모델 공장 12공정",
+    "en": "3D model factory"
+   },
+   "page": "regression",
+   "anchor": "#factory",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/w1-parts",
+   "type": "Simulation",
+   "label": {
+    "ko": "① 입력 2 → 출력 2 손 맞추기",
+    "en": "Hand-set 2x2 network"
+   },
+   "page": "regression",
+   "anchor": "#w1",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/w6-gradcheck",
+   "type": "Simulation",
+   "label": {
+    "ko": "⑥ 49개 기울기 검사",
+    "en": "Gradient check of 49 parameters"
+   },
+   "page": "regression",
+   "anchor": "#w6",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/w8-training-line",
+   "type": "Simulation",
+   "label": {
+    "ko": "⑧ 길들이기 라인",
+    "en": "Break-in training line"
+   },
+   "page": "regression",
+   "anchor": "#w8",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/w9-finetune",
+   "type": "Simulation",
+   "label": {
+    "ko": "⑨ 공장 B 미세조정 네 방법",
+    "en": "Four fine-tuning options"
+   },
+   "page": "regression",
+   "anchor": "#w9",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "generative",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/w10-capacity",
+   "type": "Simulation",
+   "label": {
+    "ko": "⑩ 용량 실험과 가중치 지문",
+    "en": "Capacity sweep and weight fingerprint"
+   },
+   "page": "regression",
+   "anchor": "#w10",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/eeanimation_params",
+   "type": "Work",
+   "label": {
+    "ko": "eeanimation 「AI Parameters」 카드 10장",
+    "en": "AI Parameters cards (eeanimation)"
+   },
+   "page": "regression",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/rumelhart1986learning",
+   "type": "Work",
+   "label": {
+    "ko": "Learning representations by back-propaga",
+    "en": "Learning representations by back-propagating errors"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/kingma2015adam",
+   "type": "Work",
+   "label": {
+    "ko": "Adam: A Method for Stochastic Optimizati",
+    "en": "Adam: A Method for Stochastic Optimization"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/goodfellow2016deep",
+   "type": "Work",
+   "label": {
+    "ko": "Deep Learning",
+    "en": "Deep Learning"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/hu2022lora",
+   "type": "Work",
+   "label": {
+    "ko": "LoRA: Low-Rank Adaptation of Large Langu",
+    "en": "LoRA: Low-Rank Adaptation of Large Language Models"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/ba2016layer",
+   "type": "Work",
+   "label": {
+    "ko": "Layer Normalization",
+    "en": "Layer Normalization"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/zhang2019root",
+   "type": "Work",
+   "label": {
+    "ko": "Root Mean Square Layer Normalization",
+    "en": "Root Mean Square Layer Normalization"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/vaswani2017attention",
+   "type": "Work",
+   "label": {
+    "ko": "Attention Is All You Need",
+    "en": "Attention Is All You Need"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/rajbhandari2020zero",
+   "type": "Work",
+   "label": {
+    "ko": "ZeRO: Memory Optimizations Toward Traini",
+    "en": "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/ouyang2022training",
+   "type": "Work",
+   "label": {
+    "ko": "Training language models to follow instr",
+    "en": "Training language models to follow instructions with human feedback"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/prechelt1998early",
+   "type": "Work",
+   "label": {
+    "ko": "Early Stopping — But When?",
+    "en": "Early Stopping — But When?"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/breiman2001random",
+   "type": "Work",
+   "label": {
+    "ko": "Random Forests",
+    "en": "Random Forests"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/friedman2001greedy",
+   "type": "Work",
+   "label": {
+    "ko": "Greedy function approximation: A gradien",
+    "en": "Greedy function approximation: A gradient boosting machine"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/severson2019data",
+   "type": "Work",
+   "label": {
+    "ko": "Data-driven prediction of battery cycle ",
+    "en": "Data-driven prediction of battery cycle life before capacity degradation"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:task/cycle-life-regression",
+   "type": "Task",
+   "label": {
+    "ko": "배터리 수명 회귀",
+    "en": "Battery cycle-life regression"
+   },
+   "page": "regression",
+   "anchor": "#data",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "셀 측정값 4개로 수명(충·방전 횟수)을 숫자로 맞히는 회귀 문제."
+   }
+  },
+  {
+   "id": "lab:concept/regression",
+   "type": "Concept",
+   "label": {
+    "ko": "회귀",
+    "en": "Regression"
+   },
+   "page": "regression",
+   "anchor": "#why",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "확률이나 반 대신 숫자를 맞히는 과제."
+   }
+  },
+  {
+   "id": "lab:concept/identity-output",
+   "type": "Concept",
+   "label": {
+    "ko": "항등 출력층",
+    "en": "Identity (linear) output layer"
+   },
+   "page": "regression",
+   "anchor": "#w2",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "회귀 출력층은 시그모이드 없이 가중합을 그대로 낸다."
+   }
+  },
+  {
+   "id": "lab:concept/mse-loss",
+   "type": "Concept",
+   "label": {
+    "ko": "평균제곱오차",
+    "en": "Mean squared error"
+   },
+   "page": "regression",
+   "anchor": "#w5",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "optimization",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "회귀의 손실. (예측 − 정답)²의 평균."
+   }
+  },
+  {
+   "id": "lab:metric/mae",
+   "type": "Metric",
+   "label": {
+    "ko": "평균 절대 오차 (회)",
+    "en": "Mean absolute error"
+   },
+   "page": "regression",
+   "anchor": "#bench",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "예측이 실제 수명에서 평균 몇 회 벗어났는지."
+   }
+  },
+  {
+   "id": "lab:metric/r2",
+   "type": "Metric",
+   "label": {
+    "ko": "R² (결정계수)",
+    "en": "Coefficient of determination"
+   },
+   "page": "regression",
+   "anchor": "#bench",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "수명의 흩어짐 가운데 엔진이 설명한 몫."
+   }
+  },
+  {
+   "id": "lab:concept/over-prediction",
+   "type": "Concept",
+   "label": {
+    "ko": "과대예측",
+    "en": "Over-prediction"
+   },
+   "page": "regression",
+   "anchor": "#mount",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "수명을 실제보다 길게 말한 예측. 보증·교체 판단에서 더 비쌀 수 있다."
+   }
+  },
+  {
+   "id": "lab:concept/prediction-landscape",
+   "type": "Concept",
+   "label": {
+    "ko": "예측 지형",
+    "en": "Prediction landscape"
+   },
+   "page": "regression",
+   "anchor": "#mount",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "입력 공간 곳곳의 예측값을 색으로 칠한 지도. 엔진마다 비탈·계단·곡면으로 다르다."
+   }
+  },
+  {
+   "id": "lab:sim/prediction-map",
+   "type": "Simulation",
+   "label": {
+    "ko": "예측 지형 지도와 실제–예측 그림",
+    "en": "Prediction map and predicted-vs-actual plot"
+   },
+   "page": "regression",
+   "anchor": "#mount",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/duel-label-count",
+   "type": "Simulation",
+   "label": {
+    "ko": "대결: 정답 셀 40개 · 600개, 10번 나누기",
+    "en": "Duel over 40 and 600 labeled cells"
+   },
+   "page": "regression",
+   "anchor": "#duel",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/linear-regression",
+   "type": "Method",
+   "label": {
+    "ko": "선형 회귀",
+    "en": "Linear regression"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "측정값의 가중합 평면 하나로 수명을 맞히는 엔진. 저장 값 5개."
+   }
+  },
+  {
+   "id": "lab:method/ridge-regression",
+   "type": "Method",
+   "label": {
+    "ko": "릿지 회귀",
+    "en": "Ridge regression"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "선형 회귀에 기울기 제곱 벌점(L2)을 더한 엔진."
+   },
+   "source": [
+    {
+     "ref": "hoerl1970ridge",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:method/lasso",
+   "type": "Method",
+   "label": {
+    "ko": "라쏘 회귀",
+    "en": "Lasso"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "기울기 절댓값 벌점(L1)으로 쓸모없는 기울기를 0으로 만드는 엔진."
+   },
+   "source": [
+    {
+     "ref": "tibshirani1996regression",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:method/regression-tree",
+   "type": "Method",
+   "label": {
+    "ko": "회귀 트리",
+    "en": "Regression tree"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "질문으로 나눈 칸마다 평균을 답하는 엔진. 예측 지형이 계단 모양."
+   }
+  },
+  {
+   "id": "lab:method/gaussian-process",
+   "type": "Method",
+   "label": {
+    "ko": "가우시안 프로세스",
+    "en": "Gaussian process regression"
+   },
+   "page": "regression",
+   "anchor": "#atlas",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "커널로 '비슷한 입력은 비슷한 출력'을 표현하는 확률 모델. 훈련 셀을 저장."
+   },
+   "source": [
+    {
+     "ref": "rasmussen2006gaussian",
+     "loc": ""
+    }
+   ]
+  },
+  {
+   "id": "lab:work/hoerl1970ridge",
+   "type": "Work",
+   "label": {
+    "ko": "Ridge regression: Biased estimation for ",
+    "en": "Ridge regression: Biased estimation for nonorthogonal problems"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/tibshirani1996regression",
+   "type": "Work",
+   "label": {
+    "ko": "Regression shrinkage and selection via t",
+    "en": "Regression shrinkage and selection via the lasso"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/rasmussen2006gaussian",
+   "type": "Work",
+   "label": {
+    "ko": "Gaussian Processes for Machine Learning",
+    "en": "Gaussian Processes for Machine Learning"
+   },
+   "page": "regression",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "basics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:concept/weight",
+   "p": "lab:partOf",
+   "o": "lab:concept/parameter",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/bias",
+   "p": "lab:partOf",
+   "o": "lab:concept/parameter",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:broader",
+   "o": "lab:topic/weights-and-biases",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/hyperparameter",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/parameter",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/single-neuron",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/single-neuron",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/dff-engine",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/parameter-count",
+   "anchor": "#w4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter-count",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/loss",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/loss",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/backpropagation",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/backpropagation",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/gradient-descent",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-descent",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/minibatch-sgd",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/minibatch-sgd",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/full-fine-tuning",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/full-fine-tuning",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/model-capacity",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/hand-tuning",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/hand-tuning",
+   "p": "lab:addressedBy",
+   "o": "lab:method/gradient-descent",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/single-neuron",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/single-line",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/single-line",
+   "p": "lab:addressedBy",
+   "o": "lab:method/dff-engine",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/loss",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/loss-no-direction",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/loss-no-direction",
+   "p": "lab:addressedBy",
+   "o": "lab:method/backpropagation",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/gradient",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/no-step-size",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/no-step-size",
+   "p": "lab:addressedBy",
+   "o": "lab:concept/learning-rate",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/minibatch-sgd",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/distribution-shift",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/distribution-shift",
+   "p": "lab:addressedBy",
+   "o": "lab:method/full-fine-tuning",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/model-capacity",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/size-without-data",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/size-without-data",
+   "p": "lab:addressedBy",
+   "o": "lab:method/early-stopping",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/activation-value",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/parameter",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/input-normalization",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/norm-scale-shift",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/norm-scale-shift",
+   "p": "lab:partOf",
+   "o": "lab:concept/parameter",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/weight-memory",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/parameter-count",
+   "anchor": "#w4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/loss",
+   "p": "lab:broader",
+   "o": "lab:topic/loss-function",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/battery-cells-a",
+   "p": "lab:broader",
+   "o": "lab:concept/dataset",
+   "anchor": "#data",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/battery-cells-a",
+   "p": "lab:raises",
+   "o": "lab:question/battery-factory",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/backpropagation",
+   "p": "lab:broader",
+   "o": "lab:topic/backpropagation",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-check",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/gradient-relative-error",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-check",
+   "p": "lab:relatedTo",
+   "o": "lab:method/backpropagation",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/backpropagation",
+   "p": "lab:solves",
+   "o": "lab:concept/gradient",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-descent",
+   "p": "lab:broader",
+   "o": "lab:topic/gradient-descent",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/adam",
+   "p": "lab:broader",
+   "o": "lab:topic/momentum-adam",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/adam",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/gradient-descent",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/learning-rate",
+   "p": "lab:partOf",
+   "o": "lab:concept/hyperparameter",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/minibatch-sgd",
+   "p": "lab:broader",
+   "o": "lab:topic/sgd-minibatch",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/batch-size",
+   "p": "lab:partOf",
+   "o": "lab:concept/hyperparameter",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/epoch",
+   "p": "lab:partOf",
+   "o": "lab:concept/hyperparameter",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/early-stopping",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/validation-loss",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/early-stopping",
+   "p": "lab:broader",
+   "o": "lab:topic/early-stopping",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/validation-set",
+   "p": "lab:relatedTo",
+   "o": "lab:method/early-stopping",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/pretraining",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/full-fine-tuning",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lora",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/full-fine-tuning",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lora",
+   "p": "lab:broader",
+   "o": "lab:topic/lora",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/full-fine-tuning",
+   "p": "lab:evaluatedOn",
+   "o": "lab:dataset/battery-cells-b",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lora",
+   "p": "lab:evaluatedOn",
+   "o": "lab:dataset/battery-cells-b",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/full-fine-tuning",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/preference-training",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/preference-training",
+   "p": "lab:broader",
+   "o": "lab:topic/pretrained-lm",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/overfitting",
+   "p": "lab:broader",
+   "o": "lab:topic/generalization",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/model-capacity",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/overfitting",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/test-set",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/validation-set",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/frozen-inference",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/activation-value",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/random-forest",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/random-forest",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/knn",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/knn",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_nn_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/random-forest",
+   "p": "lab:broader",
+   "o": "lab:topic/random-forest",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:broader",
+   "o": "lab:topic/boosting",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/knn",
+   "p": "lab:broader",
+   "o": "lab:topic/knn",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:partOf",
+   "o": "lab:concept/model-as-engine",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/dataset",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/model-as-engine",
+   "anchor": "#why",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/test-set",
+   "p": "lab:raises",
+   "o": "lab:question/simulation-validation",
+   "anchor": "#ship",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/duel-size-vs-data",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/model-capacity",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/model-capacity",
+   "p": "lab:raises",
+   "o": "lab:question/duel-size-vs-data",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/model-as-engine",
+   "p": "lab:raises",
+   "o": "lab:question/battery-factory",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/parts-shelf",
+   "p": "lab:analogyOf",
+   "o": "lab:concept/parameter",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/factory-line",
+   "p": "lab:analogyOf",
+   "o": "lab:method/minibatch-sgd",
+   "anchor": "#factory",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/root-cause-trace",
+   "p": "lab:analogyOf",
+   "o": "lab:method/backpropagation",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/sealed-sample",
+   "p": "lab:analogyOf",
+   "o": "lab:concept/test-set",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/w1-parts",
+   "anchor": "#w1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/minibatch-sgd",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/factory-3d",
+   "anchor": "#factory",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-check",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/w6-gradcheck",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/minibatch-sgd",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/w8-training-line",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lora",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/w9-finetune",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/model-capacity",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/w10-capacity",
+   "anchor": "#w10",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/backprop-1986",
+   "p": "lab:supports",
+   "o": "lab:method/backpropagation",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/backprop-1986",
+   "p": "lab:assertedIn",
+   "o": "lab:work/rumelhart1986learning",
+   "anchor": "#w6",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/adam-adaptive",
+   "p": "lab:supports",
+   "o": "lab:method/adam",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/adam-adaptive",
+   "p": "lab:assertedIn",
+   "o": "lab:work/kingma2015adam",
+   "anchor": "#w7",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/zero-16-bytes",
+   "p": "lab:supports",
+   "o": "lab:concept/weight-memory",
+   "anchor": "#w4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/zero-16-bytes",
+   "p": "lab:assertedIn",
+   "o": "lab:work/rajbhandari2020zero",
+   "anchor": "#w4",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/lora-fewer-params",
+   "p": "lab:supports",
+   "o": "lab:method/lora",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/lora-fewer-params",
+   "p": "lab:assertedIn",
+   "o": "lab:work/hu2022lora",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/rmsnorm-gain-only",
+   "p": "lab:supports",
+   "o": "lab:concept/norm-scale-shift",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/rmsnorm-gain-only",
+   "p": "lab:assertedIn",
+   "o": "lab:work/zhang2019root",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/early-cycle-prediction",
+   "p": "lab:supports",
+   "o": "lab:concept/dataset",
+   "anchor": "#data",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/early-cycle-prediction",
+   "p": "lab:assertedIn",
+   "o": "lab:work/severson2019data",
+   "anchor": "#data",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/early-stopping-validation",
+   "p": "lab:supports",
+   "o": "lab:method/early-stopping",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/early-stopping-validation",
+   "p": "lab:assertedIn",
+   "o": "lab:work/prechelt1998early",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/preference-training",
+   "p": "lab:supports",
+   "o": "lab:concept/preference-training",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/preference-training",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ouyang2022training",
+   "anchor": "#w9",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/early-stopping-validation",
+   "p": "lab:assertedIn",
+   "o": "lab:work/goodfellow2016deep",
+   "anchor": "#w8",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/norm-scale-shift",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ba2016layer",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/parameter",
+   "p": "lab:assertedIn",
+   "o": "lab:work/eeanimation_params",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/battery-factory",
+   "p": "lab:relatedTo",
+   "o": "lab:analogy/factory-line",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/activation-value",
+   "p": "lab:assertedIn",
+   "o": "lab:work/vaswani2017attention",
+   "anchor": "#w3",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/random-forest",
+   "p": "lab:assertedIn",
+   "o": "lab:work/breiman2001random",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:assertedIn",
+   "o": "lab:work/friedman2001greedy",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/cycle-life-regression",
+   "p": "lab:broader",
+   "o": "lab:concept/regression",
+   "anchor": "#why",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/cycle-life-regression",
+   "p": "lab:evaluatedOn",
+   "o": "lab:dataset/battery-cells-a",
+   "anchor": "#data",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/cycle-life-regression",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/mae",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/cycle-life-regression",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/r2",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/mae",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/identity-output",
+   "p": "lab:partOf",
+   "o": "lab:method/dff-engine",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/identity-output",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/single-neuron",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/identity-output",
+   "p": "lab:broader",
+   "o": "lab:topic/activation-function",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/mse-loss",
+   "p": "lab:broader",
+   "o": "lab:concept/loss",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/mse-loss",
+   "p": "lab:relatedTo",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:metric/initial-loss",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/mse-loss",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/mse-loss",
+   "p": "lab:broader",
+   "o": "lab:topic/loss-function",
+   "anchor": "#w5",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:metric/mae",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/mse-loss",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/over-prediction",
+   "p": "lab:relatedTo",
+   "o": "lab:metric/mae",
+   "anchor": "#mount",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:task/cycle-life-regression",
+   "p": "lab:raises",
+   "o": "lab:question/simulation-validation",
+   "anchor": "#ship",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/over-prediction",
+   "p": "lab:raises",
+   "o": "lab:question/simulation-validation",
+   "anchor": "#ship",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/prediction-landscape",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/prediction-map",
+   "anchor": "#mount",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/dff-engine",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/prediction-landscape",
+   "anchor": "#mount",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/over-prediction",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/prediction-map",
+   "anchor": "#mount",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/random-forest",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/knn",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lasso",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lasso",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lasso",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gaussian-process",
+   "p": "lab:solves",
+   "o": "lab:task/cycle-life-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gaussian-process",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/engine-bench",
+   "anchor": "#bench",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gaussian-process",
+   "p": "lab:assertedIn",
+   "o": "lab:work/ahn_ml_atlas",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/ridge-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/lasso",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/lasso",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/single-neuron",
+   "anchor": "#w2",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/random-forest",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/gradient-boosting",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/regression-tree",
+   "p": "lab:broader",
+   "o": "lab:topic/decision-tree",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/linear-regression",
+   "p": "lab:broader",
+   "o": "lab:topic/linear-regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/gradient-boosting",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/duel-label-count",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gradient-boosting",
+   "p": "lab:demonstratedBy",
+   "o": "lab:sim/duel-label-count",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/duel-size-vs-data",
+   "p": "lab:relatedTo",
+   "o": "lab:sim/duel-label-count",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/ridge-regression",
+   "p": "lab:assertedIn",
+   "o": "lab:work/hoerl1970ridge",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/lasso",
+   "p": "lab:assertedIn",
+   "o": "lab:work/tibshirani1996regression",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/gaussian-process",
+   "p": "lab:assertedIn",
+   "o": "lab:work/rasmussen2006gaussian",
+   "anchor": "#atlas",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/regression",
+   "p": "lab:raises",
+   "o": "lab:question/battery-factory",
+   "anchor": "#top",
+   "confidence": "high"
+  }
+ ]
+}

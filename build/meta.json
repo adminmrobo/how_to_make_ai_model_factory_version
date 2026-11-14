@@ -1,0 +1,57 @@
+{
+ "title": "배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하기",
+ "series": "자율주행차 배터리 AI 공장",
+ "number": "01",
+ "creator": [
+  {
+   "name": "안상선",
+   "role": "author",
+   "affiliation": "(주)M-Robo"
+  }
+ ],
+ "contributor": [
+  {
+   "name": "AI 보조 제작",
+   "role": "assistant"
+  }
+ ],
+ "date": "2026-11-14",
+ "version": "2.0",
+ "language": [
+  "ko"
+ ],
+ "license": "",
+ "url": "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/",
+ "about": [
+  "lab:concept/model-as-engine",
+  "lab:method/dff-engine",
+  "lab:method/logistic-regression",
+  "lab:concept/parameter",
+  "lab:method/backpropagation",
+  "lab:task/defect-classification",
+  "lab:concept/decision-boundary"
+ ],
+ "basedOn": [
+  "eeanimation_params",
+  "rumelhart1986learning",
+  "kingma2015adam",
+  "goodfellow2016deep",
+  "hu2022lora",
+  "ba2016layer",
+  "zhang2019root",
+  "vaswani2017attention",
+  "rajbhandari2020zero",
+  "ouyang2022training",
+  "prechelt1998early",
+  "breiman2001random",
+  "friedman2001greedy",
+  "cortes1995support",
+  "ahn_ml_atlas",
+  "ahn_nn_atlas",
+  "severson2019data"
+ ],
+ "educationalLevel": "입문~중급",
+ "learningResourceType": "interactive explainer",
+ "registry": "KG_00_registry 0.2",
+ "suggestedCitation": "안상선 (2026). 배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하기. 자율주행차 배터리 AI 공장 01, v2.0."
+}

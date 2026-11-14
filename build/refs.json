@@ -1,0 +1,832 @@
+[
+ {
+  "id": "eeanimation_params",
+  "type": "graphic",
+  "title": "AI Parameters (카드 10장)",
+  "author": [
+   {
+    "literal": "eeanimation"
+   }
+  ],
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/eeanimation_params",
+   "role": "primary",
+   "supports": [
+    "lab:concept/parameter",
+    "lab:concept/single-neuron",
+    "lab:concept/parameter-count",
+    "lab:concept/loss",
+    "lab:method/backpropagation",
+    "lab:method/gradient-descent",
+    "lab:method/minibatch-sgd",
+    "lab:method/full-fine-tuning",
+    "lab:concept/model-capacity"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": false,
+    "url": false
+   },
+   "checkedBy": "사용자 제공 이미지에서 옮김. 원 게시물 주소·게시일은 받지 못함",
+   "note": "그림은 페이지에 넣지 않고 새로 그림"
+  }
+ },
+ {
+  "id": "rumelhart1986learning",
+  "type": "article-journal",
+  "title": "Learning representations by back-propagating errors",
+  "author": [
+   {
+    "family": "Rumelhart",
+    "given": "David E."
+   },
+   {
+    "family": "Hinton",
+    "given": "Geoffrey E."
+   },
+   {
+    "family": "Williams",
+    "given": "Ronald J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1986
+    ]
+   ]
+  },
+  "container-title": "Nature",
+  "volume": "323",
+  "page": "533-536",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/rumelhart1986learning",
+   "role": "background",
+   "supports": [
+    "lab:claim/backprop-1986"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": true
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "kingma2015adam",
+  "type": "paper-conference",
+  "title": "Adam: A Method for Stochastic Optimization",
+  "author": [
+   {
+    "family": "Kingma",
+    "given": "Diederik P."
+   },
+   {
+    "family": "Ba",
+    "given": "Jimmy"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2015
+    ]
+   ]
+  },
+  "container-title": "International Conference on Learning Representations (ICLR)",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/kingma2015adam",
+   "role": "background",
+   "supports": [
+    "lab:claim/adam-adaptive"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "goodfellow2016deep",
+  "type": "book",
+  "title": "Deep Learning",
+  "author": [
+   {
+    "family": "Goodfellow",
+    "given": "Ian"
+   },
+   {
+    "family": "Bengio",
+    "given": "Yoshua"
+   },
+   {
+    "family": "Courville",
+    "given": "Aaron"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "publisher": "MIT Press",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/goodfellow2016deep",
+   "role": "background",
+   "supports": [
+    "lab:claim/early-stopping-validation",
+    "lab:concept/overfitting"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "hu2022lora",
+  "type": "paper-conference",
+  "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+  "author": [
+   {
+    "family": "Hu",
+    "given": "Edward J."
+   },
+   {
+    "literal": "et al."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "container-title": "International Conference on Learning Representations (ICLR)",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/hu2022lora",
+   "role": "background",
+   "supports": [
+    "lab:claim/lora-fewer-params"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "ba2016layer",
+  "type": "report",
+  "title": "Layer Normalization",
+  "author": [
+   {
+    "family": "Ba",
+    "given": "Jimmy Lei"
+   },
+   {
+    "family": "Kiros",
+    "given": "Jamie Ryan"
+   },
+   {
+    "family": "Hinton",
+    "given": "Geoffrey E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "container-title": "arXiv",
+  "number": "1607.06450",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/ba2016layer",
+   "role": "background",
+   "supports": [
+    "lab:concept/norm-scale-shift"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "zhang2019root",
+  "type": "paper-conference",
+  "title": "Root Mean Square Layer Normalization",
+  "author": [
+   {
+    "family": "Zhang",
+    "given": "Biao"
+   },
+   {
+    "family": "Sennrich",
+    "given": "Rico"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "container-title": "Advances in Neural Information Processing Systems 32",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/zhang2019root",
+   "role": "background",
+   "supports": [
+    "lab:claim/rmsnorm-gain-only"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "vaswani2017attention",
+  "type": "paper-conference",
+  "title": "Attention Is All You Need",
+  "author": [
+   {
+    "family": "Vaswani",
+    "given": "Ashish"
+   },
+   {
+    "literal": "et al."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2017
+    ]
+   ]
+  },
+  "container-title": "Advances in Neural Information Processing Systems 30",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/vaswani2017attention",
+   "role": "background",
+   "supports": [
+    "lab:concept/activation-value"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "rajbhandari2020zero",
+  "type": "paper-conference",
+  "title": "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models",
+  "author": [
+   {
+    "family": "Rajbhandari",
+    "given": "Samyam"
+   },
+   {
+    "family": "Rasley",
+    "given": "Jeff"
+   },
+   {
+    "family": "Ruwase",
+    "given": "Olatunji"
+   },
+   {
+    "family": "He",
+    "given": "Yuxiong"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "container-title": "SC20: International Conference for High Performance Computing, Networking, Storage and Analysis",
+  "URL": "https://arxiv.org/abs/1910.02054",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/rajbhandari2020zero",
+   "role": "background",
+   "supports": [
+    "lab:claim/zero-16-bytes"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false,
+    "url": true
+   },
+   "checkedBy": "웹 검색으로 제목·저자·파라미터당 16바이트 계산 확인(2026-11-14)"
+  }
+ },
+ {
+  "id": "ouyang2022training",
+  "type": "paper-conference",
+  "title": "Training language models to follow instructions with human feedback",
+  "author": [
+   {
+    "family": "Ouyang",
+    "given": "Long"
+   },
+   {
+    "literal": "et al."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "container-title": "Advances in Neural Information Processing Systems 35",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/ouyang2022training",
+   "role": "background",
+   "supports": [
+    "lab:claim/preference-training"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "prechelt1998early",
+  "type": "chapter",
+  "title": "Early Stopping — But When?",
+  "author": [
+   {
+    "family": "Prechelt",
+    "given": "Lutz"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1998
+    ]
+   ]
+  },
+  "container-title": "Neural Networks: Tricks of the Trade",
+  "publisher": "Springer",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/prechelt1998early",
+   "role": "background",
+   "supports": [
+    "lab:claim/early-stopping-validation"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "breiman2001random",
+  "type": "article-journal",
+  "title": "Random Forests",
+  "author": [
+   {
+    "family": "Breiman",
+    "given": "Leo"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2001
+    ]
+   ]
+  },
+  "container-title": "Machine Learning",
+  "volume": "45",
+  "page": "5-32",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/breiman2001random",
+   "role": "background",
+   "supports": [
+    "lab:method/random-forest"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": true
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "friedman2001greedy",
+  "type": "article-journal",
+  "title": "Greedy function approximation: A gradient boosting machine",
+  "author": [
+   {
+    "family": "Friedman",
+    "given": "Jerome H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2001
+    ]
+   ]
+  },
+  "container-title": "Annals of Statistics",
+  "volume": "29",
+  "issue": "5",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/friedman2001greedy",
+   "role": "background",
+   "supports": [
+    "lab:method/gradient-boosting"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "cortes1995support",
+  "type": "article-journal",
+  "title": "Support-vector networks",
+  "author": [
+   {
+    "family": "Cortes",
+    "given": "Corinna"
+   },
+   {
+    "family": "Vapnik",
+    "given": "Vladimir"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1995
+    ]
+   ]
+  },
+  "container-title": "Machine Learning",
+  "volume": "20",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/cortes1995support",
+   "role": "background",
+   "supports": [
+    "lab:method/svm-rbf"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-14). DOI·쪽 미대조"
+  }
+ },
+ {
+  "id": "ahn_ml_atlas",
+  "type": "webpage",
+  "title": "머신러닝 모델 도감",
+  "author": [
+   {
+    "family": "안",
+    "given": "상선"
+   }
+  ],
+  "URL": "https://adminmrobo.github.io/machine_learning_model_atlas/",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/ahn_ml_atlas",
+   "role": "background",
+   "supports": [
+    "lab:method/logistic-regression",
+    "lab:method/decision-tree",
+    "lab:method/random-forest",
+    "lab:method/gradient-boosting",
+    "lab:method/svm-rbf",
+    "lab:method/naive-bayes",
+    "lab:method/knn"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "url": true
+   },
+   "checkedBy": "저자 본인 사이트, 웹으로 확인(2026-11-14)"
+  }
+ },
+ {
+  "id": "ahn_nn_atlas",
+  "type": "webpage",
+  "title": "신경망 도감",
+  "author": [
+   {
+    "family": "안",
+    "given": "상선"
+   }
+  ],
+  "URL": "https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/ahn_nn_atlas",
+   "role": "background",
+   "supports": [
+    "lab:method/dff-engine",
+    "lab:method/autoencoder"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "url": true
+   },
+   "checkedBy": "저자 본인 사이트, 웹으로 확인(2026-11-14)"
+  }
+ },
+ {
+  "id": "severson2019data",
+  "type": "article-journal",
+  "title": "Data-driven prediction of battery cycle life before capacity degradation",
+  "author": [
+   {
+    "family": "Severson",
+    "given": "Kristen A."
+   },
+   {
+    "family": "Attia",
+    "given": "Peter M."
+   },
+   {
+    "literal": "et al."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "container-title": "Nature Energy",
+  "volume": "4",
+  "issue": "5",
+  "page": "383-391",
+  "DOI": "10.1038/s41560-019-0356-8",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     14
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/severson2019data",
+   "role": "background",
+   "supports": [
+    "lab:claim/early-cycle-prediction"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": true,
+    "pages": true
+   },
+   "checkedBy": "웹 검색(출판사 서지·저자 PDF)으로 확인(2026-11-14)"
+  }
+ }
+]

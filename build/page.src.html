@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하고 정비하기</title>
+<meta name="description" content="배터리 셀 데이터세트로 불량품 판정기를 만든다. 머신러닝 도감과 신경망 도감에서 엔진 9종을 골라 장착·시운전·비교하고, 신경망 엔진은 AI 파라미터 카드 10장의 정비 작업장 10곳을 거친다. 엔진(모델) 조립 공장 3D 그림과 현황판으로 보여 주는 연구실 해설 1편.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!--@@CSS@@-->
+<!--@@PSTYLE@@-->
+<style>
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin:8px 0 14px}
+.eng{border:1px solid var(--rule);border-radius:12px;padding:9px 11px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:var(--text);line-height:1.5;position:relative}
+.eng:hover{border-color:var(--info)}
+.eng[aria-pressed="true"]{border:2px solid var(--gfp);background:var(--gfp-soft)}
+.eng .chip{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.eng b{font-size:15px;display:block;padding-right:56px}
+.eng small{display:block;color:var(--muted);font-size:12.5px}
+.eng p{font-size:13.5px;margin:4px 0 0}
+.eng .sc{position:absolute;right:9px;top:8px;font-size:12px;font-variant-numeric:tabular-nums;color:var(--gfp);font-weight:700}
+.eng.off{opacity:.55;cursor:default;background:var(--panel)}
+.bookh{display:flex;align-items:center;gap:8px;margin:14px 0 2px;font-weight:700}
+.bookh a{font-weight:400;font-size:13.5px}
+.lead2{font-size:14px;color:var(--muted)}
+.lb{width:100%;border-collapse:collapse;font-size:14px}
+.lb td,.lb th{border-bottom:1px solid var(--rule);padding:6px 8px;text-align:left;font-variant-numeric:tabular-nums}
+.lb th{color:var(--muted);font-weight:500;font-size:13px}
+.lb tr.me{background:var(--gfp-soft)}
+.lb .bar{display:inline-block;height:10px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.next2{border:2px dashed var(--rule);border-radius:12px;padding:12px 16px;background:var(--panel);margin:12px 0}
+.next2 b{color:var(--info)}
+section.sec.folded .wrap>*:not(h2):not(.foldnote){display:none}
+.foldnote{display:none;font-size:14px;color:var(--muted)}
+section.sec.folded .foldnote{display:block}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0;font-size:12.5px;font-variant-numeric:tabular-nums}
+.dots span{border:1px solid var(--rule);border-radius:6px;padding:1px 6px}
+.dots span.w{border-color:rgba(11,122,134,.5);background:#e3f3f4}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="섹션 바로가기"><div class="row">
+  <a class="logo" href="#top">배터리 불량품 판정기 <i>① 엔진부</i></a>
+  <div class="links">
+    <a href="#factory">3D 공장</a><a href="#board">현황판</a><a href="#data">데이터세트</a><a href="#atlas">엔진 창고</a><a href="#mount">장착·시운전</a><a href="#bench">벤치</a><a href="#tune">정비 ①~⑩</a><a href="#duel">대결</a><a href="#ship">출고</a><a href="#sum">정리</a><a href="#kg">색인</a><a href="#export">꾸러미</a>
+  </div>
+</div></nav>
+
+<!-- lab-cover -->
+<div class="cover" id="cover" data-img="cover_01"><div class="frame">
+  <canvas id="cvCover" aria-hidden="true"></canvas>
+  <span class="cap">표지 그림 자리 · cover_01 (그림을 받으면 바뀝니다)</span>
+  <div class="cast4"><img data-mood="fly_point" alt="" aria-hidden="true" class="s"><img data-mood="doc_front" alt="" aria-hidden="true"><img data-mood="asst_smile" alt="" aria-hidden="true"><img data-mood="robo_coin" alt="" aria-hidden="true"></div>
+  <span class="cover-chip">배터리 불량품 판정기 · ① 엔진부 제작</span>
+</div></div>
+<!-- /lab-cover -->
+
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">배터리 불량품 판정기 · 1편 엔진부 제작 · 교과서 모드</div>
+  <h1>배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하기</h1>
+  <p class="question">자율주행차에 들어가는 대용량 배터리 셀 데이터세트 하나로 불량품 판정기를 만든다면, 어떤 엔진을 달아야 하고 그 엔진은 어떻게 정비할까?</p>
+  <p class="lead">이 공장이 만드는 제품은 <b>자율주행차 대용량 배터리의 불량품 판정기</b>입니다. 판정기는 차체(데이터 입출력)와 <b>엔진</b>(분류 모델)으로 나눠 봅니다. 1편에서는 배터리 셀 1,000개의 데이터세트로 엔진부를 만듭니다. <b>머신러닝 도감</b>과 <b>신경망 도감</b>에서 엔진 9종을 꺼내 판정기에 달아 보고, 시운전 벤치에서 같은 조건으로 비교합니다. 신경망 엔진은 AI 파라미터 카드 10장을 옮긴 <b>정비 작업장 10곳</b>을 거치며 속을 들여다봅니다. 고른 엔진은 출고되어 <b>2편 시뮬레이션 검증장</b>으로 갑니다.</p>
+  <p class="byline">글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · 2026-11-14 · v2.1 · 자매편: <a href="regression.html">수명 예측 장치 ① 엔진부</a> · 다음 편: 2편 시뮬레이션 검증 (준비 중)</p>
+  <div class="three"><b>세 줄로 먼저</b><ol>
+    <li>같은 데이터세트라도 엔진(모델)마다 경계를 긋는 방식이 다르다. 곧은 평면, 계단, 투표, 여백, 신경망의 굽은 면.</li>
+    <li>엔진은 같은 훈련 데이터로 학습하고 같은 검증 데이터로 시운전해야 비교가 된다. 시험 데이터는 2편까지 봉인한다.</li>
+    <li>신경망 엔진의 속은 파라미터(가중치·편향)이고, 정비는 "예측 → 손실 → 역전파 → 한 걸음"의 되풀이다.</li></ol></div>
+  <div class="kpis" aria-label="숫자 요약">
+    <div class="kpi r"><b>1,000</b><span>배터리 셀 데이터세트 (설명용 모형)<sup>①</sup></span></div>
+    <div class="kpi m"><b>9</b><span>장착해 보는 엔진 (머신러닝 7 · 신경망 2)</span></div>
+    <div class="kpi a"><b>10</b><span>신경망 엔진 정비 작업장 (카드 01~10)</span></div>
+    <div class="kpi g"><b><span id="k-best">—</span></b><span>벤치 상위 엔진 · 검증 F1<sup>①</sup></span></div>
+  </div>
+  <p class="muted" style="font-size:13px">① 이 페이지가 직접 만든 설명용 모형의 값(시드 2026)입니다. 실제 배터리 측정값이 아닙니다.</p>
+  <div data-dlg="hero"></div>
+</div></header>
+
+<main>
+<section class="sec" id="cast" aria-labelledby="h-cast"><div class="wrap">
+  <h2 id="h-cast">등장인물과 이 페이지 사용법</h2>
+  <div class="cast" id="castgrid"></div>
+  <div class="secret"><button class="bt" id="secretbtn" type="button" aria-expanded="false">방청석 보기 (미공개 식구)</button><div class="row" id="secretrow" hidden></div></div>
+  <div class="steps four" style="margin-top:16px">
+    <div class="step"><b>3D 공장부터</b>12공정을 한 바퀴 돌려 보고, 궁금한 공정을 누르면 해당 섹션으로 갑니다.</div>
+    <div class="step"><b>엔진을 골라 달기</b>엔진 창고에서 카드를 누르면 판정기에 장착되고 바로 시운전됩니다.</div>
+    <div class="step"><b>현황판 불 켜기</b>정비 작업장마다 검사 하나. 처음엔 빨간불도 있어요. 직접 고쳐 보세요.</div>
+    <div class="step"><b>도장 확인</b>노란 도장이 찍힌 그림·숫자는 설명용 모형입니다.</div>
+  </div>
+</div></section>
+
+<section class="sec" id="why" aria-labelledby="h-why"><div class="wrap">
+  <h2 id="h-why">왜 "엔진부"부터 만드나</h2>
+  <div class="steps">
+    <div class="step"><b>1. 엔진은 갈아 끼울 수 있다</b>데이터를 받고 판정을 내보내는 차체는 같아도, 안에 넣는 모델은 바꿀 수 있습니다. 그래서 먼저 여러 엔진을 같은 조건에서 견줍니다.</div>
+    <div class="step"><b>2. 도감은 부품 카탈로그다</b>머신러닝 도감과 신경망 도감에는 엔진마다 장단점이 적혀 있습니다. 이 페이지는 그 엔진을 실제 데이터세트에 달아 봅니다.</div>
+    <div class="step"><b>3. 검증은 따로 한다</b>엔진부가 완성돼도 실제 라인에서 통하는지는 모릅니다. 봉인한 시험 셀과 라인 시뮬레이션은 2편에서 합니다.</div>
+  </div>
+  <div class="explain"><h4>학습 목표 — 이 페이지를 마치면</h4><ol>
+    <li>같은 데이터세트에 엔진 9종을 달아 보고, 판정 경계의 모양과 엔진 무게(저장 값)가 어떻게 다른지 설명할 수 있다.</li>
+    <li>훈련·검증·시험을 나누는 이유와, 검증 셀 한 묶음만으로 순위를 매기면 왜 위험한지 말할 수 있다.</li>
+    <li>신경망 엔진의 파라미터가 예측 → 손실 → 역전파 → 한 걸음으로 고쳐지는 과정을 숫자로 따라갈 수 있다.</li></ol></div>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>수업 경로</th><th>보는 곳</th><th>건너뛰는 곳</th></tr></thead><tbody>
+    <tr><td>45분 (엔진 고르기 중심)</td><td>3D 공장 → 데이터세트 → 엔진 창고 → 장착·시운전 → 벤치 → 대결 → 출고</td><td>정비 ①~⑩ (아래 정비 공정에서 "접기")</td></tr>
+    <tr><td>90분 (엔진 속까지)</td><td>위 경로 + 정비 ①~⑩</td><td>—</td></tr>
+    <tr><td>정비만 (파라미터 수업)</td><td>정비 ①~⑩ → 대결</td><td>엔진 창고·벤치는 결과 표만</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<!-- 3D 공장 -->
+<section class="sec" id="factory" aria-labelledby="h-factory"><div class="wrap">
+  <h2 id="h-factory">큰 그림 — 배터리 불량품 판정기 공장 12공정 (3D 모형)</h2>
+  <p class="lead">위쪽 줄(P1~P6)은 데이터세트를 만들고 두 도감관에서 엔진을 꺼내는 곳, 아래쪽 줄(P7~P12)은 엔진을 달고 시운전·정비·비교해 출고하는 곳입니다. P8~P10은 초록 고리로 이어져 여러 바퀴 돕니다. 오른쪽 숫자는 정비 작업장 ⑧에서 실제로 학습한 신경망 엔진의 기록을 따라갑니다. 마지막 P12는 2편 시뮬레이션 검증장(공사 중)입니다.</p>
+  <div class="panel">
+    <div class="ptitle">배터리 불량품 판정기 엔진 조립 라인 — 끌어서 돌리기, 공정을 누르면 설명</div>
+    <div class="fac">
+      <div><div class="cwrap"><canvas id="cvFac" aria-label="12개 공정으로 된 엔진(모델) 조립 공장의 3D 그림. 판정기 차체가 컨베이어를 따라 이동하며 도감관에서 엔진을 받아 장착한다"></canvas><span class="hint">끌어서 돌리기 · 공정 누르기</span></div>
+        <div class="legend"><span style="--lc:#f3c9c7">데이터세트</span><span style="--lc:#d7f0e6">도감관 (엔진 창고)</span><span style="--lc:#e7d3f0">장착·정비</span><span style="--lc:#cfe0f8">시운전·비교</span><span style="--lc:#f6e2bf">출고</span><span style="--lc:#e3e6ea">2편 (공사 중)</span></div>
+      </div>
+      <div class="pcard" aria-live="polite">
+        <div class="pc-no" id="pc-no">P1 / 12</div>
+        <h3 id="pc-name">—</h3>
+        <p id="pc-desc">—</p>
+        <p class="mnote" id="pc-metric">—</p>
+        <div id="pc-link"></div>
+        <div class="minis" id="fac-minis"></div>
+      </div>
+    </div>
+    <div class="pchips" id="pchips" role="group" aria-label="공정 고르기"></div>
+    <div class="ctrl">
+      <div class="group"><button class="bt primary" id="f-play" type="button">⏸ 멈춤</button><button class="bt" id="f-step" type="button">다음 공정 ▶|</button><button class="bt" id="f-reset" type="button">처음부터</button></div>
+      <div class="group"><span class="glabel">속도</span><span id="g-fspd"></span></div>
+      <div class="group"><span class="glabel">시점</span><span id="g-fview"></span></div>
+    </div>
+  </div>
+  <div class="explain"><h4>공정 읽는 법</h4><ol>
+    <li><b>P1~P4 데이터세트</b>: 셀 측정값과 불량 판정을 받고, 표준화하고, 훈련 600 · 검증 200 · 시험 200으로 나눕니다. 시험 200은 금고에 넣어 2편까지 봉인합니다.</li>
+    <li><b>P5~P6 도감관</b>: 머신러닝 도감관에서 엔진 7종, 신경망 도감관에서 2종을 꺼냅니다. 지붕 위 작은 상자 하나가 엔진 하나입니다.</li>
+    <li><b>P7~P10</b>: 차체에 엔진을 달고, 시운전 벤치에서 검증 셀로 재고, 신경망 엔진은 정비 작업장 ①~⑩에서 손보고, 엔진끼리 비교합니다. 이 고리를 여러 번 돕니다.</li>
+    <li><b>P11~P12</b>: 고른 엔진을 출고합니다. 실제 라인 시뮬레이션과 봉인 시험은 2편 검증장에서 합니다.</li></ol>
+    <div class="lim">이 그림의 한계: 실무에서는 엔진 비교에서 떨어지면 데이터세트(P1~P4)로 되돌아가는 일이 흔합니다. 이 그림은 한 방향으로만 그렸습니다.</div></div>
+  <div data-dlg="factory"></div>
+</div></section>
+
+<!-- 현황판 -->
+<section class="sec" id="board" aria-labelledby="h-board"><div class="wrap">
+  <h2 id="h-board">공장 현황판 — 엔진 벤치와 정비 작업장 10곳</h2>
+  <p class="lead">위는 엔진 벤치 순위, 아래는 신경망 엔진 정비 작업장 10곳의 검사 램프입니다. <span class="lamp">대기</span> <span class="lamp run">검사 중</span> <span class="lamp ok">합격</span> <span class="lamp ng">불합격</span></p>
+  <div class="prods">
+    <div class="prod"><h3 style="color:var(--gfp)">장착한 엔진</h3><div class="row" id="prod-cls"></div></div>
+    <div class="prod"><h3 style="color:var(--info)">벤치 순위 (검증 F1)</h3><div class="row" id="prod-lb"></div></div>
+  </div>
+  <div class="board" id="boardgrid"></div>
+  <div class="shipbar" aria-hidden="true"><i id="shipbar"></i></div>
+  <p class="mnote" id="shiptxt">합격 0 / 10</p>
+  <div class="banner" id="shipban">정비 작업장 10곳 모두 합격 — 엔진부 출고 준비 완료!</div>
+  <div data-dlg="board"></div>
+</div></section>
+
+<!-- 데이터세트 -->
+<section class="sec" id="data" aria-labelledby="h-data"><div class="wrap">
+  <h2 id="h-data">P1~P4 데이터세트 — 배터리 셀 1,000개</h2>
+  <div class="tags"><span class="tag nn">모델: 이진 분류 (불량 1 / 양품 0)</span><span class="tag fly">현장: 배터리 출하 검사 라인</span></div>
+  <div class="datacard">
+    <div><b>내부저항</b>평균 1.2 mΩ 근처(대용량 셀). 높을수록 열이 나고 빨리 늙습니다.</div>
+    <div><b>초기 용량</b>평균 60 Ah 근처(수십 Ah급 차량용 셀). 공정이 고르면 편차가 작습니다.</div>
+    <div><b>온도 상승</b>충전 중 오른 온도, 평균 8 °C 근처. 크면 위험 신호입니다.</div>
+    <div><b>전압 편차</b>셀 안 전압 흔들림, 평균 10 mV 근처. 크면 불량 신호입니다.</div>
+  </div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>자율주행 전기차 배터리 팩에 들어갈 대용량 셀의 출하 검사 라인입니다. 셀 하나가 불량이면 팩 전체의 안전과 주행 거리에 영향을 줍니다. 셀마다 네 가지를 재고, 검사원이 불량 여부를 판정합니다. 이 판정이 판정기가 배울 정답(라벨)입니다.</div>
+    <div><div class="tr">모델에서는</div>측정값 4개가 입력, 불량 여부가 정답인 <b>이진 분류</b> 데이터세트입니다. 불량 셀이 약 20%라서, 양품만 말해도 정확도가 80%가 나오는 <b>불균형</b> 데이터입니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">셀 1,000개 한눈에 — 가로: 내부저항, 세로: 온도 상승</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvData1" aria-label="내부저항과 온도 상승 산점도. 빨간 점은 불량 셀"></canvas></div><div class="cwrap tall"><canvas id="cvData2" aria-label="네 측정값별 양품과 불량 셀의 분포 비교"></canvas></div></div>
+    <div class="legend"><span style="--lc:var(--eye)">불량 셀</span><span style="--lc:#8fa3b8">양품 셀</span></div>
+    <div class="minis" id="data-minis"></div>
+  </div>
+  <div class="explain"><h4>P3·P4에서 하는 일</h4><ol>
+    <li><b>표준화</b>: 네 측정값의 단위가 달라(mΩ, Ah, °C, mV) 그대로 넣으면 큰 숫자가 판정을 좌우합니다. 훈련 셀의 평균을 빼고 표준편차로 나눠 눈금을 맞춥니다. 검증·시험 셀에도 <b>훈련 셀의 평균·표준편차</b>를 그대로 씁니다.</li>
+    <li><b>나누기</b>: 훈련 600(엔진이 배우는 셀), 검증 200(시운전·비교용), 시험 200(2편까지 봉인). 불량 비율은 세 묶음이 비슷합니다.</li></ol>
+    <div class="lim">이 섹션의 한계: 측정값과 불량의 관계는 설명을 위해 지어낸 공식입니다(저항·온도가 함께 높을 때 특히 위험). 실제 셀의 물리 관계가 아닙니다.</div></div>
+  <div class="bridge field"><b>현장에 옮기면</b> 실제 배터리 연구에는 초기 충·방전 곡선 같은 시계열에서 특징을 뽑아, 용량이 줄기 전에 수명을 예측한 사례가 있습니다[11]. 그런 곡선 데이터라면 신경망 도감의 LSTM·GRU 같은 시계열 엔진도 후보가 됩니다. 1편은 표 형태 데이터라 표 데이터용 엔진만 답니다.<div class="lim">비유의 한계: 실제 불량 판정은 규격·안전 기준이 정하고, 판정기는 그 판정을 돕는 도구입니다.</div></div>
+</div></section>
+
+<!-- 엔진 창고 -->
+<section class="sec" id="atlas" aria-labelledby="h-atlas"><div class="wrap">
+  <h2 id="h-atlas">P5~P6 엔진 창고 — 두 도감에서 꺼낸 엔진 9종</h2>
+  <div class="tags"><span class="tag nn">모델: 머신러닝 7 · 신경망 2</span><span class="tag fly">현장: 엔진 카탈로그와 창고</span></div>
+  <p class="lead">카드를 누르면 그 엔진이 판정기에 장착되고 바로 아래 시운전 벤치에서 돌아갑니다. 오른쪽 위 숫자는 그 엔진의 검증 F1(기본 설정)입니다.</p>
+  <div class="bookh">머신러닝 도감관 <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감 →</a></div>
+  <div class="shelf" id="shelf-ml"></div>
+  <div class="bookh">신경망 도감관 <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감 →</a></div>
+  <div class="shelf" id="shelf-nn"></div>
+  <p class="lead2">흐린 카드는 이번 데이터세트에 맞지 않아 창고에 두는 엔진입니다. 이미지(CNN)나 시계열(LSTM·GRU) 엔진은 사진·충방전 곡선 데이터가 들어올 때 꺼냅니다.</p>
+  <div data-dlg="atlas"></div>
+</div></section>
+
+<!-- 장착·시운전 -->
+<section class="sec" id="mount" aria-labelledby="h-mount"><div class="wrap">
+  <h2 id="h-mount">P7~P8 엔진 장착과 시운전</h2>
+  <div class="tags"><span class="tag nn">모델: 같은 훈련 600 → 같은 검증 200</span><span class="tag fly">현장: 엔진 동력계(다이노) 벤치</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진을 차에 싣기 전에 벤치에 올려 같은 조건에서 출력과 연비를 잽니다. 조건이 다르면 숫자를 견줄 수 없습니다.</div>
+    <div><div class="tr">모델에서는</div>모든 엔진이 같은 훈련 셀 600개로 배우고, 같은 검증 셀 200개로 잽니다. 오른쪽 그림은 엔진이 그은 <b>판정 경계</b>입니다(초기 용량·전압 편차를 평균에 고정한 단면).</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle" id="m-title">장착한 엔진 — </div>
+    <div class="ctrl"><div class="group" id="m-knob"></div><div class="group"><button class="bt primary" id="m-run" type="button">▶ 다시 시운전</button></div></div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvMap" aria-label="장착한 엔진의 판정 경계 지도. 가로 내부저항, 세로 온도 상승"></canvas></div>
+      <div><h3 style="font-size:15px;margin:4px 0 6px">검증 셀 200개 · 혼동 행렬</h3><div class="cm" id="m-cm"></div><p class="mnote" id="m-info" style="margin-top:10px"></p></div></div>
+    <div class="minis" id="m-minis"></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">판정 문턱과 비용 — 불량 하나를 놓치면 양품 하나를 버리는 것보다 몇 배 손해일까</h3>
+    <div class="ctrl"><div class="group"><label class="glabel" for="r-thr">판정 문턱</label><input type="range" id="r-thr" min="0.05" max="0.95" step="0.05" value="0.5"><span class="val" id="v-thr">0.50</span></div>
+      <div class="group"><label class="glabel" for="r-cost">놓친 불량 1개의 비용 (양품 버림 = 1)</label><input type="range" id="r-cost" min="1" max="20" step="1" value="10"><span class="val" id="v-cost">10배</span></div></div>
+    <div class="minis" id="m-cost"></div>
+    <div class="insight" id="i-mount" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>경계 지도 읽기</h4><ol>
+    <li>빨간 칸은 엔진이 "불량"이라 하는 곳, 회색 칸은 "양품"이라 하는 곳입니다. 점은 검증 셀(빨강 = 실제 불량).</li>
+    <li>로지스틱 회귀는 곧은 선, 결정 트리는 계단, 랜덤 포레스트·부스팅은 잘게 쪼갠 계단, SVM·신경망은 부드럽게 굽은 선을 긋습니다.</li>
+    <li>오토인코더는 양품만 보고 배워 "양품 무리에서 멀리 떨어진 셀"을 불량으로 봅니다. 그래서 경계가 양품 무리를 둘러싸는 모양입니다. 다만 "얼마나 멀어야 불량인가"의 문턱은 훈련 셀의 라벨로 골랐습니다. 라벨을 전혀 안 쓰는 엔진은 아닙니다.</li>
+    <li><b>판정 문턱</b>: 엔진은 "불량일 확률"을 내고, 그 확률이 문턱(기본 0.5)을 넘으면 불량으로 판정합니다. 문턱을 내리면 불량을 덜 놓치지만 멀쩡한 셀을 더 버립니다. 아래 슬라이더로 바꿔 보세요.</li></ol>
+    <div class="lim">이 칸의 한계: 지도는 네 측정값 중 둘만 움직인 단면입니다. 엔진은 넷을 모두 보고 판정합니다.</div></div>
+  <div data-dlg="mount"></div>
+</div></section>
+
+<!-- 벤치 -->
+<section class="sec" id="bench" aria-labelledby="h-bench"><div class="wrap">
+  <h2 id="h-bench">P10 엔진 벤치 — 9종을 같은 조건으로</h2>
+  <div class="tags"><span class="tag nn">모델: 검증 F1 · 재현율 · 엔진 크기</span><span class="tag fly">현장: 성적표</span></div>
+  <div class="panel">
+    <div class="ptitle">엔진 벤치 기록 — 기본 설정, 시드 11</div>
+    <div class="ctrl"><div class="group"><button class="bt primary" id="b-all" type="button">▶ 9종 모두 시운전</button><span class="val" id="b-prog"></span></div></div>
+    <div class="ctrl"><div class="group"><button class="bt" id="b-rep" type="button">▶ 5번 나눠 다시 재기 (평균 ± 편차)</button><span class="val" id="b-rprog"></span></div></div>
+    <div class="tblwrap"><table class="lb" id="b-tb"></table></div>
+    <div class="cwrap"><canvas id="cvBench" class="wide" style="height:280px" aria-label="엔진별 저장 값 수(가로, 로그)와 검증 F1(세로)"></canvas></div>
+    <div class="insight" id="i-bench" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li><b>F1</b>은 정밀도(불량이라 한 것 중 진짜 불량)와 재현율(진짜 불량 중 잡아낸 것)의 조화 평균입니다. 불량이 20%뿐이라 정확도만 보면 엔진 차이가 잘 안 보입니다.</li>
+    <li><b>훈련 F1과 검증 F1의 차이</b>가 크면 훈련 셀을 외운 엔진입니다(트리·포레스트·부스팅에서 크게 나타납니다).</li>
+    <li><b>저장 값</b>은 엔진이 판정할 때 들고 다니는 숫자의 개수입니다. k-최근접 이웃은 훈련 셀을 통째로, 포레스트·부스팅은 트리 마디를, 신경망은 파라미터를 저장합니다. 배터리 관리 칩처럼 메모리가 작은 곳에서는 이 숫자가 중요합니다(정비 작업장 ④).</li>
+    <li>신경망(DFF)은 벤치에서 120 에포크를 끝까지 돕니다. 검증 셀을 보고 멈추면 그 엔진만 검증 셀에 맞춰지기 때문입니다. 검증으로 멈추는 조기 종료는 정비 작업장 ⑧에서 따로 봅니다.</li>
+    <li><b>5번 나눠 다시 재기</b>: 훈련·검증 800개를 다섯 번 다르게 섞어 600 · 200으로 나누고 매번 다시 배웁니다. 한 번만 나눈 점수는 운이 섞입니다. 평균의 차이가 편차보다 작으면 순위를 믿지 않습니다.</li></ol>
+    <div class="lim">이 벤치의 한계: 엔진마다 손잡이를 기본값 하나로만 맞췄습니다. 손잡이를 잘 돌리면 순위가 바뀔 수 있습니다. 신경망 엔진의 손잡이를 하나씩 들여다보는 곳이 다음의 정비 작업장입니다.</div></div>
+  <div class="bridge gen"><b>생성 AI로 치면</b> 업무에 쓸 언어 모델을 고를 때도 같습니다. 가장 큰 모델이 늘 답이 아니라, 같은 시험 문제로 견주고, 비용·응답 속도·데이터 보안(사내 설치 가능 여부)을 함께 봅니다. 작은 모델에 미세조정(⑨)을 얹는 선택지도 있습니다.<div class="lim">비유의 한계: 언어 모델의 성적은 한 숫자로 줄이기 어렵고, 시험 문제가 학습 데이터에 섞였을 위험(오염)도 따져야 합니다.</div></div>
+  <div data-dlg="bench"></div>
+  <div class="quiz" data-quiz="bench"></div>
+</div></section>
+
+<!-- 정비 공정 소개 -->
+<section class="sec" id="tune" aria-labelledby="h-tune"><div class="wrap">
+  <h2 id="h-tune">P9 신경망 엔진 정비 공정 — 작업장 ①~⑩</h2>
+  <div class="ctrl"><div class="group"><button class="bt" id="t-fold" type="button" aria-pressed="false">작업장 ①~⑩ 접기 (45분 경로)</button></div></div>
+  <p class="lead">신경망 도감에서 꺼낸 DFF 엔진(4 → 8 → 1)을 분해해, AI 파라미터 카드 10장을 하나씩 작업장으로 삼아 정비합니다. 엔진의 속인 파라미터가 무엇이고(①~④), 어떻게 고쳐지며(⑤~⑧), 새 공장에 맞춰 개조하고(⑨), 크기를 정해 출고 검사를 하는지(⑩) 봅니다. 작업장마다 검사 하나가 현황판 램프와 이어져 있습니다.</p>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>카드</th><th>정비 작업장</th><th>엔진에서 보는 것</th></tr></thead><tbody>
+    <tr><td>01</td><td><a href="#w1">① 부품 창고</a></td><td>가중치·편향이라는 부품</td></tr><tr><td>02</td><td><a href="#w2">② 뉴런 조립대</a></td><td>뉴런 하나 = 파라미터 셋</td></tr>
+    <tr><td>03</td><td><a href="#w3">③ 설계도실</a></td><td>파라미터가 사는 행렬, 활성값과의 차이</td></tr><tr><td>04</td><td><a href="#w4">④ 계량실</a></td><td>파라미터 개수와 메모리, 엔진별 크기</td></tr>
+    <tr><td>05</td><td><a href="#w5">⑤ 첫 시동</a></td><td>예측과 손실, 초기 손실 점검</td></tr><tr><td>06</td><td><a href="#w6">⑥ 원인 추적실</a></td><td>역전파와 기울기 검사</td></tr>
+    <tr><td>07</td><td><a href="#w7">⑦ 조정대</a></td><td>옵티마이저의 한 걸음</td></tr><tr><td>08</td><td><a href="#w8">⑧ 길들이기 라인</a></td><td>미니배치·스텝·에포크</td></tr>
+    <tr><td>09</td><td><a href="#w9">⑨ 개조 공정</a></td><td>사전학습과 미세조정, 어댑터</td></tr><tr><td>10</td><td><a href="#w10">⑩ 출고 검사실</a></td><td>엔진 크기와 일반화, 추론 중 고정</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<!-- ① -->
+<section class="sec" id="w1" aria-labelledby="h-w1"><div class="wrap">
+  <h2 id="h-w1"><span class="hex">1</span>작업장 ① 부품 창고 — 파라미터란 무엇인가 <span class="slide">카드 01</span></h2>
+  <div class="tags"><span class="tag nn">모델: 가중치 w · 편향 b</span><span class="tag fly">현장: 엔진 조립 전 부품 선반</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>같은 설계도의 엔진이라도 어떤 부품 값(나사 길이, 저항값)을 끼우느냐에 따라 다르게 돕니다.</div>
+    <div><div class="tr">모델에서는</div><b>가중치</b>는 입력 신호를 몇 배로 키울지(부호까지), <b>편향</b>은 합을 얼마나 밀어 올릴지 정합니다. 이 숫자들을 데이터에서 배우기 때문에 "학습되는 파라미터"라고 부릅니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">입력 2개 → 출력 2개 판정기 — y₁ = 불량 확률, y₂ = 양품 확률</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW1" aria-label="입력 두 개와 출력 두 개를 잇는 가중치 네 개와 편향 두 개. 선 굵기는 가중치 크기"></canvas></div>
+      <div><div class="ctrl" id="w1-sl" style="flex-direction:column;align-items:stretch"></div></div></div>
+    <div class="ctrl"><div class="group"><button class="bt" id="w1-reset" type="button">카드 01의 값으로</button></div><div class="group"><span class="glabel">셀 A: 내부저항 +1.5σ, 온도 +1.2σ (실제 불량) · 셀 B: −1.0σ, −0.8σ (실제 양품)</span></div></div>
+    <div class="tblwrap"><table class="cmp" id="w1-tb"></table></div>
+    <div class="qc" id="qc1"></div>
+    <div class="insight" id="i-w1" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>y₁ = σ(w₁₁x₁ + w₁₂x₂ + b₁). 카드 01처럼 <b>w의 첫째 첨자는 받는 뉴런, 둘째 첨자는 보내는 입력</b>입니다. w₁₂는 "x₂에서 y₁로" 가는 선입니다.</li>
+    <li>카드 01의 값 그대로면 y₁ 검사는 통과하지만 y₂ 검사는 떨어집니다. y₂가 뜨거운 불량 셀 A까지 "양품일 확률이 높다"고 말하기 때문입니다.</li>
+    <li>w₂₁, w₂₂를 음수 쪽으로 돌려 보세요. "저항·온도가 클수록 양품일 가능성은 낮다"는 관계를 부품 값으로 끼워 넣는 셈입니다.</li></ol>
+    <div class="lim">이 칸의 한계: 여기서는 사람이 손으로 부품을 끼웠습니다. 파라미터가 수십 개만 돼도 손으로는 못 맞춥니다. → 데이터에서 저절로 맞추는 방법이 필요합니다(⑤~⑧).</div></div>
+  <div data-dlg="w1"></div>
+  <div class="quiz" data-quiz="w1"></div>
+</div></section>
+
+<!-- ② -->
+<section class="sec" id="w2" aria-labelledby="h-w2"><div class="wrap">
+  <h2 id="h-w2"><span class="hex">2</span>작업장 ② 뉴런 조립대 — 뉴런 하나, 파라미터 셋 <span class="slide">카드 02</span></h2>
+  <div class="tags"><span class="tag nn">모델: z = w₁x₁ + w₂x₂ + b</span><span class="tag fly">현장: 부품 셋으로 만드는 판정기</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>"저항 눈금 × 얼마 + 온도 눈금 × 얼마 + 보정값"이 기준을 넘으면 빨간 불을 켜는 판정기 하나를 조립합니다.</div>
+    <div><div class="tr">모델에서는</div>뉴런 하나는 가중합 z를 만들고, 활성화 함수 f를 거쳐 출력합니다. 학습되는 값은 w₁, w₂, b 세 개입니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">카드 02의 뉴런 — x₁ = 2, x₂ = 3 은 "내부저항 +2σ, 온도 +3σ"인 아주 뜨거운 셀 (실제 불량)</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW2" aria-label="입력 두 개와 가중치, 편향이 합쳐지는 뉴런 하나와 활성화 함수 곡선"></canvas></div>
+      <div><div class="ctrl" id="w2-sl" style="flex-direction:column;align-items:stretch"></div>
+      <div class="ctrl"><div class="group"><span class="glabel">활성화 f</span><span id="g-w2f"></span></div></div></div></div>
+    <div class="eq" id="eq-w2"></div>
+    <div class="ctrl"><div class="group"><button class="bt" id="w2-reset" type="button">카드 02의 값으로</button></div></div>
+    <div class="qc" id="qc2"></div>
+    <div class="insight" id="i-w2" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>카드 02 그대로 계산하면 z = 0.5×2 − 1×3 + 0.2 = −1.8, σ(−1.8) ≈ 0.142입니다. 이 뉴런은 아주 뜨거운 셀을 "불량 확률 14%"라고 봅니다.</li>
+    <li>온도에 붙은 w₂ = −1.0이 문제입니다. 온도가 높을수록 불량 점수를 깎고 있습니다. w₂를 양수로 바꾸면 판정이 뒤집힙니다.</li>
+    <li>뉴런 하나는 곧은 경계 하나입니다. 엔진 창고의 로지스틱 회귀가 바로 이 뉴런 하나(입력 4개, 파라미터 5개)짜리 엔진입니다.</li></ol>
+    <div class="lim">이 칸의 한계: 뉴런 하나는 직선 하나로만 가릅니다. "저항과 온도가 함께 높을 때 특히 위험" 같은 굽은 경계는 뉴런 여러 개가 필요합니다. → ③</div></div>
+  <details class="fold"><summary>수식으로 보기</summary><p>z = Σᵢ wᵢxᵢ + b, ŷ = f(z). 분류 출력의 f는 시그모이드 σ(z) = 1/(1+e^(−z)), DFF 엔진의 은닉층 f는 이 페이지에서 tanh입니다.</p></details>
+  <div data-dlg="w2"></div>
+  <div class="quiz" data-quiz="w2"></div>
+</div></section>
+
+<!-- ③ -->
+<section class="sec" id="w3" aria-labelledby="h-w3"><div class="wrap">
+  <h2 id="h-w3"><span class="hex">3</span>작업장 ③ 설계도실 — 파라미터는 어디에 사나 <span class="slide">카드 03</span></h2>
+  <div class="tags"><span class="tag nn">모델: 행렬 W₁ · b₁ · W₂ · b₂</span><span class="tag fly">현장: 엔진 안의 고정 부품 vs 흘러가는 연료</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진에 볼트로 고정된 부품(파라미터)과, 그 엔진을 지나가는 연료(활성값)는 다릅니다. 연료가 바뀌어도 부품은 그대로입니다.</div>
+    <div><div class="tr">모델에서는</div>DFF 엔진의 파라미터는 행렬 두 개와 벡터 두 개에 삽니다. 셀을 바꿔 넣으면 은닉층 값(<b>활성값</b>)은 바뀌지만 파라미터는 한 칸도 바뀌지 않습니다. 언어 모델도 같은 원리입니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">정비 중인 DFF 엔진(작업장 ⑧에서 학습)의 설계도 — 셀을 바꿔 넣어 보세요</div>
+    <div class="ctrl"><div class="group"><span class="glabel">넣을 셀 (검증 데이터)</span><span class="cellbtns" id="w3-cells"></span></div></div>
+    <div class="cwrap"><canvas id="cvW3" class="wide" style="height:300px" aria-label="파라미터 행렬 W1, b1, W2, b2의 색 격자와 은닉층 활성값 막대"></canvas></div>
+    <div class="minis" id="w3-minis"></div>
+    <div class="qc" id="qc3"></div>
+    <div class="insight" id="i-w3" aria-live="polite"></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">언어 모델이라면 — 카드 03의 상자를 눌러 보세요</h3>
+    <div class="cellbtns" id="w3-llm"></div>
+    <p class="mnote" id="w3-llmtxt" aria-live="polite"></p>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>W₁(8×4)은 입력 4개를 은닉 뉴런 8개로 섞고, b₁(8)은 각 은닉 뉴런을 밀어 올리고, W₂(1×8)와 b₂(1)는 은닉 8개를 출력 하나로 모읍니다.</li>
+    <li>P3의 <b>표준화</b>에 쓰는 평균·표준편차는 훈련 데이터에서 <b>계산한 값</b>이지 기울기로 배우는 파라미터가 아닙니다.</li>
+    <li>언어 모델의 정규화 층에는 배우는 크기 γ(와 종류에 따라 이동 β)가 있습니다. 층 정규화(LayerNorm)는 γ·β를 둘 다 쓰고[5], 요즘 큰 언어 모델이 많이 쓰는 RMSNorm은 γ만 둡니다[6]. 카드 03의 "γ, β"는 LayerNorm 기준입니다.</li></ol>
+    <div class="lim">이 칸의 한계: 파라미터가 어디 사는지는 알았지만, 몇 개인지와 얼마나 무거운지는 아직 모릅니다. → ④</div></div>
+  <div class="bridge gen"><b>생성 AI로 치면</b> 프롬프트를 바꾸면 모델 안을 흐르는 활성값이 바뀔 뿐, 저장된 가중치는 그대로입니다. 그래서 같은 모델 파일 하나로 수많은 사람이 서로 다른 질문을 합니다.<div class="lim">비유의 한계: 실제 서비스에는 대화 기록·검색 결과 같은 바깥 기억이 붙기도 합니다. 그것도 가중치를 바꾸지는 않습니다.</div></div>
+  <div data-dlg="w3"></div>
+  <div class="quiz" data-quiz="w3"></div>
+</div></section>
+
+<!-- ④ -->
+<section class="sec" id="w4" aria-labelledby="h-w4"><div class="wrap">
+  <h2 id="h-w4"><span class="hex">4</span>작업장 ④ 계량실 — 파라미터 세기와 엔진 무게 <span class="slide">카드 04</span></h2>
+  <div class="tags"><span class="tag nn">모델: 입력×출력 + 출력</span><span class="tag fly">현장: 엔진 무게 달기</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진을 싣기 전에 무게를 답니다. 배터리 관리 장치(BMS) 칩에 넣을 판정기라면 메모리 칸이 정해져 있습니다.</div>
+    <div><div class="tr">모델에서는</div>완전 연결층 하나의 파라미터는 <b>입력 수 × 출력 수(가중치) + 출력 수(편향)</b>입니다. 개수에 숫자 하나의 바이트 수를 곱하면 가중치를 담는 메모리가 됩니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">계량 — DFF 엔진의 층 크기를 바꿔 세기 (BMS 칩 메모리 예산은 예시값)</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW4" aria-label="층마다 가중치와 편향 개수를 쌓은 막대와 메모리 예산선"></canvas></div>
+      <div><div class="ctrl" id="w4-sl" style="flex-direction:column;align-items:stretch"></div>
+        <div class="ctrl"><div class="group"><span class="glabel">숫자 하나</span><span id="g-w4p"></span></div></div>
+        <div class="ctrl"><div class="group"><button class="bt" id="w4-card" type="button">카드 04 예시 (4 → 3)</button><button class="bt" id="w4-ours" type="button">DFF 엔진 (4 → 8 → 1)</button></div></div></div></div>
+    <div class="eq" id="eq-w4"></div>
+    <div class="tblwrap"><table class="cmp" id="w4-tb"></table></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">엔진 9종의 무게 — 저장 값 × 4바이트 (FP32)</h3>
+    <div class="tblwrap"><table class="lb" id="w4-eng"></table></div>
+    <div class="qc" id="qc4"></div>
+    <div class="insight" id="i-w4" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>카드 04: 입력 4 → 출력 3이면 4×3 = 12 + 편향 3 = 15개입니다.</li>
+    <li>DFF 엔진: (4×8 + 8) + (8×1 + 1) = 40 + 9 = 49개입니다.</li>
+    <li>숫자 하나를 2바이트(16비트)로 담으면 파라미터 10억 개는 약 2 GB입니다. 이것은 <b>가중치만</b>의 무게입니다.</li>
+    <li>학습할 때는 기울기와 옵티마이저 상태가 더 듭니다. 혼합 정밀도로 Adam을 쓰면 파라미터 하나에 약 16바이트(가중치·기울기 각 2, 32비트 사본 4, Adam의 두 상태 각 4)가 든다는 계산이 알려져 있습니다[8].</li></ol>
+    <div class="lim">이 칸의 한계: 부품은 다 셌는데, 이 부품들이 좋은 값인지는 아직 모릅니다. 시동을 걸어 봐야 합니다. → ⑤</div></div>
+  <div data-dlg="w4"></div>
+  <div class="quiz" data-quiz="w4"></div>
+</div></section>
+
+<!-- ⑤ -->
+<section class="sec" id="w5" aria-labelledby="h-w5"><div class="wrap">
+  <h2 id="h-w5"><span class="hex">5</span>작업장 ⑤ 첫 시동 — 예측하고 손실 재기 <span class="slide">카드 05</span></h2>
+  <div class="tags"><span class="tag nn">모델: 손실 = −ln P(정답)</span><span class="tag fly">현장: 조립한 엔진 첫 시동</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>조립한 엔진에 처음 시동을 걸어 봅니다. 처음엔 거칠어도 괜찮지만, 너무 이상한 소리가 나면 조립부터 의심합니다.</div>
+    <div><div class="tr">모델에서는</div>학습 전에 먼저 예측해 보고 <b>손실</b>을 잽니다. 분류의 손실(교차 엔트로피)은 정답에 준 확률이 작을수록 큽니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">손실 곡선 — 정답에 준 확률이 낮을수록 벌점이 커진다</div>
+    <div class="cwrap tall"><canvas id="cvW5a" aria-label="정답 확률에 따른 −ln P 곡선과 현재 점"></canvas></div>
+    <div class="ctrl">
+      <div class="group"><label class="glabel" for="r-w5p">P(정답)</label><input type="range" id="r-w5p" min="0.01" max="0.99" step="0.01" value="0.10"><span class="val" id="v-w5p">0.10</span></div>
+    </div>
+    <div class="eq" id="eq-w5"></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">초기 손실 점검 — 학습 전 DFF 엔진을 검증 셀 200개에 돌려 보기</h3>
+    <div class="ctrl"><div class="group"><span class="glabel">초깃값 크기</span><span id="g-w5i"></span></div></div>
+    <div class="minis" id="w5-minis"></div>
+    <div class="qc" id="qc5"></div>
+    <div class="insight" id="i-w5" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>카드 05처럼 정답 확률이 0.10이면 손실은 −ln 0.10 ≈ 2.30입니다. 0.5면 0.69, 0.9면 0.11로 작아집니다.</li>
+    <li>아무것도 배우지 않은 엔진이 늘 "반반(0.5)"이라고 하면 손실은 ln 2 ≈ 0.693입니다. 그래서 첫 손실이 이 근처인지 보는 것이 흔한 점검입니다. 초깃값을 너무 크게 하면 엔진이 처음부터 확신에 차 틀려 손실이 크게 튑니다.</li>
+    <li>늘 불량 비율(약 0.2)만 말하는 엔진의 손실은 약 0.5입니다. 학습한 엔진은 이것보다 낮아야 쓸모가 있습니다.</li></ol>
+    <div class="lim">이 칸의 한계: 손실이 얼마나 큰지는 알았지만, 어느 파라미터를 어느 쪽으로 고쳐야 줄어드는지는 모릅니다. → ⑥</div></div>
+  <div data-dlg="w5"></div>
+  <div class="quiz" data-quiz="w5"></div>
+</div></section>
+
+<!-- ⑥ -->
+<section class="sec" id="w6" aria-labelledby="h-w6"><div class="wrap">
+  <h2 id="h-w6"><span class="hex">6</span>작업장 ⑥ 원인 추적실 — 역전파 <span class="slide">카드 06</span></h2>
+  <div class="tags"><span class="tag nn">모델: ∂L/∂w = ∂L/∂ŷ · ∂ŷ/∂a · ∂a/∂w</span><span class="tag fly">현장: 이상 소음 원인을 거꾸로 추적</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진에서 이상 소음이 나면 출력 쪽부터 거꾸로 부품을 따라가며 "이 부품이 소음에 얼마나 책임이 있나"를 따집니다.</div>
+    <div><div class="tr">모델에서는</div><b>역전파</b>는 손실에서 출발해 층을 거꾸로 지나며, 파라미터마다 "조금 바꾸면 손실이 얼마나 변하나"(<b>기울기</b>)를 연쇄 법칙으로 곱해 구합니다[1].</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">파라미터 49개의 기울기 — 역전파 값(막대)과 직접 흔들어 잰 값(점)</div>
+    <div class="cwrap"><canvas id="cvW6" class="wide" style="height:280px" aria-label="파라미터 49개의 기울기 막대와 수치 미분 점"></canvas></div>
+    <div class="ctrl"><div class="group"><span class="glabel">역전파 코드</span><span id="g-w6b"></span></div><div class="group"><button class="bt" id="w6-batch" type="button">다른 미니배치로</button></div></div>
+    <div class="eq" id="eq-w6"></div>
+    <div class="qc" id="qc6"></div>
+    <div class="insight" id="i-w6" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>점은 파라미터 하나를 아주 조금(±0.00001) 흔들어 손실이 변한 양을 직접 잰 값입니다(중심 차분). 막대는 역전파로 한 번에 구한 값입니다.</li>
+    <li>둘이 맞으면 역전파 코드가 옳다는 뜻입니다. 이것을 <b>기울기 검사</b>라고 하고, 새 층이나 손실을 직접 짤 때 실무에서 씁니다. 상대 오차가 0.00001보다 작으면 합격으로 둡니다.</li>
+    <li>"버그 넣기"를 누르면 tanh의 미분(1 − h²)을 빠뜨린 코드가 됩니다. 막대와 점이 어긋나고 검사가 불합격으로 바뀝니다.</li></ol>
+    <div class="lim">이 칸의 한계: 고칠 방향은 알았지만, 얼마만큼 움직일지는 아직 정하지 않았습니다. → ⑦</div></div>
+  <details class="fold"><summary>수식으로 보기</summary><p>∂L/∂z = σ(z) − y. 출력층: ∂L/∂W₂ⱼ = ∂L/∂z · hⱼ. 은닉층: ∂L/∂aⱼ = ∂L/∂z · W₂ⱼ · (1 − hⱼ²), ∂L/∂W₁ⱼₖ = ∂L/∂aⱼ · xₖ. 미니배치 평균을 씁니다.</p></details>
+  <div data-dlg="w6"></div>
+  <div class="quiz" data-quiz="w6"></div>
+</div></section>
+
+<!-- ⑦ -->
+<section class="sec" id="w7" aria-labelledby="h-w7"><div class="wrap">
+  <h2 id="h-w7"><span class="hex">7</span>작업장 ⑦ 조정대 — 옵티마이저가 한 걸음 고친다 <span class="slide">카드 07</span></h2>
+  <div class="tags"><span class="tag nn">모델: w ← w − η · ∂L/∂w</span><span class="tag fly">현장: 조정 나사를 조금씩 돌리기</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진을 맞출 때 나사를 한 번에 크게 돌리면 지나치고, 너무 조금 돌리면 하루 종일 걸립니다.</div>
+    <div><div class="tr">모델에서는</div><b>경사하강법</b>은 기울기 반대쪽으로 <b>학습률</b> η만큼 움직입니다. Adam은 기울기의 평균과 크기를 따로 기억해 파라미터마다 보폭을 맞춥니다[2].</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">카드 07의 손실 곡선 L(w) = (w − 0.40)² + 0.05 — 출발점 w = 0.50</div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW7a" aria-label="손실 곡선 위에서 걸음마다 움직이는 점"></canvas></div><div class="cwrap tall"><canvas id="cvW7b" aria-label="걸음마다 손실 변화"></canvas></div></div>
+    <div class="ctrl">
+      <div class="group"><label class="glabel" for="r-w7">학습률 η</label><input type="range" id="r-w7" min="0.01" max="1.2" step="0.01" value="0.10"><span class="val" id="v-w7">0.10</span></div>
+      <div class="group"><span class="glabel">옵티마이저</span><span id="g-w7o"></span></div>
+      <div class="group"><button class="bt primary" id="w7-step" type="button">한 걸음</button><button class="bt" id="w7-ten" type="button">10걸음</button><button class="bt" id="w7-reset" type="button">출발점으로</button></div>
+    </div>
+    <div class="eq" id="eq-w7"></div>
+    <div class="qc" id="qc7"></div>
+    <div class="insight" id="i-w7" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>카드 07: 기울기 +0.20, 학습률 0.10이면 w = 0.50 − 0.10 × 0.20 = 0.48. 손실이 0.060에서 0.0564로 줄어듭니다.</li>
+    <li>이 곡선은 굽음(2차 미분)이 2라서 학습률이 1을 넘으면 걸음마다 바닥을 더 크게 지나쳐 멀어집니다(발산). 1.0이면 바닥 양쪽을 영원히 오갑니다.</li>
+    <li>Adam은 첫 걸음의 크기가 기울기 크기와 상관없이 거의 학습률만큼입니다. 그래서 Adam의 학습률은 SGD보다 작게(예: 0.001~0.01) 잡는 일이 많습니다.</li></ol>
+    <div class="lim">이 칸의 한계: 데이터 전체가 아니라 곡선 하나에서 한 걸음씩 봤습니다. 실제로는 셀 묶음을 바꿔 가며 수천 걸음을 걷습니다. → ⑧</div></div>
+  <div data-dlg="w7"></div>
+  <div class="quiz" data-quiz="w7"></div>
+</div></section>
+
+<!-- ⑧ -->
+<section class="sec" id="w8" aria-labelledby="h-w8"><div class="wrap">
+  <h2 id="h-w8"><span class="hex">8</span>작업장 ⑧ 길들이기 라인 — 미니배치로 되풀이 <span class="slide">카드 08</span></h2>
+  <div class="tags"><span class="tag nn">모델: 배치 · 스텝 · 에포크</span><span class="tag fly">현장: 새 엔진 길들이기 운전</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>새 엔진은 길들이기 운전을 합니다. 셀 600개를 한 상자(배치)씩 넣고, 상자마다 한 번 조정하고(스텝), 600개를 한 바퀴 다 돌면 1 에포크입니다.</div>
+    <div><div class="tr">모델에서는</div>DFF 엔진을 미니배치로 학습합니다. 에포크마다 <b>검증 데이터</b>(학습에 안 쓴 200개)로 손실과 F1을 재고, 검증 손실이 가장 낮았던 때의 파라미터를 남깁니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">길들이기 라인 — 훈련 600 · 검증 200 (시험 200은 봉인)</div>
+    <div class="ctrl">
+      <div class="group"><span class="glabel">배치 크기</span><span id="g-w8b"></span></div>
+      <div class="group"><span class="glabel">옵티마이저 · 학습률</span><span id="g-w8o"></span></div>
+      <div class="group"><button class="bt primary" id="w8-run" type="button">▶ 길들이기 시작</button><button class="bt" id="w8-reset" type="button">기본 기록으로</button></div>
+    </div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW8a" aria-label="훈련·검증 손실 곡선"></canvas></div><div class="cwrap tall"><canvas id="cvW8b" aria-label="에포크별 검증 F1 곡선"></canvas></div></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">행동으로 보기 — 지금 라인에 오른 상자 (훈련 셀 600개 중, 분홍 = 불량 셀)</h3>
+    <div class="cards" id="cards8" aria-label="훈련 셀 600개 중 지금 스텝에 쓰는 배치"></div>
+    <div class="minis" id="w8-minis"></div>
+    <h3 style="font-size:15px;margin:10px 0 4px">검증 혼동 행렬</h3><div class="cm" id="w8-cm"></div>
+    <div class="qc" id="qc8"></div>
+    <div class="insight" id="i-w8" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li><b>배치</b>: 한 스텝에 쓰는 셀 묶음. <b>스텝</b>: 옵티마이저가 파라미터를 한 번 고치는 일. <b>에포크</b>: 훈련 데이터를 한 바퀴 다 도는 일. 배치 32면 1 에포크 = 19스텝(600 ÷ 32, 올림)입니다.</li>
+    <li>기울기는 배치 안 셀들의 평균입니다. 배치가 작으면 한 에포크에 스텝이 많아 빨리 움직이지만 걸음이 흔들립니다.</li>
+    <li>검사 기준(예시): 검증 F1 0.80 이상. 실제 공장의 기준은 안전 규격과 비용이 정합니다.</li>
+    <li>훈련 손실은 끝까지 내려가도 검증 손실은 어느 에포크부터 다시 오를 수 있습니다. 그때 멈추는 것이 <b>조기 종료</b>입니다[10].</li></ol>
+    <div class="lim">이 칸의 한계: 공장 A의 셀로만 길들였습니다. 재료가 바뀐 공장 B에서도 맞을까요? → ⑨</div></div>
+  <div class="bridge gen"><b>생성 AI로 치면</b> 대형 언어 모델의 사전학습도 같은 고리입니다. 다음 토큰을 예측하고, 교차 엔트로피 손실을 재고, 역전파와 옵티마이저로 고치는 일을 아주 큰 미니배치로 수십만 스텝 되풀이합니다.<div class="lim">비유의 한계: 큰 모델은 여러 GPU에 나눠 계산하므로, 메모리·통신 문제가 이 작은 라인에는 없습니다.</div></div>
+  <div data-dlg="w8"></div>
+  <div class="quiz" data-quiz="w8"></div>
+</div></section>
+
+<!-- ⑨ -->
+<section class="sec" id="w9" aria-labelledby="h-w9"><div class="wrap">
+  <h2 id="h-w9"><span class="hex">9</span>작업장 ⑨ 개조 공정 — 사전학습과 미세조정 <span class="slide">카드 09</span></h2>
+  <div class="tags"><span class="tag nn">모델: 전체 미세조정 vs 어댑터(LoRA 방식)</span><span class="tag fly">현장: 새 공장 라인에 맞춘 엔진 개조</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>공장 B가 새 양극재를 쓰기 시작했습니다. 이제는 초기 용량이 모자란 셀이 불량이 되기 쉽습니다. 공장 A용 엔진을 처음부터 새로 짤 수도, 일부만 개조할 수도 있습니다.</div>
+    <div><div class="tr">모델에서는</div>공장 A 셀 600개로 배운 DFF 엔진(<b>사전학습</b>)을, 공장 B 셀 30개로 다시 고칩니다(<b>미세조정</b>). 전부 고치거나, 원래 가중치는 잠그고 작은 보정 행렬만 배웁니다(LoRA 방식[4]).</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">공장 B 불량 판정 — 훈련 30 · 검증 140 (설명용 모형, 40 에포크)</div>
+    <div class="ctrl"><div class="group"><span class="glabel">방법</span><span id="g-w9"></span></div><div class="group"><button class="bt primary" id="w9-run" type="button">네 방법 모두 비교</button></div></div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW9a" aria-label="동결된 가중치와 학습하는 가중치를 색으로 나눈 행렬 그림"></canvas></div><div class="cwrap tall"><canvas id="cvW9b" aria-label="방법별 공장 B 검증 F1 막대"></canvas></div></div>
+    <div class="tblwrap"><table class="cmp" id="w9-tb"></table></div>
+    <div class="qc" id="qc9"></div>
+    <div class="insight" id="i-w9" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li><b>그대로 쓰기</b>: 공장 A의 습관 그대로라 공장 B의 새 불량(용량 부족)을 많이 놓칩니다.</li>
+    <li><b>처음부터 B로만</b>: 셀 30개(불량 7개)로 49개를 처음부터 배우니 데이터가 모자랍니다.</li>
+    <li><b>전체 미세조정</b>: A에서 배운 것에서 출발해 49개를 모두 조금씩 고칩니다.</li>
+    <li><b>어댑터만</b>: W₁은 잠그고, W₁에 더할 보정 A·Bᵀ(8 + 4 = 12개)와 출력층(9개), 모두 21개만 배웁니다. 큰 모델에서는 이렇게 학습할 값을 크게 줄여 메모리와 저장 공간을 아낍니다[4].</li></ol>
+    <div class="lim">이 칸의 한계: 카드 09의 세 번째 단계 "선호 학습"은 여기서 돌리지 않았습니다. 두 답 중 사람이 더 좋다고 고른 쪽을 따르도록 고치는 단계로, 언어 모델의 말투·안전성을 맞출 때 씁니다[9]. 불량 판정에는 "더 좋아 보이는 답"이 아니라 정답 라벨이 있기 때문입니다. 셀 140개로 잰 차이라 몇 개만 달라져도 순위가 바뀔 수 있습니다.</div></div>
+  <div data-dlg="w9"></div>
+  <div class="quiz" data-quiz="w9"></div>
+</div></section>
+
+<!-- ⑩ -->
+<section class="sec" id="w10" aria-labelledby="h-w10"><div class="wrap">
+  <h2 id="h-w10"><span class="hex">10</span>작업장 ⑩ 출고 검사실 — 크다고 늘 좋은 건 아니다 <span class="slide">카드 10</span></h2>
+  <div class="tags"><span class="tag nn">모델: 용량 · 일반화 · 추론 중 고정</span><span class="tag fly">현장: 출고 전 마지막 검사, 출고 후 봉인</span></div>
+  <div class="pair">
+    <div><div class="tl">현장에서는</div>엔진을 키우면 힘은 세지지만 연비와 무게가 나빠지고, 시험 주행 코스에만 맞춘 엔진은 실제 도로에서 실망스럽습니다. 출고한 엔진은 봉인해 쓰는 동안 바뀌지 않게 합니다.</div>
+    <div><div class="tr">모델에서는</div>은닉 뉴런을 늘리면(파라미터 ↑) 훈련 손실은 계속 줄지만, 처음 보는 셀의 손실은 어느 크기부터 다시 늡니다. 출고한 엔진은 가중치를 고정한 채 추론만 합니다.</div>
+  </div>
+  <div class="panel">
+    <div class="ptitle">용량 실험 — 훈련 셀 80개만으로 DFF 엔진, 은닉 뉴런 1~32개 (Adam 0.01, 전체 배치, 400 에포크)</div>
+    <div class="ctrl"><div class="group"><button class="bt primary" id="w10-sweep" type="button">▶ 크기별로 길들여 보기</button></div><div class="group"><span class="val" id="w10-prog"></span></div></div>
+    <div class="twin"><div class="cwrap tall"><canvas id="cvW10a" aria-label="은닉 뉴런 수에 따른 훈련·검증 손실"></canvas></div><div class="cwrap tall"><canvas id="cvW10b" aria-label="은닉 뉴런 수에 따른 파라미터 수"></canvas></div></div>
+    <h3 style="font-size:15px;margin:14px 0 4px">출고 검사 — 배포 후 추론 1,000번 전후의 가중치 지문 비교</h3>
+    <div class="ctrl"><div class="group"><button class="bt primary" id="w10-infer" type="button">추론 1,000번 → 지문 비교</button></div></div>
+    <div class="minis" id="w10-minis"></div>
+    <div class="qc" id="qc10"></div>
+    <div class="insight" id="i-w10" aria-live="polite"></div>
+  </div>
+  <div class="explain"><h4>풀이</h4><ol>
+    <li>훈련 손실(파랑)은 뉴런이 늘수록 거의 0까지 내려갑니다. 셀 80개를 외운 것입니다. 검증 손실(빨강)은 작은 크기에서 가장 낮고, 큰 쪽으로 갈수록 크게 오릅니다.</li>
+    <li>카드 10의 말처럼 성능은 파라미터 수 하나가 아니라 데이터의 양과 질, 구조, 학습 방법, 계산량이 함께 정합니다.</li>
+    <li>배포 후 추론은 파라미터를 읽기만 합니다. 추론 전후의 가중치 지문(값들을 섞어 만든 짧은 코드)이 같으면 바뀌지 않았다는 뜻입니다.</li>
+    <li>봉인한 시험 셀 200개는 여기서 열지 않습니다. 엔진을 고른 뒤 2편 시뮬레이션 검증장에서 한 번만 엽니다.</li></ol>
+    <div class="lim">이 칸의 한계: 크기 하나만 바꿨습니다. 데이터가 충분하면 작은 엔진과 큰 엔진 중 무엇이 나을까요? → 대결</div></div>
+  <div class="bridge gen"><b>생성 AI로 치면</b> 프롬프트에 예시를 넣어 답이 좋아지는 것도 가중치가 바뀐 것이 아니라 활성값이 바뀐 것입니다(카드 10 오른쪽). 같은 모델을 다시 부르면 그 예시를 기억하지 못합니다.<div class="lim">비유의 한계: 서비스에 따라 대화 기록을 따로 저장해 다시 넣어 주기도 합니다. 그래도 가중치는 그대로입니다.</div></div>
+  <div data-dlg="w10"></div>
+  <div class="quiz" data-quiz="w10"></div>
+</div></section>
+
+<!-- 대결 -->
+<section class="sec" id="duel" aria-labelledby="h-duel"><div class="wrap">
+  <h2 id="h-duel">대결 — 작은 엔진이냐, 신경망 엔진이냐</h2>
+  <p class="lead">같은 훈련 셀 600개, 같은 검증 셀 200개, 같은 시드. 초파리 연구원은 머신러닝 도감의 <b>로지스틱 회귀</b>(저장 값 5개), 주판봇은 신경망 도감의 <b>DFF 4 → 8 → 1</b>(파라미터 49개, 120 에포크 끝까지)을 고릅니다. 판정 기준은 <b>검증 F1</b>(높을수록 좋음)입니다. 검증 셀 200개 한 번으로는 운이 섞이므로, 훈련·검증 800개를 <b>10번 다르게 나눠</b> 평균과 이긴 횟수로 판정합니다(평균 차이가 0.01을 넘고 10번 중 8번 이상 이겨야 승). 시험 셀은 봉인 그대로 둡니다.</p>
+  <div class="duel">
+    <div class="side l"><div class="head"><img id="d-fly" data-mood="fly_point" alt="" aria-hidden="true"><div><b style="color:var(--c-fly)">초파리 연구원 · 로지스틱 회귀</b><br><span class="muted">곧은 경계 하나, 숫자 5개.</span></div></div><div data-dlg="dfly"></div></div>
+    <div class="vs">VS</div>
+    <div class="side r"><div class="head"><img id="d-robo" data-mood="robo_coin" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">주판봇 · DFF 신경망</b><br><span class="muted">은닉 8, 굽은 경계, 숫자 49개.</span></div></div><div data-dlg="drobo"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">먼저 맞혀 보기</span><button class="bt" data-pred="fly" type="button" aria-pressed="false">초파리가 이길 것 같다</button><button class="bt" data-pred="robo" type="button" aria-pressed="false">주판봇이 이길 것 같다</button></div>
+      <div class="group"><button class="bt primary" data-go type="button">결과 보기</button><button class="bt" data-close type="button" hidden>다시 닫기</button></div></div>
+    <div class="duel-res" hidden>
+      <p class="muted" style="font-size:13.5px;margin:0">막대 = 10번 나눈 검증 F1의 평균. 길수록 좋습니다. 아래 점은 10번 각각의 결과입니다.</p>
+      <div id="d-bars"></div>
+      <div id="d-say"></div>
+      <div class="score"><span id="d-score"></span><span id="d-pred"></span></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="duel"></div>
+</div></section>
+
+<!-- 출고 -->
+<section class="sec" id="ship" aria-labelledby="h-ship"><div class="wrap">
+  <h2 id="h-ship">P11~P12 출고 — 2편 시뮬레이션 검증장으로</h2>
+  <div class="tags"><span class="tag nn">모델: 엔진 선정 · 봉인 시험은 2편</span><span class="tag fly">현장: 출고 전표</span></div>
+  <div class="panel">
+    <div class="ptitle">출고 전표 — 벤치 순위로 고른 엔진, 바꿀 수 있음</div>
+    <div class="ctrl"><div class="group"><span class="glabel">출고할 엔진</span><span id="g-ship"></span></div></div>
+    <div class="minis" id="ship-minis"></div>
+    <div class="insight" id="i-ship" aria-live="polite"></div>
+  </div>
+  <div class="next2"><b>2편 예고 — 시뮬레이션 검증장 (준비 중)</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li>봉인한 시험 셀 200개를 단 한 번 열어, 출고한 엔진의 진짜 성적을 잽니다.</li>
+      <li>3D 생산 라인에 엔진을 실어 셀을 하나씩 흘려 보내는 라인 시뮬레이션을 돌립니다.</li>
+      <li>불량을 놓친 비용과 양품을 버린 비용을 따져 판정 문턱(0.5)을 다시 정합니다.</li>
+      <li>공장 B처럼 재료가 바뀌는 상황(분포 이동)을 라인에서 일으켜, 엔진이 언제 다시 정비를 받아야 하는지 봅니다.</li>
+    </ul></div>
+</div></section>
+
+<!-- 정리 -->
+<section class="sec" id="sum" aria-labelledby="h-sum"><div class="wrap">
+  <h2 id="h-sum">정리 — 데이터세트, 엔진 9종, 정비 작업장 10곳</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>카드</th><th>정비 작업장</th><th>3D 공정</th><th>검사 지표</th><th>상태</th></tr></thead><tbody id="sum-tb"></tbody></table></div>
+  <h3>용어 대응</h3>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>모델 용어</th><th>공장 말로</th><th>이 페이지에서</th></tr></thead><tbody>
+    <tr><td>데이터세트 (훈련·검증·시험)</td><td>재료, 시운전 코스, 봉인된 출고 표본</td><td>셀 600 · 200 · 200</td></tr>
+    <tr><td>모델</td><td>엔진</td><td>도감 엔진 9종</td></tr>
+    <tr><td>파라미터 (가중치·편향)</td><td>엔진에 끼운 부품 값</td><td>DFF의 W₁, b₁, W₂, b₂ — 49개</td></tr>
+    <tr><td>하이퍼파라미터</td><td>엔진 손잡이 · 공정 조건표</td><td>트리 깊이·수, k, γ, 은닉 수, 학습률, 배치</td></tr>
+    <tr><td>활성값</td><td>엔진을 지나가는 연료</td><td>은닉층 h (셀마다 다름)</td></tr>
+    <tr><td>손실 · 역전파 · 옵티마이저</td><td>이상 소음 · 원인 추적 · 나사 조정</td><td>교차 엔트로피 · 49개 기울기 · Adam</td></tr>
+    <tr><td>미세조정 · 어댑터</td><td>새 공장에 맞춘 개조 · 덧붙이는 보정 장치</td><td>49개 전부 / 21개만</td></tr>
+  </tbody></table></div>
+  <h3>비유의 한계</h3>
+  <ul>
+    <li>엔진 비유는 "갈아 끼우면 끝"처럼 보이게 합니다. 실제로는 엔진마다 알맞은 전처리·손잡이·데이터 양이 달라, 갈아 끼울 때마다 다시 맞춰야 합니다.</li>
+    <li>부품 비유는 파라미터 하나하나에 뜻이 있는 것처럼 보이게 합니다. 신경망의 가중치는 여럿이 함께 일해서, 하나만 떼어 해석하기 어렵습니다.</li>
+    <li>여기서 나온 순위와 숫자는 이 장난감 데이터세트의 답입니다. 실제 배터리 데이터에서는 다시 벤치를 돌려야 합니다.</li>
+  </ul>
+  <div class="next"><a href="regression.html"><b>수명 예측 장치 ① 엔진부</b><br>같은 셀로 수명(회)을 맞히는 자매편</a><a href="https://adminmrobo.github.io/machine_learning_model_atlas/"><b>머신러닝 모델 도감</b><br>엔진 7종의 원래 카드</a><a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html"><b>신경망 도감</b><br>DFF·오토인코더의 원래 카드</a><a href="https://adminmrobo.github.io/optimization_3d_map/"><b>좌표축 위의 그릇</b><br>손실 지형과 학습률·배치</a></div>
+</div></section>
+
+<section class="sec" id="outro" aria-labelledby="h-outro"><div class="wrap">
+  <h2 id="h-outro">아웃트로</h2>
+  <div data-dlg="outro"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <h3>출처</h3>
+  <table><thead><tr><th>#</th><th>자료</th><th>이 페이지에서 쓴 곳</th></tr></thead><tbody>
+    <tr><td>[0]</td><td>eeanimation, 「AI Parameters」 카드 10장 (01 What are AI parameters? ~ 10 Bigger is not automatically better) — 사용자 제공 이미지, 원 게시물 주소·게시일 미확인</td><td>정비 작업장 ①~⑩의 주제와 순서, 카드 속 예시 숫자(−1.8, 15개, 2 GB, 2.30, 0.48). 그림은 페이지에 넣지 않고 새로 그림</td></tr>
+    <tr><td>[A]</td><td>안상선, 「머신러닝 모델 도감」 · 「신경망 도감」 (adminmrobo.github.io)</td><td>엔진 창고의 엔진 목록과 분류</td></tr>
+    <tr><td>[1]</td><td>Rumelhart, D. E., Hinton, G. E., Williams, R. J. (1986). Learning representations by back-propagating errors. Nature 323, 533–536.</td><td>⑥ 역전파</td></tr>
+    <tr><td>[2]</td><td>Kingma, D. P., Ba, J. (2015). Adam: A Method for Stochastic Optimization. ICLR.</td><td>⑦·⑧ Adam</td></tr>
+    <tr><td>[3]</td><td>Goodfellow, I., Bengio, Y., Courville, A. (2016). Deep Learning. MIT Press. 6·7·8장</td><td>⑤ 손실, ⑧ 미니배치·조기 종료, ⑩ 용량과 일반화</td></tr>
+    <tr><td>[4]</td><td>Hu, E. J. 외 (2022). LoRA: Low-Rank Adaptation of Large Language Models. ICLR.</td><td>⑨ 어댑터(낮은 순위 보정)</td></tr>
+    <tr><td>[5]</td><td>Ba, J. L., Kiros, J. R., Hinton, G. E. (2016). Layer Normalization. arXiv:1607.06450.</td><td>③ γ·β</td></tr>
+    <tr><td>[6]</td><td>Zhang, B., Sennrich, R. (2019). Root Mean Square Layer Normalization. NeurIPS 32.</td><td>③ RMSNorm은 γ만</td></tr>
+    <tr><td>[7]</td><td>Vaswani, A. 외 (2017). Attention Is All You Need. NeurIPS 30.</td><td>③ 언어 모델 속 파라미터 자리</td></tr>
+    <tr><td>[8]</td><td>Rajbhandari, S., Rasley, J., Ruwase, O., He, Y. (2020). ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. SC20.</td><td>④ 학습 때 파라미터당 약 16바이트</td></tr>
+    <tr><td>[9]</td><td>Ouyang, L. 외 (2022). Training language models to follow instructions with human feedback. NeurIPS 35.</td><td>⑨ 선호 학습</td></tr>
+    <tr><td>[10]</td><td>Prechelt, L. (1998). Early Stopping — But When? In Neural Networks: Tricks of the Trade. Springer.</td><td>⑧·벤치 조기 종료</td></tr>
+    <tr><td>[11]</td><td>Severson, K. A., Attia, P. M. 외 (2019). Data-driven prediction of battery cycle life before capacity degradation. Nature Energy 4, 383–391.</td><td>데이터세트 — 실제 배터리 예측 연구는 충·방전 곡선을 쓴다</td></tr>
+    <tr><td>[12]</td><td>Breiman, L. (2001). Random Forests. Machine Learning 45, 5–32. · Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machine. Annals of Statistics 29(5). · Cortes, C., Vapnik, V. (1995). Support-vector networks. Machine Learning 20.</td><td>엔진 창고 — 랜덤 포레스트, 그래디언트 부스팅, SVM</td></tr>
+  </tbody></table>
+  <h3>예시값·설명용 모형인 것</h3>
+  <ul><li>배터리 셀 1,000개(공장 A)와 400개(공장 B)의 측정값·불량 여부 — 페이지가 직접 만든 모형(시드 2026·3031). 실제 측정 데이터 아님</li><li>엔진 9종은 이 페이지가 외부 라이브러리 없이 직접 구현한 단순판(예: 부스팅은 XGBoost 자체가 아니라 같은 원리의 작은 구현). 모든 학습 결과·손실·기울기·검사 값은 페이지가 직접 계산</li><li>합격 기준(F1 0.80, BMS 메모리 8 KB, 초기 손실 ln 2 ± 0.25)은 설명용 예시값</li><li>3D 공장은 개략 모형이며 실제 공장 배치가 아님</li></ul>
+  <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다. 참고한 카드의 그림은 이 페이지에 넣지 않았습니다.</p>
+  <p>글 · 안상선 ((주)M-Robo 대표) · <a href="https://adminmrobo.github.io/who_am_i/who_am_i.html">저자 소개</a> · <a href="https://adminmrobo.github.io/machine_learning_model_atlas/">머신러닝 모델 도감</a> · <a href="https://adminmrobo.github.io/neural_network_atlas/0_neural_network_essence.html">신경망 도감</a></p>
+</div></footer>
+
+<script>
+/*@@SPRITES@@*/
+/*@@BM@@*/
+/*@@EN@@*/
+/*@@COMMON@@*/
+/*@@PAGE@@*/
+</script>
+</body>
+</html>

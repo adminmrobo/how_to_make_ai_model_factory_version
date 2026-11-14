@@ -1,0 +1,85 @@
+{
+  "series_ko": "자율주행차 배터리 AI 공장",
+  "title_ko": "배터리 불량품 판정기 ① 엔진부 제작",
+  "site_title": "배터리 불량품 판정기 ① 엔진부 제작 — 도감에서 엔진을 골라 장착하기",
+  "site_url": "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/",
+  "ontology": {
+    "pages": [
+      {
+        "path": "index.html",
+        "kg": true,
+        "export": true
+      },
+      {
+        "path": "regression.html",
+        "kg": true,
+        "export": true
+      }
+    ],
+    "files": [
+      "build/kg.json",
+      "build/refs.json",
+      "build/meta.json",
+      "build/kg_reg.json",
+      "build/refs_reg.json",
+      "build/meta_reg.json"
+    ]
+  },
+  "i18n": {
+    "langs": [
+      "ko"
+    ],
+    "pages": {
+      "ko": 2
+    },
+    "readme_langs": [
+      "ko"
+    ]
+  },
+  "languages": [
+    "ko"
+  ],
+  "items": [
+    {
+      "id": "cover_01",
+      "role": "cover",
+      "path": "img/cover_01.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... shared lab assembly line, EV battery modules, self-driving car model; device chassis with green and red indicator lamps ... No text (전체: COVER_01_battery_model_factory.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null
+    },
+    {
+      "id": "cover_01r",
+      "role": "cover",
+      "path": "img/cover_01r.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "doc",
+        "asst",
+        "fly",
+        "jupanbot"
+      ],
+      "robot": "jupanbot-v2",
+      "prompt_en": "Website top cover illustration, wide 16:9 ... same scene as cover_01; device chassis with an analog dial gauge ... No text (전체: COVER_01r_battery_life_regressor.md)",
+      "source_of": null,
+      "status": "pending",
+      "received": null
+    }
+  ],
+  "updated": "2026-11-14"
+}

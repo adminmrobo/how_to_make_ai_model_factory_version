@@ -1,0 +1,200 @@
+{
+  "page": "01_battery_classifier_engine",
+  "domain": [
+    "ai"
+  ],
+  "format": "duel",
+  "runs": [
+    {
+      "run": 1,
+      "date": "2026-11-14",
+      "skill": "1.14",
+      "reviewer": "claude-opus-5-5 (만든 대화와 같은 대화 — 교차 검수 아님)",
+      "machine": {
+        "M1": "pass",
+        "M2": "pass (390)",
+        "M3": "pass (fonts.googleapis.com만)",
+        "M4": "pass",
+        "M5": "pass (끊긴 관계 0)",
+        "M6": "pass",
+        "M7": "pass",
+        "M8": "n/a",
+        "M9": "n/a"
+      },
+      "scores": {
+        "A": 4.0,
+        "B": 3.0,
+        "C": 3.5,
+        "D": 3.0,
+        "E": 3.5,
+        "F": 3.5
+      },
+      "tasks_open": [
+        "#outro 초파리 대사 근거 없음",
+        "#duel 판정 불확실성(부트스트랩 95% 구간 0 포함)",
+        "#bench DFF만 검증으로 멈춤",
+        "#bench 순위 잡음 표시",
+        "#mount 오토인코더 문턱에 라벨 사용 명시",
+        "#data Severson 인용 범위·배터리 일반 서술",
+        "#mount 판정 문턱·비용 맛보기",
+        "#why 학습 목표·수업 경로",
+        "#bench 생성 AI 연결 상자",
+        "#w4 주판봇 수치 대사",
+        "#factory 모바일 3D 라벨",
+        "#bench 추론 시간·설명 가능성 열"
+      ],
+      "tasks_done": [],
+      "note": ""
+    },
+    {
+      "run": 2,
+      "date": "2026-11-14",
+      "skill": "1.14",
+      "reviewer": "claude-opus-5-5 (같은 대화 — 교차 검수 아님)",
+      "machine": {
+        "M1": "pass",
+        "M2": "pass (390)",
+        "M3": "pass",
+        "M4": "pass",
+        "M5": "pass",
+        "M6": "pass",
+        "M7": "pass",
+        "M8": "n/a",
+        "M9": "n/a"
+      },
+      "scores": {
+        "A": 4.0,
+        "B": 4.0,
+        "C": 4.0,
+        "D": 3.5,
+        "E": 4.0,
+        "F": 4.0
+      },
+      "tasks_open": [
+        "#mount 문턱·비용은 맛보기 수준 — 본격 비용 분석은 2편",
+        "#factory 모바일 3D 글자 크기"
+      ],
+      "tasks_done": [
+        "#outro 초파리 대사",
+        "#duel 10번 나눠 평균·이긴 횟수로 판정 (R 유지, 10/10)",
+        "#mount·#atlas 오토인코더 라벨 사용 명시",
+        "#data Severson 인용 범위",
+        "#bench DFF 고정 120 에포크(검증 안 봄)",
+        "#bench 5번 나눠 평균 ± 편차, 상위 3종 동률 해석",
+        "#w4 주판봇 수치 대사 제거",
+        "#why 학습 목표·수업 경로, #tune 접기",
+        "#mount 판정 문턱·비용 슬라이더",
+        "#bench 생성 AI 연결 상자",
+        "#bench 추론 시간·설명 가능성 열",
+        "#factory 모바일 기본 시점·캐릭터 크기"
+      ],
+      "note": ""
+    },
+    {
+      "run": 3,
+      "date": "2026-11-14",
+      "target": "regression.html v1.0",
+      "machine": {
+        "M1": [],
+        "M2": 390,
+        "M4": [
+          0,
+          0
+        ],
+        "M5": "ok",
+        "M6": [],
+        "M7": []
+      },
+      "pending": [
+        "cover_01r"
+      ],
+      "note": "회귀 편 첫 점검: 콘솔 오류 0, 390px 가로 넘침 없음, 상호작용 따라가기 후 QC 10/10 합격, KG 노드 103·관계 161 끊긴 관계 0. 페르소나 재채점은 사용자 요청 시."
+    },
+    {
+      "run": 4,
+      "date": "2026-11-14",
+      "target": "regression.html v1.0",
+      "skill": "1.14",
+      "reviewer": "claude-opus-5-5 (만든 대화와 같은 대화 — 교차 검수 아님)",
+      "machine": {
+        "M1": "pass",
+        "M2": "pass (390)",
+        "M3": "pass (fonts.googleapis.com만)",
+        "M4": "pass",
+        "M5": "pass (노드 103·관계 161, 끊긴 관계 0)",
+        "M6": "fail: cover_01r가 IMG 명세에 없음",
+        "M7": "pass",
+        "M8": "n/a",
+        "M9": "n/a"
+      },
+      "scores": {
+        "A": 3.5,
+        "B": 3.0,
+        "C": 3.0,
+        "D": 3.0,
+        "E": 3.5,
+        "F": 3.5
+      },
+      "tasks_open": [
+        "#data·#bench 잡음 바닥(MAE 약 24회) 미표시",
+        "#how·#atlas·#w4 '분류기' 잔재 3곳",
+        "#atlas·#bench 가우시안 프로세스 '불확실성' 주장만 있고 표시 없음",
+        "#w5 시드 11 초기 손실 0.453은 운(10개 시드 평균 1.163)",
+        "M6 cover_01r IMG 명세 등록",
+        "#w9·#bench R² 음수·MAE/RMSE/MSE 정리",
+        "#mount 과대예측 비대칭 비용",
+        "#w10 은닉 2개 최적 단정(한 시드)",
+        "#duel 부스팅 손잡이 공정성 한 줄(작은 부스팅도 0/10 확인)",
+        "#w10 '손실' 문구와 그림(평균 오차) 불일치",
+        "#duel·퀴즈 분류/회귀 구분 문항"
+      ],
+      "tasks_done": [],
+      "note": ""
+    },
+    {
+      "run": 5,
+      "date": "2026-11-14",
+      "target": "regression.html v1.1",
+      "skill": "1.14",
+      "reviewer": "claude-opus-5-5 (같은 대화 — 교차 검수 아님)",
+      "machine": {
+        "M1": "pass",
+        "M2": "pass (390)",
+        "M3": "pass",
+        "M4": "pass",
+        "M5": "pass",
+        "M6": "pass (cover_01r IMG 등록, 그림은 생성 대기)",
+        "M7": "pass",
+        "M8": "n/a",
+        "M9": "n/a"
+      },
+      "scores": {
+        "A": 4.0,
+        "B": 4.0,
+        "C": 4.0,
+        "D": 3.5,
+        "E": 4.0,
+        "F": 4.0
+      },
+      "tasks_open": [
+        "#mount 여유분은 검증 셀로 고른 값 — 봉인 시험 확인은 2편",
+        "#bench 가우시안 프로세스 잡음·길이 척도 고정(주변 우도 최적화 없음)",
+        "cover_01r 그림 생성"
+      ],
+      "tasks_done": [
+        "#data·#bench 잡음 바닥 ≈ 23.9회 표시·해석",
+        "#how·#atlas·#w4 '분류기' → '회귀기'",
+        "#mount 가우시안 프로세스 95% 예측 구간(커버리지 97%)",
+        "#w5 시드 10개 평균·범위로 판정",
+        "M6 cover_01r IMG 등록",
+        "#bench·#w9 오차 세 가지·음수 R² 설명",
+        "#mount 비대칭 비용 슬라이더·최소 비용 여유분",
+        "#w10 시드 3개 평균·범위, 단정 완화",
+        "#w10 손실→오차 문구",
+        "#duel 작은 부스팅(20그루) 손잡이 확인",
+        "#duel 분류/회귀 구분 퀴즈, #bench 보상 모델 연결"
+      ],
+      "note": ""
+    }
+  ]
+}
