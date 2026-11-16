@@ -355,9 +355,10 @@ footer td,footer th{border:1px solid var(--rule);padding:6px 8px;text-align:left
 
 <!-- lab-cover -->
 <div class="cover" id="cover" data-img="cover_06"><div class="frame">
-  <canvas id="cvCover" aria-hidden="true"></canvas>
-  <span class="cap">표지 그림 자리 · cover_06 (그림을 받으면 바뀝니다)</span>
-  <div class="cast4"><img data-mood="fly_magnify" alt="" aria-hidden="true" class="s"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_calc" alt="" aria-hidden="true"></div>
+  <picture>
+    <source type="image/webp" srcset="img/cover_06_960.webp 960w, img/cover_06.webp 1600w" sizes="(max-width:1080px) 100vw, 1080px">
+    <img class="art" src="img/cover_06.webp" width="1600" height="900" alt="방폭 유리 챔버의 프레스가 작은 배터리 셀을 누르자 연기와 작은 불꽃이 나고, 박사는 확률 곡선을 가리키고 하루·초파리 연구원·주판봇이 열화상 화면과 비상정지 버튼 옆에서 지켜보는 장면" fetchpriority="high" decoding="async">
+  </picture>
   <span class="cover-chip">⑤ 배터리 열폭주 실험 랩 · 로지스틱 모델</span>
 </div></div>
 <!-- /lab-cover -->

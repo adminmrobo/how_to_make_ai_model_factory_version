@@ -210,9 +210,10 @@
    "robot": "jupanbot-v2",
    "prompt_en": "Website top cover illustration, wide 16:9 ... same lab line; blast-proof glass chamber with a hydraulic press over a small battery cell, gray smoke and a small flame inside, thermal camera screen, S-shaped probability curve on a whiteboard (전체: COVER_PROMPT_06.md)",
    "source_of": null,
-   "status": "pending",
-   "received": null,
-   "page": "blast.html"
+   "status": "done",
+   "received": "2026-11-17",
+   "page": "blast.html",
+   "note": "공장 라이브러리 참조 수정본. 남은 차이: 하루 앞머리 일부 노출, 초파리 다리 표현, 주판봇 주판·안테나, 보드 점 3개(프롬프트는 4개)"
   }
  ],
  "updated": "2026-11-17"
