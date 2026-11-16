@@ -240,8 +240,8 @@
    "id": "lab:sim/blast-lab-3d",
    "type": "Simulation",
    "label": {
-    "ko": "3D 방폭 실험 랩 12칸",
-    "en": "3D crush-test lab"
+    "ko": "3D 방폭 시험실",
+    "en": "3D blast-proof test room"
    },
    "page": "blast",
    "anchor": "#lab",

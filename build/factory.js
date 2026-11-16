@@ -11,7 +11,12 @@ var ST=FS.ST,NS=FS.NS,K=FS.K,FORM=8,STACK=5;
 
 /* ══ 상태와 계산 ══ */
 var CFG=FS.defaults(),R=null,BASE=FS.run(FS.defaults()),OPT=null,K1PICK=-1,LOG=[];
-function rerun(){R=FS.run(CFG,{labels:25});LI=0;all();}
+function rerun(){R=FS.run(CFG,{labels:25});LI=0;all();evCheck();}
+/* 공장 이벤트: 조건이 거짓→참으로 바뀔 때 한 번 뜬다 (fac_events.js) */
+function evCheck(){if(typeof FEV==='undefined')return;var o=R;
+  FEV.cond('overload',o.wip>1500,{text:'라인 속도 '+fmt(CFG.speed,2)+'×에서 병목('+ST[o.bottleneck].name+') 앞에 셀 '+n0(o.wip)+'개가 쌓였습니다(7일 끝). 주판봇이 비상정지 버튼을 눌렀어요!'});
+  FEV.cond('heat',o.tmax>60,{text:'최고 기계 온도 '+fmt(o.tmax,1)+' °C. 60 °C를 넘으면 센서가 거짓말을 시작합니다. 지금 라벨 오기율 '+pct(o.labelErr)+'(제약 3% 이하).'});
+  FEV.cond('power',o.perDay.elec>BASE.perDay.elec*1.1,{text:'하루 전기료 '+won(o.perDay.elec)+' — 기본 설정보다 '+pct(o.perDay.elec/BASE.perDay.elec-1,0)+' 많습니다. 최대부하 시간(kWh당 210원, 예시값)에 건조 오븐이 돌고 있어요.'});}
 var timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(rerun,60);}
 
 /* ══ 조종실 ══ */

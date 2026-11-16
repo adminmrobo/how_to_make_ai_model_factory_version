@@ -16,8 +16,10 @@ a.slot:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08)}
 .slot .no{font-size:13px;color:var(--muted)}
 .slot h3{margin:0;font-size:18px}
 .slot p{margin:0;font-size:14px;line-height:1.6}
-.slot .st{position:absolute;right:12px;top:12px}
+.slot .st{position:absolute;right:12px;top:12px;z-index:1}
 .slot.empty{border:2px dashed var(--rule);background:var(--panel);color:var(--muted)}
+.slot .thumb{display:block;width:calc(100% + 32px);max-width:none;height:auto;aspect-ratio:16/9;object-fit:cover;margin:-14px -16px 4px;border-radius:13px 13px 0 0;border-bottom:1px solid var(--rule);background:#f6f9fb}
+.labband .thumb3{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1px solid var(--rule)}
 .slot .face{display:flex;gap:6px;align-items:flex-end;margin-top:6px}
 .slot .face img{width:40px;height:40px}
 .slot .kind{display:inline-block;font-size:12.5px;border:1px solid var(--rule);border-radius:6px;padding:0 7px;margin-right:4px}
@@ -35,26 +37,6 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
 .labband .kind{display:inline-block;font-size:12.5px;border:1px solid var(--rule);border-radius:6px;padding:0 7px;margin-right:4px}
 .labband .face{display:flex;gap:6px;align-items:flex-end;margin-top:6px}.labband .face img{width:44px;height:44px}
 @media(max-width:640px){.labband{grid-template-columns:1fr}}
-.evtoast{position:fixed;right:16px;bottom:16px;z-index:60;width:min(380px,calc(100vw - 32px));background:#fff;border:2px solid var(--ev,#c9302c);border-radius:14px;box-shadow:0 10px 30px rgba(22,33,43,.22);overflow:hidden}
-.evtoast canvas{display:block;width:100%;height:190px;border-bottom:1px solid var(--rule)}
-.evtoast .evb{padding:10px 12px}
-.evtoast .evh{display:flex;align-items:center;gap:8px}
-.evtoast .evlv{font-size:12px;font-weight:800;color:#fff;background:var(--ev);border-radius:6px;padding:1px 7px;flex:none}
-.evtoast .evt{font-size:15px;line-height:1.35;flex:1}
-.evtoast .evx{border:0;background:none;font-size:22px;line-height:1;cursor:pointer;color:var(--muted);padding:0 2px}
-.evtoast .evp{margin:6px 0;font-size:13.5px;line-height:1.55}
-.evtoast .evf{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
-.evtoast .evgo{font-size:13.5px;font-weight:700;color:var(--ev)}
-.evtoast .evwho{font-size:11.5px;color:var(--muted)}
-.evtoast.in{animation:evin .45s cubic-bezier(.2,1.4,.4,1)}
-@keyframes evin{from{transform:translateY(30px) scale(.9);opacity:0}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){.evtoast.in{animation:none}}
-.evdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
-.evboard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:14px;align-items:start}
-.evboard canvas{width:100%;height:200px;border-radius:12px;border:1px solid var(--rule);background:#fff}
-#ev-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-#ev-log{list-style:none;padding:0;margin:6px 0 0;font-size:13.5px}#ev-log li{padding:3px 0;border-bottom:1px dotted var(--rule)}
-@media(max-width:700px){.evboard{grid-template-columns:1fr}.evtoast canvas{height:140px}}
 </style>
 </head>
 <body>
@@ -78,6 +60,33 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
 </div></header>
 
 <main>
+<section class="sec" id="factories" aria-labelledby="h-fac"><div class="wrap">
+  <h2 id="h-fac">공장 목록</h2>
+  <p class="lead">카드의 그림은 각 공장 페이지에 있는 <b>3D 모형</b>을 그대로 찍은 것입니다. 카드를 눌러 들어가면 끌어서 돌려 보고, 공정을 눌러 볼 수 있습니다.</p>
+  <div class="slots">
+    <a class="slot" href="classifier.html" data-fac="classifier"><img class="thumb" src="img/fac3d_classifier.webp" width="960" height="540" loading="lazy" decoding="async" alt="① 판정기 엔진 조립 공장 3D — 12공정 라인과 일하는 연구실 식구들"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ① · 엔진부 제작</span><h3>배터리 불량품 판정기</h3>
+      <p><span class="kind">분류 모델</span>셀 측정값으로 불량을 가립니다. 머신러닝·신경망 도감에서 엔진 9종을 달아 벤치에 올리고, 신경망 엔진은 정비 작업장 10곳에서 손봅니다.</p>
+      <div class="face"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_chart" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="regression.html" data-fac="regression"><img class="thumb" src="img/fac3d_regression.webp" width="960" height="540" loading="lazy" decoding="async" alt="② 수명 예측 장치 엔진 조립 공장 3D"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ② · 엔진부 제작</span><h3>배터리 수명 예측 장치</h3>
+      <p><span class="kind">회귀 모델</span>셀이 충·방전을 몇 번 견딜지 숫자로 맞힙니다. 회귀 엔진 9종, 잡음 바닥, 과대예측 비용, 예측 구간.</p>
+      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="factory.html" data-fac="factory"><img class="thumb" src="img/fac3d_factory.webp" width="960" height="540" loading="lazy" decoding="async" alt="③ 배터리 생산 공장 3D — 믹싱부터 검사까지 자동화 라인"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ③ · 생산 라인</span><h3>배터리 생산 공장</h3>
+      <p><span class="kind">3D 시뮬레이션</span><span class="kind">최적화 실습 키트</span>완전 자동화 10공정. 센서 값이 라벨에 기록되고, 증산하면 병목·불량, 24시간 가동하면 고열로 센서 오기. 전기료까지 따져 최적 운전을 찾습니다.</p>
+      <div class="face"><img data-mood="sia_guide" alt="" aria-hidden="true"><img data-mood="moa_report" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="solar.html" data-fac="solar"><img class="thumb" src="img/fac3d_solar.webp" width="960" height="540" loading="lazy" decoding="async" alt="④ 태양광 셀 공장 3D — 방진복을 입은 식구들"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ④ · 품질 · 6시그마</span><h3>태양광 패널 셀 생산 공장</h3>
+      <p><span class="kind">3D 시뮬레이션</span><span class="kind">간이 판정기</span>원재료 수입처·공장·2·3교대·계절·생산량에 따라 셀 효율 분포가 달라지고, 불량 판정 기준도 달라져야 합니다. 한 조건에서 만든 AI 간이 판정기로 현장의 고충을 계산합니다.</p>
+      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
+    <a class="slot" href="blast.html" data-fac="blast"><img class="thumb" src="img/fac3d_blast.webp" width="960" height="540" loading="lazy" decoding="async" alt="⑤ 방폭 시험실 3D — 유리 챔버 안에서 셀이 폭발하고 관제실에서 지켜보는 장면"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ⑤ · 안전 · 증설</span><h3>배터리 열폭주 실험 랩</h3>
+      <p><span class="kind">3D 방폭 시험실</span><span class="kind">로지스틱 모델</span><span class="kind">CSV · Colab</span>소방 당국의 압착 실험 뉴스 사례(충전율 100%만 화염)를 출발점으로, 방폭 챔버 안 압착 시험(폭발 장면 포함)을 반복해 연기·화염 확률 곡선을 세우고, 실험 기록 CSV를 Colab에서 직접 분석합니다.</p>
+      <div class="face"><img data-mood="robo_calc" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
+    <div class="slot empty"><span class="st"><span class="lamp">예비 부지</span></span><span class="no">공장 ⑥</span><h3>예비 부지</h3><p>다음 공장을 지을 자리입니다. 준비 중.</p></div>
+    <div class="slot empty"><span class="st"><span class="lamp">예비 부지 · 증설</span></span><span class="no">공장 ⑦</span><h3>예비 부지</h3><p>⑤ 열폭주 실험 랩을 지으며 늘린 부지입니다. 준비 중.</p></div>
+    <a class="slot ext" data-fac="cement" href="https://adminmrobo.github.io/smart_factory_world/cement/" rel="noopener"><span class="st"><span class="lamp ok">이웃 공장</span></span><span class="no">공장 목록 밖 · 스마트 팩토리 World</span><h3>옆에 있는 시멘트 공장</h3>
+      <p><span class="kind">3D 가상 공장</span>원료 배합 → 킬른(소성) → 냉각기 → 분쇄기 → 사일로·출하. 킬른 지연과 병목 신호판, 28일 뒤 강도를 미리 맞히는 AI와 압축 시험을 다룹니다. 같은 박사·하루·초파리 연구원이 일하는 이웃 공장입니다. 누르면 스마트 팩토리 World 사이트로 이동합니다.</p>
+      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
+  </div>
+</div></section>
+
 <section class="sec" id="curriculum" aria-labelledby="h-cur"><div class="wrap">
   <h2 id="h-cur">강의 커리큘럼과 이 사이트</h2>
   <p class="lead">강의에서 다룬 세 갈래를 공장 하나하나에 나눠 담았습니다. 강의 시간에는 화면을 띄워 직접 조작하며 시연하고, 수업 뒤에는 학습자가 혼자 다시 돌려 볼 수 있게 만들었습니다.</p>
@@ -89,31 +98,6 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
   <p class="mnote">캐릭터(박사·조수 하루·초파리 연구원·주판봇·인턴 시아·모아)는 모든 공장에서 같은 자리에서 일합니다. 페이지마다 퀴즈·대결·지식 색인이 있어 강의 뒤 복습에 씁니다.</p>
 </div></section>
 
-<section class="sec" id="factories" aria-labelledby="h-fac"><div class="wrap">
-  <h2 id="h-fac">공장 목록</h2>
-  <div class="slots">
-    <a class="slot" href="classifier.html" data-fac="classifier"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ① · 엔진부 제작</span><h3>배터리 불량품 판정기</h3>
-      <p><span class="kind">분류 모델</span>셀 측정값으로 불량을 가립니다. 머신러닝·신경망 도감에서 엔진 9종을 달아 벤치에 올리고, 신경망 엔진은 정비 작업장 10곳에서 손봅니다.</p>
-      <div class="face"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_chart" alt="" aria-hidden="true"></div></a>
-    <a class="slot" href="regression.html" data-fac="regression"><span class="st"><span class="lamp ok">가동 중</span></span><span class="no">공장 ② · 엔진부 제작</span><h3>배터리 수명 예측 장치</h3>
-      <p><span class="kind">회귀 모델</span>셀이 충·방전을 몇 번 견딜지 숫자로 맞힙니다. 회귀 엔진 9종, 잡음 바닥, 과대예측 비용, 예측 구간.</p>
-      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
-    <a class="slot" href="factory.html" data-fac="factory"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ③ · 생산 라인</span><h3>배터리 생산 공장</h3>
-      <p><span class="kind">3D 시뮬레이션</span><span class="kind">최적화 실습 키트</span>완전 자동화 10공정. 센서 값이 라벨에 기록되고, 증산하면 병목·불량, 24시간 가동하면 고열로 센서 오기. 전기료까지 따져 최적 운전을 찾습니다.</p>
-      <div class="face"><img data-mood="sia_guide" alt="" aria-hidden="true"><img data-mood="moa_report" alt="" aria-hidden="true"></div></a>
-    <a class="slot" href="solar.html" data-fac="solar"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ④ · 품질 · 6시그마</span><h3>태양광 패널 셀 생산 공장</h3>
-      <p><span class="kind">3D 시뮬레이션</span><span class="kind">간이 판정기</span>원재료 수입처·공장·2·3교대·계절·생산량에 따라 셀 효율 분포가 달라지고, 불량 판정 기준도 달라져야 합니다. 한 조건에서 만든 AI 간이 판정기로 현장의 고충을 계산합니다.</p>
-      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
-    <a class="slot" href="blast.html" data-fac="blast"><span class="st"><span class="lamp ok">새로 가동</span></span><span class="no">공장 ⑤ · 안전 · 증설</span><h3>배터리 열폭주 실험 랩</h3>
-      <p><span class="kind">3D 방폭 챔버</span><span class="kind">로지스틱 모델</span>소방 당국의 압착 실험 뉴스 사례(충전율 100%만 화염)를 출발점으로, 반복 실험으로 연기·화염 확률 곡선을 세우고 보관·유통 충전율 기준을 따집니다.</p>
-      <div class="face"><img data-mood="robo_calc" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
-    <div class="slot empty"><span class="st"><span class="lamp">예비 부지</span></span><span class="no">공장 ⑥</span><h3>예비 부지</h3><p>다음 공장을 지을 자리입니다. 준비 중.</p></div>
-    <div class="slot empty"><span class="st"><span class="lamp">예비 부지 · 증설</span></span><span class="no">공장 ⑦</span><h3>예비 부지</h3><p>⑤ 열폭주 실험 랩을 지으며 늘린 부지입니다. 준비 중.</p></div>
-    <a class="slot ext" data-fac="cement" href="https://adminmrobo.github.io/smart_factory_world/cement/" rel="noopener"><span class="st"><span class="lamp ok">이웃 공장</span></span><span class="no">공장 목록 밖 · 스마트 팩토리 World</span><h3>옆에 있는 시멘트 공장</h3>
-      <p><span class="kind">3D 가상 공장</span>원료 배합 → 킬른(소성) → 냉각기 → 분쇄기 → 사일로·출하. 킬른 지연과 병목 신호판, 28일 뒤 강도를 미리 맞히는 AI와 압축 시험을 다룹니다. 같은 박사·하루·초파리 연구원이 일하는 이웃 공장입니다. 누르면 스마트 팩토리 World 사이트로 이동합니다.</p>
-      <div class="face"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="fly_magnify" alt="" aria-hidden="true"></div></a>
-  </div>
-</div></section>
 
 <section class="sec" id="testlab" aria-labelledby="h-lab"><div class="wrap">
   <h2 id="h-lab">시제품 테스트 랩실</h2>
@@ -122,22 +106,17 @@ a.labband:hover{border-color:var(--info);box-shadow:0 2px 10px rgba(22,33,43,.08
       <h3>생선 통조림 분류 장비 — 진짜 물고기로 시험하기</h3>
       <p><span class="kind">3D 시험 라인</span><span class="kind">3D 판정 지형</span>Fish Market 시료 1,580마리로 장비 34대를 조립하고, 봉인해 둔 진짜 물고기 158마리를 12칸 시험 라인에 흘립니다. 랩 점수 99%가 실제 테스트에서 90% 안팎이 되는 까닭과, 시험지를 엿보고 고르면 생기는 일을 봅니다.</p>
       <div class="face"><img data-mood="fly_magnify" alt="" aria-hidden="true"><img data-mood="robo_calc" alt="" aria-hidden="true"><img data-mood="asst_report" alt="" aria-hidden="true"></div></div>
-    <canvas id="cvLabMini" aria-hidden="true"></canvas></a>
+    <img class="thumb3" src="img/fac3d_testlab.webp" width="960" height="540" loading="lazy" decoding="async" alt="시제품 테스트 랩실 3D — 물고기 시험 라인"></a>
 </div></section>
 
 <section class="sec" id="events" aria-labelledby="h-ev"><div class="wrap">
-  <h2 id="h-ev">공장 이벤트 상황판</h2>
-  <p class="lead">공장에서 과부하, 불량품 대량 발생 같은 일이 터지면 화면 오른쪽 아래에 <b>경고 알림</b>이 뜨고, 해당 공장 카드의 램프가 빨갛게 바뀝니다. 알림의 숫자는 각 공장 페이지의 설명용 모형에서 가져왔고, "보러 가기"를 누르면 원인을 직접 돌려 볼 수 있습니다.</p>
-  <div class="evboard">
+  <h2 id="h-ev">공장 이벤트 안내</h2>
+  <p class="lead">과부하·고열·불량품 대량 발생 같은 이벤트는 이 목록 화면에서는 뜨지 않습니다. <b>그 공장에 들어가서, 이벤트를 일으킬 조건이 실제로 맞았을 때</b> 공장 화면 오른쪽 아래에 경고 알림으로 뜹니다. 예컨대 ③ 배터리 생산 공장에서 라인 속도를 올려 재공품이 1,500셀을 넘기면 "과부하 경보"가, ⑤ 열폭주 실험 랩에서 압착한 셀이 화염 단계로 가면 "열폭주 경보"가 뜹니다.</p>
+  <div class="evwrap">
     <div><canvas id="cvEvPrev" aria-label="이벤트 그림 미리보기: 공장 복장을 입은 연구실 식구들이 과부하·불량·고열 같은 사고에 대응하는 장면이 번갈아 나온다"></canvas></div>
-    <div>
-      <div class="ctrl"><div class="group"><button class="bt primary" id="ev-rand" type="button">이벤트 일으키기</button><button class="bt" id="ev-auto" type="button" aria-pressed="true">자동 이벤트 켜짐 (끄기)</button></div></div>
-      <div id="ev-chips" role="group" aria-label="이벤트 골라 일으키기"></div>
-      <h3 style="font-size:15px;margin:10px 0 0">최근 이벤트</h3>
-      <ul id="ev-log"><li class="muted">아직 없음 — 위 버튼을 누르거나 잠시 기다리세요.</li></ul>
-    </div>
+    <div id="fev-board"></div>
   </div>
-  <p class="mnote">이벤트는 교육용 연출입니다. 실제 공장의 경보가 아닙니다. 캐릭터 그림은 <a href="https://adminmrobo.github.io/fruitfly-lab-expressions/factory.html">공장 복장·동작 벡터</a>입니다.</p>
+  <p class="mnote">이벤트는 교육용 연출입니다. 실제 공장의 경보가 아닙니다. 각 공장 페이지 아래쪽 "이 공장의 이벤트"에서 조건과 발생 여부를 볼 수 있습니다. 캐릭터 그림은 <a href="https://adminmrobo.github.io/fruitfly-lab-expressions/factory.html">공장 복장·동작 벡터</a>입니다.</p>
 </div></section>
 
 <section class="sec" id="map" aria-labelledby="h-map"><div class="wrap">

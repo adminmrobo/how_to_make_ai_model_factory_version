@@ -21,9 +21,16 @@ function bindCond(){U.btns($('#g-F'),[[650,'650 kg'],[1300,'1,300 kg (뉴스)'],
 bindCond();
 $('#r-soc').oninput=function(){cond.soc=+this.value;$('#v-soc').textContent=cond.soc+'%';labInfo();};
 function rnd(){return BS.rng(seedN++);}
-function press(n){var r=rnd();for(var i=0;i<n;i++){var tr=BS.trial({soc:cond.soc,F:cond.F,shape:cond.shape,T:cond.T},r);DATA.push(tr);LAST=tr;}tPress=Lab.t();refit();labInfo();drawTemp();upLogit();upPolicy();}
+function press(n){var r=rnd();for(var i=0;i<n;i++){var tr=BS.trial({soc:cond.soc,F:cond.F,shape:cond.shape,T:cond.T},r);DATA.push(tr);LAST=tr;}tPress=Lab.t();Lab.go(LAST);refit();labInfo();drawTemp();upLogit();upPolicy();}
 $('#b-press').onclick=function(){press(1);};$('#b-20').onclick=function(){press(20);};
-$('#b-mix').onclick=function(){var d=BS.design(60,seedN++,{});DATA=DATA.concat(d);LAST=d[d.length-1];tPress=Lab.t();refit();labInfo();drawTemp();upLogit();upPolicy();};
+$('#b-mix').onclick=function(){var d=BS.design(60,seedN++,{});DATA=DATA.concat(d);LAST=d[d.length-1];tPress=Lab.t();Lab.go(LAST);refit();labInfo();drawTemp();upLogit();upPolicy();};
+$('#b-demo').onclick=function(){var r=BS.rng(seedN++);Lab.go({soc:100,F:2000,shape:cond.shape,T:25,y:2,onset:7,peak:772*(0.95+0.1*r())},true);document.getElementById('cvLab').scrollIntoView({behavior:U.reduce?'auto':'smooth',block:'center'});};
+/* ══ CSV 내려받기 (Colab 분석용) ══ */
+var CSVH='trial_id,soc_pct,force_kg,shape,shape_code,ambient_c,result,result_label,onset_s,peak_c';
+function csvRows(d){return d.map(function(x,i){return [i+1,x.soc,x.F,x.shape===1?'cylindrical':x.shape===-1?'prismatic':'both',x.shape,x.T,x.y,['none','smoke','fire'][x.y],x.y?x.onset.toFixed(1):'',Math.round(x.peak)].join(',');}).join('\n');}
+function dl(name,text){var b=new Blob(['\ufeff'+text],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+$('#csv-mine').onclick=function(){if(!DATA.length){$('#csv-msg').textContent='기록이 없습니다. 먼저 압착을 해 보세요.';return;}dl('blast_trials_mine.csv',CSVH+'\n'+csvRows(DATA));$('#csv-msg').textContent='내 실험 기록 '+DATA.length+'회를 내려받았습니다.';};
+$('#csv-news').onclick=function(){dl('blast_news_4.csv',CSVH+'\n'+csvRows(BS.NEWS.map(function(n){return {soc:n.soc,F:n.F,shape:0,T:n.T,y:n.y,onset:n.y===2?7:n.y===1?15:0,peak:n.y===2?772:n.y===1?150:30};})));};
 $('#b-clear').onclick=function(){DATA=[];LAST=null;refit();labInfo();drawTemp();upLogit();upPolicy();};
 function labInfo(){var q=BS.probs(BS.TRUE,cond),same=DATA.filter(function(x){return x.soc===cond.soc&&x.F===cond.F;}),cnt=[0,0,0];same.forEach(function(x){cnt[x.y]++;});
   $('#lab-minis').innerHTML=mini('r','화염 확률 (가정 모형)',pct(q.fire))+mini('a','연기만 날 확률',pct(q.smoke))+mini('g','변화 없음',pct(q.none))+
@@ -38,63 +45,221 @@ function drawTemp(){var cv=$('#cvTemp');if(!LAST){U.plot(cv,{xr:[0,60],yr:[0,900
   U.plot(cv,{xr:[0,60],yr:[0,900],xt:[0,15,30,45,60],yt:[0,200,400,600,800],xl:'누른 뒤 시간 (초)',yl:'셀 표면 온도 (°C)',series:[{pts:pts,color:YC[LAST.y],width:2.6}],hlines:[{y:772,color:'rgba(201,48,44,.4)',label:'뉴스 사례 최고 772 °C'}],vlines:LAST.y?[{x:LAST.onset,color:YC[LAST.y],label:(LAST.y===2?'불꽃 ':'연기 ')+fmt(LAST.onset,0)+'초'}]:[],stamp:'설명용 모형'});}
 U.reg($('#cvTemp'),function(dt){if(!dt)drawTemp();});
 
-/* ══ 3D 실험 랩 ══ */
+/* ══ 3D 방폭 시험실 ══
+   컨베이어처럼 줄 세운 칸이 아니라, 한 방(방폭 시험실) 안에서 진행하는 압착 시험.
+   가운데 방폭 챔버 안 유압 프레스가 셀을 누르고, 관제실 방폭 유리 뒤에서 식구들이 지켜본다.
+   화염 단계면: 압착 → 부풂·가스 분출(벤팅) → 폭발(섬광·불덩이·파편·충격파·유리 금) → 분출 화염 → 질식·냉각 소화 → 배기.
+   Lab.go(trial, demo) 로 한 번의 시험을 재생한다. 그림 속 시간은 실제보다 빠르다. */
 var Lab={};
-(function(){var cv=$('#cvLab'),narrow=(cv.clientWidth||window.innerWidth)<600,yaw=narrow?-0.15:-0.5,pitch=narrow?1.2:0.82,sel=5,t=0;Lab.t=function(){return t;};
-  var PR=[['P1','시료 보관','충전율별 배터리를 방화 보관함에 둡니다. 보관 충전율이 낮을수록 안전합니다.','f'],['P2','충전 스테이션','시험할 충전율로 맞춥니다. 조수 하루가 기록을 맡아요.','e'],['P3','형태 지그','원통형·각형 배터리를 프레스에 맞게 고정합니다. 인턴 시아 담당.','e'],['P4','열화상 카메라','셀 표면 온도를 1초마다 찍습니다. 인턴 모아 담당.','v'],['P5','압착 프레스','650·1,300·2,000 kg으로 누릅니다. 뉴스 사례는 1,300 kg이었습니다.','e'],['P6','방폭 챔버','두꺼운 유리 챔버 안에서 누릅니다. 연기·화염이 나도 밖으로 새지 않게 배기합니다. 주판봇이 비상정지를 지켜요.','x'],
-    ['P7','온도 기록계','열화상과 열전대 온도를 모읍니다.','v'],['P8','연기 감지기','연기 농도로 "연기" 단계를 판정합니다. 초파리 연구원이 적외선 온도계로 확인해요.','v'],['P9','소화 설비','화염 단계면 질식 소화와 냉각을 합니다.','x'],['P10','실험 기록','결과 단계(없음·연기·화염)와 조건을 기록해 로지스틱 모델로 보냅니다.','v'],['P11','판정실','박사가 확률 곡선과 안전 기준을 검토합니다.','v'],['P12','폐기','시험한 배터리는 안전하게 방전·폐기합니다.','f']];
-  var WHO={1:['asst',0.9],2:['sia',0.88],3:['moa',0.86],5:['robo',0.72],7:['fly',0.41],10:['doc',1.0]},SHEET={doc:'D1',asst:'A1',sia:'S1',moa:'M1',fly:'F1',robo:'R1'};
-  var XS=[-10,-6,-2,2,6,10],P12=PR.map(function(p,i){var row=i<6?0:1;return {id:p[0],name:p[1],desc:p[2],cat:p[3],x:row?XS[5-(i-6)]:XS[i],y:row?4.6:-4.6,h:[1.4,1.6,1.4,1.8,2.8,2.4,1.6,1.8,1.6,1.4,2.0,1.2][i]};});
-  var CAT={f:['#fbecd3','#ecc98f','#dfb46e'],e:['#e3eef9','#bcd3ee','#a3c2e6'],v:['#efe0f6','#d6b7e6','#c39bd9'],x:['#f6dedb','#e8b9b4','#dc9f99']};
+(function(){var cv=$('#cvLab'),narrow=(cv.clientWidth||window.innerWidth)<600,yaw=narrow?-0.32:-0.62,pitch=narrow?0.95:0.74,zoom=narrow?1.7:1.15,sel=4,t=0,slow=1;
+  Lab.t=function(){return t;};
+  /* 장비 12개: 번호 · 이름 · 설명 · 위치(라벨 기준점) */
+  var EQ=[['E1','방화 시료 보관함','충전율별 시료 셀을 방화 금고에 보관합니다. 보관 충전율이 낮을수록 안전합니다. 인턴 시아 담당.',-7.4,4.3,2.2],
+    ['E2','충·방전 스테이션','시험할 충전율(0~100%)로 셀을 맞춥니다. 조수 하루가 충전율과 셀 번호를 기록해요.',-7.4,0.6,1.5],
+    ['E3','시료 지그 · 앤빌','셀을 받침대(앤빌) 위에 고정합니다. 원통형·각형을 바꿔 끼울 수 있어요.',0,0,0.9],
+    ['E4','유압 압착 프레스','650·1,300·2,000 kg으로 셀을 누릅니다. 뉴스 사례는 1,300 kg이었습니다.',0,0,4.3],
+    ['E5','방폭 챔버','강철 틀과 두꺼운 강화 유리로 만든 시험 상자. 폭발·화염·파편이 밖으로 나오지 못하게 가둡니다.',0,-2.5,3.0],
+    ['E6','열화상 카메라','챔버 관측창으로 셀 표면 온도를 1초마다 찍습니다. 인턴 모아가 관제실 화면으로 봐요.',-4.5,-2.3,2.1],
+    ['E7','열전대 · 데이터 기록계','셀에 붙인 열전대 온도와 압력·변위를 기록합니다.',-4.5,2.5,1.7],
+    ['E8','연기·가스 감지기','챔버 천장의 감지기가 연기 농도로 "연기" 단계를 판정합니다.',-1.4,-1.2,4.6],
+    ['E9','배기 덕트 · 스크러버','유독 가스와 연기를 빨아내 걸러 밖으로 내보냅니다.',2.2,1.6,5.4],
+    ['E10','소화 노즐 (질식·냉각)','화염 단계면 불활성 가스로 질식시키고 물안개로 식힙니다.',-1.6,1.4,4.6],
+    ['E11','관제실 · 방폭 유리','시험 중에는 아무도 방에 들어가지 않습니다. 박사·하루·모아·초파리가 방폭 유리 뒤 콘솔에서 지켜봅니다.',7.0,0,2.6],
+    ['E12','비상정지','버섯 모양 빨간 버튼. 주판봇이 지켜요. 누르면 프레스가 멈추고 소화가 바로 시작됩니다.',5.5,-3.9,1.6]];
+  var CX=[-2.9,2.9],CY=[-2.4,2.4],CZ=[0.35,4.2];   /* 챔버 안쪽 */
   var cx,cy,sc;function P(x,y,z){var c=Math.cos(yaw),s=Math.sin(yaw),rx=x*c-y*s,ry=x*s+y*c,cp=Math.cos(pitch),sp=Math.sin(pitch);return [cx+rx*sc,cy+(-z*cp-ry*sp)*sc,ry*cp-z*sp];}
   function fwd(){var c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);return [s*cp,c*cp,-sp];}
-  function poly(g,pts,fill,stroke){g.beginPath();pts.forEach(function(p,k){k?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]);});g.closePath();if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.strokeStyle=stroke;g.stroke();}}
-  function box(g,x,y,z0,w,d,h,cols,hl,alpha){var F=fwd(),x0=x-w/2,x1=x+w/2,y0=y-d/2,y1=y+d/2,z1=z0+h;
-    var faces=[[[0,0,1],[[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],0],[[0,-1,0],[[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]],1],[[0,1,0],[[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]],1],[[-1,0,0],[[x0,y0,z0],[x0,y1,z0],[x0,y1,z1],[x0,y0,z1]],2],[[1,0,0],[[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]],2]];
-    g.lineWidth=hl?2.4:1;if(alpha)g.globalAlpha=alpha;faces.forEach(function(f){var n=f[0];if(n[0]*F[0]+n[1]*F[1]+n[2]*F[2]>=0)return;poly(g,f[1].map(function(p){return P(p[0],p[1],p[2]);}),cols[f[2]],hl?hl:'rgba(22,33,43,.35)');});g.globalAlpha=1;}
-  var PATH=[[-13.5,-2.4],[12.6,-2.4],[13.6,-1.2],[13.6,1.2],[12.6,2.4],[-13.5,2.4]];
+  function poly(g,pts,fill,stroke,lw){g.beginPath();pts.forEach(function(p,k){k?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]);});g.closePath();if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.lineWidth=lw||1;g.strokeStyle=stroke;g.stroke();}}
+  function faces(x,y,z0,w,d,h){var x0=x-w/2,x1=x+w/2,y0=y-d/2,y1=y+d/2,z1=z0+h;
+    return [[[0,0,1],[[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],0],[[0,0,-1],[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]],0],[[0,-1,0],[[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]],1],[[0,1,0],[[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]],1],[[-1,0,0],[[x0,y0,z0],[x0,y1,z0],[x0,y1,z1],[x0,y0,z1]],2],[[1,0,0],[[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]],2]];}
+  function box(g,x,y,z0,w,d,h,cols,hl,alpha){var F=fwd();if(alpha)g.globalAlpha=alpha;
+    faces(x,y,z0,w,d,h).forEach(function(f){var n=f[0];if(n[0]*F[0]+n[1]*F[1]+n[2]*F[2]>=0)return;poly(g,f[1].map(function(p){return P(p[0],p[1],p[2]);}),cols[f[2]],hl||'rgba(22,33,43,.32)',hl?2.2:1);});g.globalAlpha=1;}
+  function cyl(g,x,y,z0,r,h,cols,n){var F=fwd(),N=n||14,top=[],bot=[];for(var i=0;i<N;i++){var a=i/N*Math.PI*2;top.push([x+Math.cos(a)*r,y+Math.sin(a)*r,z0+h]);bot.push([x+Math.cos(a)*r,y+Math.sin(a)*r,z0]);}
+    for(var k=0;k<N;k++){var a2=(k+0.5)/N*Math.PI*2,nx=Math.cos(a2),ny=Math.sin(a2);if(nx*F[0]+ny*F[1]>=0)continue;var j=(k+1)%N,sh=0.5+0.5*Math.max(0,-(nx*0.6+ny*0.8));
+      poly(g,[P.apply(null,bot[k]),P.apply(null,bot[j]),P.apply(null,top[j]),P.apply(null,top[k])],sh>0.75?cols[1]:cols[2],null);}
+    if(F[2]<0)poly(g,top.map(function(p){return P(p[0],p[1],p[2]);}),cols[0],'rgba(22,33,43,.3)');}
   function rr(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);}
-  function draw(dt){if(dt)t+=dt;var Rr=U.setup(cv),g=Rr.g,w=Rr.w,h=Rr.h;cx=w/2;cy=h*0.56;sc=Math.min(w/31,h/19);
-    var since=t-tPress,y=LAST?LAST.y:-1,onA=LAST?Math.min(LAST.onset*0.35,4):0;   /* 그림에서는 시간을 빠르게 */
+  var STEEL=['#a7b0ba','#8d96a1','#737c87'],DARK=['#6b737d','#59616a','#4b525a'],YEL=['#f2c230','#d9ac22','#c49a1a'],RED=['#e0443a','#c0352c','#a32b23'];
+
+  /* ── 한 번의 시험 재생 상태 ── */
+  var RUN=null,PART=[],CRACK=[];
+  function tl(tr){var onA=tr.y===2?clamp(tr.onset*0.12,0.6,1.8):clamp((tr.onset||14)*0.08,0.8,1.8),sV=2.1+onA;return {sV:sV,sX:sV+1.3};}
+  Lab.go=function(tr,demo){RUN={tr:tr,s:0,demo:!!demo,T:tl(tr),boom:false,fired:false,smk:0,fl:0,spray:0,dust:false};PART=[];CRACK=[];};
+  function spawn(o){if(PART.length<900)PART.push(o);}
+  function emit(kind,x,y,z,n,o){o=o||{};for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,u=Math.random()*2-1,sp=(o.sp||1)*(0.4+Math.random()*0.8),r2=Math.sqrt(1-u*u);
+      var vx=Math.cos(a)*r2*sp,vy=Math.sin(a)*r2*sp,vz=u*sp+(o.up||0);if(o.dir){vx=o.dir[0]*sp+vx*0.25;vy=o.dir[1]*sp+vy*0.25;vz=o.dir[2]*sp+vz*0.25;}
+      spawn({k:kind,x:x,y:y,z:z,vx:vx,vy:vy,vz:vz,a:0,L:(o.L||1)*(0.7+Math.random()*0.6),r:o.r||0.2,c:o.c,rot:Math.random()*6,vr:(Math.random()-0.5)*14,sz:o.sz||0.12});}}
+  function stepParts(dt){for(var i=PART.length-1;i>=0;i--){var p=PART[i];p.a+=dt;if(p.a>p.L){PART.splice(i,1);continue;}
+      if(p.k==='smoke'||p.k==='bsmoke'){p.vz+=dt*0.9;p.vx*=1-dt*0.8;p.vy*=1-dt*0.8;p.vz*=1-dt*0.4;
+        if(p.z>CZ[1]-0.5){var dx=2.2-p.x,dy=1.6-p.y,d=Math.hypot(dx,dy)+0.2;p.vx+=dx/d*dt*3;p.vy+=dy/d*dt*3;p.vz*=0.6;if(d<0.6)p.a=Math.max(p.a,p.L-0.2);}}
+      else if(p.k==='flame'){p.vz+=dt*2.6;p.vx*=1-dt*2;p.vy*=1-dt*2;}
+      else if(p.k==='spray'){p.vz-=dt*4;}
+      else if(p.k==='fire'){p.vx*=1-dt*3;p.vy*=1-dt*3;p.vz=p.vz*(1-dt*3)+dt*1.5;}
+      else {p.vz-=dt*9.8;p.rot+=p.vr*dt;}   /* spark·debris: 중력 */
+      p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;
+      /* 챔버 벽에 부딪혀 튕김 — 폭발이 챔버 안에 갇힌다 */
+      var e=p.k==='debris'?0.45:p.k==='spark'?0.6:0.1;
+      if(p.x<CX[0]+0.05){p.x=CX[0]+0.05;p.vx=-p.vx*e;}if(p.x>CX[1]-0.05){p.x=CX[1]-0.05;p.vx=-p.vx*e;}
+      if(p.y<CY[0]+0.05){p.y=CY[0]+0.05;p.vy=-p.vy*e;}if(p.y>CY[1]-0.05){p.y=CY[1]-0.05;p.vy=-p.vy*e;}
+      if(p.z>CZ[1]-0.05){p.z=CZ[1]-0.05;p.vz=-Math.abs(p.vz)*e;}
+      if(p.z<CZ[0]){p.z=CZ[0];if(p.k==='debris'||p.k==='spark'){p.vz=Math.abs(p.vz)*e;p.vx*=0.7;p.vy*=0.7;if(Math.abs(p.vz)<0.4){p.vz=0;p.vr*=0.8;if(p.k==='debris')p.L=Math.max(p.L,p.a+60);}}else p.vz=Math.max(0,p.vz);}}}
+  function update(dt){if(!RUN)return;var s0=RUN.s;RUN.s+=dt*slow;var s=RUN.s,tr=RUN.tr,T=RUN.T,y=tr.y,bx=0,by=0,bz=1.15;dt*=slow;
+    if(s0<1.6&&s>=1.6){emit('spark',bx,by,bz,y>=1?14:5,{sp:2.2,L:0.6,up:1});if(y===0)emit('smoke',bx,by,bz-0.2,6,{sp:0.4,L:1.6,r:0.18,c:'200,200,205'});}
+    if(y>=1&&s>T.sV&&s<T.sV+(y===2?1.3:7)){RUN.smk+=dt*(y===2?46:20);while(RUN.smk>1){RUN.smk--;emit('smoke',bx+(Math.random()-0.5)*0.3,by,bz+0.1,1,{dir:[(Math.random()-0.5)*0.6,(Math.random()-0.5)*0.6,1.6],sp:y===2?2.2:1.1,L:y===2?2.2:3.6,r:0.22,c:y===2?'235,235,238':'165,168,175'});}}
+    if(y===2&&!RUN.boom&&s>=T.sX){RUN.boom=true;
+      emit('fire',bx,by,bz,70,{sp:5.5,L:0.9,r:0.38});emit('spark',bx,by,bz,90,{sp:9,L:1.6,up:2});emit('debris',bx,by,bz,34,{sp:7,L:30,up:2.5,sz:0.13});
+      emit('bsmoke',bx,by,bz,40,{sp:2.8,L:4.5,r:0.35,c:'38,32,34'});
+      var c0u=0.42+Math.random()*0.16,c0v=0.3+Math.random()*0.15;for(var k=0;k<11;k++){var a=k/11*Math.PI*2+Math.random()*0.3,L1=0.08+Math.random()*0.16,mu=c0u+Math.cos(a)*L1*0.5,mv=c0v+Math.sin(a)*L1*0.6;CRACK.push([c0u,c0v,mu,mv]);CRACK.push([mu,mv,mu+Math.cos(a+0.4)*L1*0.5,mv+Math.sin(a+0.4)*L1*0.6]);}
+      for(var k2=0;k2<14;k2++){var a1=k2/14*Math.PI*2,r1=0.06+0.03*(k2%2),a2=a1+Math.PI*2/14;CRACK.push([c0u+Math.cos(a1)*r1,c0v+Math.sin(a1)*r1*1.2,c0u+Math.cos(a2)*r1,c0v+Math.sin(a2)*r1*1.2]);}
+      if(!RUN.fired&&typeof FEV!=='undefined'){RUN.fired=true;var dm=RUN.demo;setTimeout(function(){FEV.fire('runaway',{force:true,title:'열폭주 경보 — 충전율 '+tr.soc+'% 셀 압착',text:'방폭 챔버에서 충전율 '+tr.soc+'% 셀을 '+tr.F.toLocaleString('ko-KR')+' kg으로 누르자 가스를 뿜다 폭발했습니다(최고 '+Math.round(tr.peak)+' °C). 주판봇이 비상정지! 파편과 불길은 챔버 안에 갇혔어요.'+(dm?' (시연 — 기록에는 넣지 않음)':'')});},2600);}}
+    if(y===2&&RUN.boom&&s<T.sX+8.5){RUN.fl+=dt*(s<T.sX+5?60:25);while(RUN.fl>1){RUN.fl--;emit('flame',bx+(Math.random()-0.5)*0.5,by+(Math.random()-0.5)*0.4,bz+0.05,1,{dir:[(Math.random()-0.5)*0.4,(Math.random()-0.5)*0.4,1.8],sp:1.6,L:0.55,r:0.3});
+        if(Math.random()<0.35)emit('bsmoke',bx,by,bz+0.6,1,{dir:[0,0,1.2],sp:1.2,L:4,r:0.32,c:'45,38,40'});if(Math.random()<0.12)emit('spark',bx,by,bz+0.2,1,{sp:3,L:1,up:2});}}
+    if(y===2&&RUN.boom&&s>T.sX+5&&s<T.sX+10){RUN.spray+=dt*50;while(RUN.spray>1){RUN.spray--;var nx=[-1.6,1.6][Math.floor(Math.random()*2)];emit('spray',nx,(Math.random()-0.5)*1.6,CZ[1]-0.15,1,{dir:[(Math.random()-0.5)*0.8,(Math.random()-0.5)*0.8,-1.5],sp:2.2,L:1.1,r:0.08});}}
+    stepParts(dt);}
+  Lab.phase=function(){if(!RUN)return '대기';var s=RUN.s,T=RUN.T,y=RUN.tr.y;if(s<1.2)return '프레스 하강';if(s<2.1)return '압착';
+    if(y===0)return '변화 없음';if(y===1)return s<T.sV?'압착 유지':s<T.sV+7?'연기 발생 · 배기':'배기 완료';
+    if(s<T.sV)return '셀 부풂';if(s<T.sX)return '가스 분출(벤팅)';if(s<T.sX+0.6)return '폭발!';if(s<T.sX+5)return '분출 화염 · 열폭주';if(s<T.sX+10)return '질식·냉각 소화';return '배기 · 진화 완료';};
+  function realT(){if(!RUN)return 0;var s=RUN.s,T=RUN.T,tr=RUN.tr;if(tr.y===2)return s<T.sX?tr.onset*s/T.sX:tr.onset+(s-T.sX)*3;return s*3;}
+  function tempNow(){return RUN?BS.temp(RUN.tr,Math.min(60,realT())):25;}
+
+  /* ── 그리기 ── */
+  function draw(dt){if(dt){t+=dt;update(dt);}var Rr=U.setup(cv),g=Rr.g,w=Rr.w,h=Rr.h;sc=Math.min(w/25,h/16)*zoom;cx=w*(narrow?0.4:0.47);cy=h*0.6;
+    var s=RUN?RUN.s:0,y=RUN?RUN.tr.y:-1,T=RUN?RUN.T:null,since=RUN&&RUN.boom?s-T.sX:99,shake=since<1.2?14*Math.exp(-since*3.5):0;
+    if(shake){cx+=(Math.random()-0.5)*shake;cy+=(Math.random()-0.5)*shake;}
     g.fillStyle='#fbfcfd';g.fillRect(0,0,w,h);
-    if(LAST&&y===2&&since>1.4+onA&&since<12){var fl=0.05+0.05*Math.sin(t*20);g.fillStyle='rgba(255,90,30,'+fl+')';g.fillRect(0,0,w,h);}
-    g.strokeStyle='rgba(22,33,43,.07)';g.lineWidth=1;for(var x=-15;x<=15;x+=1.5){var a=P(x,-7.5,0),b=P(x,7.5,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}for(var yy=-7.5;yy<=7.5;yy+=1.5){a=P(-15,yy,0);b=P(15,yy,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}
-    for(var k=1;k<PATH.length;k++){var x0=PATH[k-1][0],y0=PATH[k-1][1],x1=PATH[k][0],y1=PATH[k][1],dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy),nx=-dy/L*0.55,ny=dx/L*0.55;poly(g,[P(x0+nx,y0+ny,0.3),P(x1+nx,y1+ny,0.3),P(x1-nx,y1-ny,0.3),P(x0-nx,y0-ny,0.3)],'#d9dee5','rgba(22,33,43,.25)');}
-    var items=[];
-    P12.forEach(function(p,k){var cp=P(p.x,p.y,p.h/2);items.push({d:cp[2],f:function(){var hl=sel===k?C.gfp:null;
-        if(k===5){/* 방폭 챔버: 바닥 + 유리 + 배터리 + 효과 */
-          box(g,p.x,p.y,0,3.0,2.4,0.5,CAT.x,hl);var sq=LAST?clamp((since)/1.2,0,1):0,bh=LAST?0.6*(1-0.45*sq):0.6,bc=LAST?(y===2&&since>1.4+onA?['#3b2a24','#2a1d18','#1e1512']:['#2f6fb0','#255a91','#1d4a78']):['#2f6fb0','#255a91','#1d4a78'];
-          if(cond.shape===1||!LAST)box(g,p.x,p.y,0.5,0.7,0.7,bh,bc,false);else box(g,p.x,p.y,0.5,1.1,0.5,bh,bc,false);
-          var pz=LAST?(since<0.8?2.5-1.4*since/0.8:since<3?1.4-0.3*clamp((since-0.8)/0.4,0,1):1.1+Math.min(1.4,(since-3)*0.5)):2.5;box(g,p.x,p.y,0.5+pz*0.6+0.2,1.4,1.2,0.35,['#8d96a1','#6f7883','#5b636d'],false);
-          if(LAST&&since>0.9+onA&&since<16&&y>=1){var N=y===2?26:12;for(var i=0;i<N;i++){var ph=((since-0.9-onA)*0.35+rr(i))%1,sx=p.x+(rr(i+3)-0.5)*1.2+Math.sin(t*2+i)*0.2,sz=0.9+ph*3.4,q=P(sx,p.y+(rr(i+7)-0.5)*0.8,sz);
-            g.fillStyle=y===2?'rgba(30,26,28,'+(0.55*(1-ph))+')':'rgba(150,152,158,'+(0.45*(1-ph))+')';g.beginPath();g.arc(q[0],q[1],sc*(0.2+ph*0.55),0,7);g.fill();}}
-          if(LAST&&y===2&&since>1.4+onA&&since<12){for(var j=0;j<14;j++){var fz=0.9+rr(j)*1.6*(0.6+0.4*Math.sin(t*14+j)),q2=P(p.x+(rr(j+5)-0.5)*0.9,p.y+(rr(j+9)-0.5)*0.6,fz);g.fillStyle=j%3?'rgba(255,140,30,.85)':'rgba(255,220,80,.9)';g.beginPath();g.moveTo(q2[0],q2[1]-sc*0.35);g.quadraticCurveTo(q2[0]+sc*0.22,q2[1],q2[0],q2[1]+sc*0.15);g.quadraticCurveTo(q2[0]-sc*0.22,q2[1],q2[0],q2[1]-sc*0.35);g.fill();}
-            for(var s2=0;s2<8;s2++){var sp=P(p.x+(rr(s2+20)-0.5)*2.4*((t*3+s2)%1),p.y,1+((t*3+s2)%1)*1.5);g.fillStyle='#ffd400';g.fillRect(sp[0],sp[1],3,3);}}
-          box(g,p.x,p.y,0.5,3.0,2.4,p.h,['rgba(200,225,240,.18)','rgba(170,205,230,.22)','rgba(150,190,220,.25)'],hl);
-        }else if(k===4){box(g,p.x,p.y,0,2.4,2.0,0.6,CAT.e,hl);box(g,p.x-0.9,p.y,0.6,0.3,0.3,p.h-0.6,['#8d96a1','#6f7883','#5b636d'],false);box(g,p.x+0.9,p.y,0.6,0.3,0.3,p.h-0.6,['#8d96a1','#6f7883','#5b636d'],false);box(g,p.x,p.y,p.h,2.4,0.6,0.35,['#9aa3ad','#7f8893','#6b737d'],false);}
-        else box(g,p.x,p.y,0,2.6,2.0,p.h,CAT[p.cat],hl);
-        if(k===0){[30,50,70,100].forEach(function(s,j){var col=s>=100?'#d4421e':s>=70?'#e0a23a':'#2f8f5b';box(g,p.x-0.9+j*0.6,p.y,p.h,0.4,0.4,0.25+s/200,[col,col,col],false);});}
-        if(k===6||k===3){var tp2=P(p.x,p.y,p.h+0.15),tv=LAST?BS.temp(LAST,Math.min(60,since*(60/12))):25;g.fillStyle=tv>500?'#d4421e':tv>100?'#e0a23a':'#2f8f5b';g.font='700 11px '+cssv('--font');g.textAlign='center';g.fillText(Math.round(tv)+' °C',tp2[0],tp2[1]-16);}
-        var tp=P(p.x,p.y,p.h+0.5);g.beginPath();g.arc(tp[0],tp[1],11,0,7);g.fillStyle=sel===k?C.gfp:'#fff';g.fill();g.lineWidth=1.5;g.strokeStyle=sel===k?C.gfp:C.rule;g.stroke();
-        g.fillStyle=sel===k?'#fff':C.text;g.font='700 10.5px '+cssv('--font');g.textAlign='center';g.textBaseline='middle';g.fillText(String(k+1),tp[0],tp[1]+0.5);g.textBaseline='alphabetic';
-        if(sel===k||w>700){g.font=(sel===k?'700 ':'')+'11px '+cssv('--font');var lb=P(p.x,p.y,p.h+1.15);U.label(g,lb[0],lb[1],p.name,sel===k?C.gfp:C.muted,'center');}}});
-      if(WHO[k]){var fp=P(p.x+1.75,p.y,0),wh=WHO[k];items.push({d:fp[2]-0.01,f:function(){var h2=sc*(w<600?6.0:5.0)*wh[1];if(typeof FVdraw==='function'&&FVdraw(g,wh[0],t,fp[0],fp[1],h2))return;if(typeof drawMotion==='function')drawMotion(g,SHEET[wh[0]],'idle',t,fp[0],fp[1],h2,{fps:4});}});}});
-    items.sort(function(a,b){return b.d-a.d;}).forEach(function(it){it.f();});
-    var bw=Math.min(w-16,330);g.fillStyle='rgba(255,255,255,.9)';g.fillRect(8,8,bw,44);g.strokeStyle=C.rule;g.strokeRect(8,8,bw,44);
-    g.fillStyle=LAST?YC[y]:C.text;g.font='700 12.5px '+cssv('--font');g.textAlign='left';g.fillText(LAST?'방금 결과: '+YN[y]+(y===2?' (열폭주)':''):'압착 버튼을 눌러 보세요',16,26);
-    g.font='12px '+cssv('--font');g.fillStyle=C.muted;g.fillText('조건 '+cond.soc+'% · '+cond.F.toLocaleString('ko-KR')+' kg · 기록 '+DATA.length+'회',16,44);
+    var F=fwd(),X0=-9.5,X1=9.5,Y0=-6.5,Y1=6.5,WH=5.6;
+    /* 바닥 */
+    poly(g,[P(X0,Y0,0),P(X1,Y0,0),P(X1,Y1,0),P(X0,Y1,0)],'#eef1f4','rgba(22,33,43,.25)');
+    g.strokeStyle='rgba(22,33,43,.06)';g.lineWidth=1;for(var gx=X0;gx<=X1+0.01;gx+=1){var a=P(gx,Y0,0),b=P(gx,Y1,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}
+    for(var gy=Y0;gy<=Y1+0.01;gy+=1){a=P(X0,gy,0);b=P(X1,gy,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}
+    /* 관제실 바닥 */
+    poly(g,[P(5,Y0,0.01),P(X1,Y0,0.01),P(X1,Y1,0.01),P(5,Y1,0.01)],'#e6ecf2',null);
+    /* 안전선(노랑·검정 빗금) — 챔버 둘레 */
+    (function(){var m=0.55,x0=CX[0]-0.25-m,x1=CX[1]+0.25+m,y0=CY[0]-0.25-m,y1=CY[1]+0.25+m,seg=[[x0,y0,x1,y0],[x1,y0,x1,y1],[x1,y1,x0,y1],[x0,y1,x0,y0]];
+      seg.forEach(function(q){var L=Math.hypot(q[2]-q[0],q[3]-q[1]),n=Math.round(L/0.5);for(var i=0;i<n;i++){var u0=i/n,u1=(i+1)/n,ax=q[0]+(q[2]-q[0])*u0,ay=q[1]+(q[3]-q[1])*u0,bx2=q[0]+(q[2]-q[0])*u1,by2=q[1]+(q[3]-q[1])*u1,nx=-(q[3]-q[1])/L*0.22,ny=(q[2]-q[0])/L*0.22;
+        poly(g,[P(ax,ay,0.02),P(bx2,by2,0.02),P(bx2+nx,by2+ny,0.02),P(ax+nx,ay+ny,0.02)],i%2?'#1d1a22':'#f2c230',null);}});})();
+    /* 뒤쪽 벽 두 면 (앞쪽 벽은 잘라서 안이 보이게) */
+    var walls=[[[0,1,0],[[X0,Y0,0],[X1,Y0,0],[X1,Y0,WH],[X0,Y0,WH]]],[[0,-1,0],[[X0,Y1,0],[X1,Y1,0],[X1,Y1,WH],[X0,Y1,WH]]],[[1,0,0],[[X0,Y0,0],[X0,Y1,0],[X0,Y1,WH],[X0,Y0,WH]]],[[-1,0,0],[[X1,Y0,0],[X1,Y1,0],[X1,Y1,WH],[X1,Y0,WH]]]];
+    walls.forEach(function(wl){var n=wl[0];if(n[0]*F[0]+n[1]*F[1]+n[2]*F[2]>=0)return;var pts=wl[1].map(function(p){return P(p[0],p[1],p[2]);});poly(g,pts,'#f3f5f8','rgba(22,33,43,.22)');
+      /* 벽 띠와 경고 표지 */
+      var q=wl[1],mid=[(q[0][0]+q[1][0])/2,(q[0][1]+q[1][1])/2];poly(g,[P(q[0][0],q[0][1],0.9),P(q[1][0],q[1][1],0.9),P(q[1][0],q[1][1],1.05),P(q[0][0],q[0][1],1.05)],'#d6dde5',null);
+      if(n[0]===0){var sx=mid[0]-4.5,sy=mid[1];var c1=P(sx-0.7,sy,3.2),c2=P(sx+0.7,sy,3.2),c3=P(sx,sy,4.4);poly(g,[c1,c2,c3],'#f2c230','#1d1a22',1.5);var cm=P(sx,sy,3.55);g.fillStyle='#1d1a22';g.font='900 '+Math.max(9,sc*0.55)+'px '+cssv('--font');g.textAlign='center';g.fillText('!',cm[0],cm[1]+sc*0.15);}});
+    var items=[];function add(x,y,z,f){var q=P(x,y,z);items.push({d:q[2],f:f});}
+    function hlOf(k){return sel===k?C.gfp:null;}
+    /* E1 방화 보관함 */
+    add(-7.4,4.3,1,function(){box(g,-7.4,4.3,0,1.8,1.2,2.2,RED,hlOf(0));[30,50,70,100].forEach(function(sv,j){var col=sv>=100?'#d4421e':sv>=70?'#e0a23a':'#2f8f5b';box(g,-8.0+j*0.4,3.6,2.2,0.28,0.28,0.2+sv/250,[col,col,col],false);});});
+    /* E2 충·방전 스테이션 */
+    add(-7.4,0.6,0.8,function(){box(g,-7.4,0.6,0,1.6,1.4,1.1,STEEL,hlOf(1));box(g,-7.4,0.6,1.1,1.2,0.8,0.5,['#2b3a4a','#22303d','#1b2631'],false);var q=P(-7.4,0.2,1.42);g.fillStyle='#7cf0a8';g.font='700 '+Math.max(8,sc*0.42)+'px '+cssv('--font');g.textAlign='center';g.fillText(cond.soc+'%',q[0],q[1]);});
+    /* E6 열화상 카메라 (삼각대) */
+    add(-4.5,-2.3,1,function(){var tp=P(-4.5,-2.3,1.8);[[-4.9,-2.6],[-4.1,-2.6],[-4.5,-1.9]].forEach(function(l){var a2=P(l[0],l[1],0);g.strokeStyle='#4b525a';g.lineWidth=2;g.beginPath();g.moveTo(a2[0],a2[1]);g.lineTo(tp[0],tp[1]);g.stroke();});
+      box(g,-4.3,-2.2,1.8,0.9,0.5,0.45,['#3a4652','#2e3943','#252e36'],hlOf(5));var tv=tempNow(),q=P(-4.5,-2.3,2.7);g.fillStyle=tv>500?'#d4421e':tv>100?'#e0a23a':'#2f8f5b';g.font='700 '+Math.max(9,sc*0.45)+'px '+cssv('--font');g.textAlign='center';g.fillText(Math.round(tv)+' °C',q[0],q[1]);});
+    /* E7 기록계 랙 */
+    add(-4.5,2.5,0.8,function(){box(g,-4.5,2.5,0,1.2,0.9,1.7,DARK,hlOf(6));for(var i=0;i<4;i++){var q=P(-4.5,2.04,0.4+i*0.33);g.fillStyle=i%2?'#7cf0a8':'#e0a23a';g.fillRect(q[0]-sc*0.3,q[1]-2,sc*0.6*((Math.sin(t*3+i)+1.4)/2.4),3);}
+      var c1=P(-3.9,2.5,0.7),c2=P(-2.9,0.6,1.1);g.strokeStyle='rgba(30,30,30,.55)';g.lineWidth=1.5;g.beginPath();g.moveTo(c1[0],c1[1]);g.quadraticCurveTo((c1[0]+c2[0])/2,Math.max(c1[1],c2[1])+10,c2[0],c2[1]);g.stroke();});
+    /* E9 배기 덕트 (챔버 지붕 → 천장 → 뒷벽) */
+    add(2.2,1.6,5,function(){box(g,2.2,1.6,CZ[1]+0.15,0.8,0.8,1.3,['#c5ccd4','#aab3bd','#949ea9'],hlOf(8));box(g,2.2,(1.6+Y1)/2+0.2,WH-0.7,0.8,Y1-1.6+0.4,0.7,['#c5ccd4','#aab3bd','#949ea9'],false);
+      var on=RUN&&RUN.tr.y>=1&&s>(T?T.sV:0);if(on){var q=P(2.2,1.6,CZ[1]+1.6);g.fillStyle='rgba(120,120,130,.35)';for(var i=0;i<3;i++){g.beginPath();g.arc(q[0]+Math.sin(t*4+i)*4,q[1]-((t*30+i*12)%30),3+i,0,7);g.fill();}}});
+    /* E12 비상정지 기둥 */
+    add(5.5,-3.9,0.8,function(){box(g,5.5,-3.9,0,0.45,0.45,1.3,YEL,hlOf(11));cyl(g,5.5,-3.9,1.3,0.32,0.18,['#e0443a','#c0352c','#a32b23'],12);});
+    /* E11 관제실: 방폭 유리 벽 + 콘솔 + 모니터 */
+    add(7.0,0,1,function(){box(g,7.0,0,0,1.1,6.4,1.0,['#dfe5ec','#c7d0da','#b3bfcb'],hlOf(10));
+      for(var m=0;m<3;m++){var my=-2+m*2;box(g,6.8,my,1.0,0.12,1.5,0.9,['#22303d','#1b2631','#141d26'],false);var q=P(6.72,my,1.48),tv=tempNow();g.fillStyle=m===0?(tv>500?'#ff6a3d':tv>100?'#ffc04a':'#7cf0a8'):'#7cf0a8';g.font='700 '+Math.max(8,sc*0.36)+'px '+cssv('--font');g.textAlign='center';
+        g.fillText(m===0?Math.round(tv)+'°C':m===1?Lab.phase().slice(0,6):(DATA.length+'회'),q[0],q[1]);}});
+    /* 캐릭터: 아무도 시험 방에 들어가지 않는다 — 관제실과 문 앞 */
+    var WHO=[['doc',8.3,1.5,1.0],['asst',8.1,-0.6,0.9],['moa',7.9,3.0,0.86],['fly',8.4,-2.3,0.42],['robo',6.1,-3.9,0.74],['sia',8.7,4.3,0.88]];
+    WHO.forEach(function(c){var fp=P(c[1],c[2],0);items.push({d:fp[2]-0.01,f:function(){var h2=sc*4.6*c[3],jx=since<1?(Math.random()-0.5)*6*(1-since):0;
+      if(typeof FVdraw==='function'&&FVdraw(g,c[0],t,fp[0]+jx,fp[1],h2))return;if(typeof drawMotion==='function')drawMotion(g,{doc:'D1',asst:'A1',sia:'S1',moa:'M1',fly:'F1',robo:'R1'}[c[0]],'idle',t,fp[0]+jx,fp[1],h2,{fps:4});}});});
+    /* 방폭 유리 칸막이 (x = 5) — 관제실과 시험실 사이 */
+    add(5,0,2.4,function(){poly(g,[P(5,Y0,0),P(5,Y1,0),P(5,Y1,3.4),P(5,Y0,3.4)],'rgba(170,205,230,.22)','rgba(60,90,120,.55)',1.6);
+      for(var k=0;k<=6;k++){var yy=Y0+(Y1-Y0)*k/6,a3=P(5,yy,0),b3=P(5,yy,3.4);g.strokeStyle='rgba(60,70,80,.55)';g.lineWidth=2;g.beginPath();g.moveTo(a3[0],a3[1]);g.lineTo(b3[0],b3[1]);g.stroke();}
+      var sg=P(5,-1.5,3.0);U.label(g,sg[0],sg[1],'관제실 · 방폭 유리','#2b3a4a','center');});
+    /* E5 방폭 챔버 + 안의 모든 것 */
+    add(0,0,1.6,function(){drawChamber(g,s,y,T,since);});
+    items.sort(function(a2,b2){return b2.d-a2.d;}).forEach(function(it){it.f();});
+    /* 번호 표지 */
+    var busy=RUN&&RUN.s<(RUN.tr.y===2?RUN.T.sX+12:RUN.tr.y===1?RUN.T.sV+8:3);
+    EQ.forEach(function(e,k){if(busy&&[2,3,4,7,9].indexOf(k)>=0)return;var q=P(e[3],e[4],e[5]+0.35);g.beginPath();g.arc(q[0],q[1],10,0,7);g.fillStyle=sel===k?C.gfp:'#fff';g.fill();g.lineWidth=1.5;g.strokeStyle=sel===k?C.gfp:C.rule;g.stroke();
+      g.fillStyle=sel===k?'#fff':C.text;g.font='700 9.5px '+cssv('--font');g.textAlign='center';g.textBaseline='middle';g.fillText(String(k+1),q[0],q[1]+0.5);g.textBaseline='alphabetic';
+      if(sel===k){U.label(g,q[0],q[1]-20,e[1],C.gfp,'center');}});
+    /* 섬광 · 열기 */
+    if(since<1.4){var fa=0.9*Math.exp(-since*5);g.fillStyle='rgba(255,236,190,'+fa+')';g.fillRect(0,0,w,h);}
+    if(RUN&&y===2&&RUN.boom&&since<8){g.fillStyle='rgba(255,90,30,'+(0.05+0.04*Math.sin(t*20))*(since<5?1:(8-since)/3)+')';g.fillRect(0,0,w,h);}
+    /* 경광등 효과 */
+    if(RUN&&y>=1&&s>T.sV&&s<(y===2?T.sX+11:T.sV+8)){var ang=t*6,bq=P(-2.4,-1.9,CZ[1]+0.6);g.save();var bgr=g.createRadialGradient(bq[0],bq[1],0,bq[0],bq[1],sc*5);bgr.addColorStop(0,'rgba(255,59,48,.35)');bgr.addColorStop(1,'rgba(255,59,48,0)');g.fillStyle=bgr;g.beginPath();g.moveTo(bq[0],bq[1]);g.arc(bq[0],bq[1],sc*5,ang,ang+0.5);g.closePath();g.fill();g.beginPath();g.moveTo(bq[0],bq[1]);g.arc(bq[0],bq[1],sc*5,ang+Math.PI,ang+Math.PI+0.5);g.closePath();g.fill();g.restore();}
+    /* 상태판 */
+    var bw=Math.min(w-16,350);g.fillStyle='rgba(255,255,255,.92)';g.fillRect(8,8,bw,46);g.strokeStyle=C.rule;g.lineWidth=1;g.strokeRect(8,8,bw,46);
+    var res=RUN?(RUN.demo?'시연: ':'방금 결과: ')+YN[y]+(y===2?' (열폭주·폭발)':''):'조건을 고르고 "압착 1회"를 누르세요';
+    g.fillStyle=RUN?YC[y]:C.text;g.font='700 12.5px '+cssv('--font');g.textAlign='left';g.fillText(res,16,26);
+    g.font='12px '+cssv('--font');g.fillStyle=C.muted;g.fillText((RUN?'단계: '+Lab.phase()+' · ':'')+'조건 '+cond.soc+'% · '+cond.F.toLocaleString('ko-KR')+' kg · 기록 '+DATA.length+'회'+(slow<1?' · 느린 화면':''),16,45);
     U.stamp(g,w,'개략 모형 · 교육용');
-    var p=P12[sel];$('#pc-no').textContent=p.id+' / 12';$('#pc-name').textContent=p.name;$('#pc-desc').textContent=p.desc;}
-  $('#pchips').innerHTML=P12.map(function(p){return '<button type="button">'+p.id+' '+p.name+'</button>';}).join('');
+    var e=EQ[sel];$('#pc-no').textContent=e[0]+' / 12';$('#pc-name').textContent=e[1];$('#pc-desc').textContent=e[2];}
+
+  function drawChamber(g,s,y,T,since){var F=fwd(),x0=CX[0]-0.25,x1=CX[1]+0.25,y0=CY[0]-0.25,y1=CY[1]+0.25,z0=0,z1=CZ[1]+0.15,hl=sel===4?C.gfp:null;
+    /* 받침(콘크리트 패드) */
+    box(g,0,0,0,x1-x0+0.3,y1-y0+0.3,CZ[0],['#cfd5dc','#b9c1ca','#a7b0ba'],false);
+    var fs=faces(0,0,CZ[0],x1-x0,y1-y0,z1-CZ[0]);
+    /* 뒤쪽 면(안에서 보이는 면) 먼저 */
+    fs.forEach(function(f){var n=f[0];if(n[0]*F[0]+n[1]*F[1]+n[2]*F[2]<0||n[2]===1)return;poly(g,f[1].map(function(p){return P(p[0],p[1],p[2]);}),n[2]===-1?'#dfe4ea':'rgba(205,220,232,.55)','rgba(60,70,80,.45)',1.2);});
+    /* 안: 앤빌 · 기둥 · 크로스헤드 · 램 */
+    var press=s<1.2?s/1.2:1,crush=s<1.2?0:clamp((s-1.2)/0.8,0,1),bh0=0.85,bh=bh0*(1-0.42*crush),swell=(y===2&&s>2.1&&!(RUN&&RUN.boom))?clamp((s-2.1)/1.2,0,1)*0.18:0;
+    var cylS=RUN?RUN.tr.shape!==-1:cond.shape===1,bz=CZ[0]+0.55;
+    var parts=[];
+    function pz(x,yy,z,f){parts.push({d:P(x,yy,z)[2],f:f});}
+    pz(0,0,0.6,function(){box(g,0,0,CZ[0],1.8,1.5,0.55,DARK,sel===2?C.gfp:null);});
+    [-1.25,1.25].forEach(function(xx){pz(xx,0,2,function(){cyl(g,xx,0,CZ[0],0.16,CZ[1]-0.2-CZ[0],STEEL,10);});});
+    var ramZ=bz+bh+(1-press)*1.6+0.02;
+    pz(0,0,CZ[1]-0.3,function(){box(g,0,0,CZ[1]-0.45,3.0,0.7,0.4,STEEL,sel===3?C.gfp:null);cyl(g,0,0,ramZ+0.3,0.22,CZ[1]-0.45-(ramZ+0.3),['#d9dee4','#bfc6ce','#a9b1ba'],12);box(g,0,0,ramZ,1.3,1.0,0.3,['#9aa3ad','#7f8893','#6b737d'],false);});
+    /* 셀 */
+    var charred=RUN&&RUN.boom,glow=RUN&&y===2&&s>T.sV&&!RUN.boom?clamp((s-T.sV)/1.3,0,1):0,col=charred?['#3b2a24','#2a1d18','#1e1512']:glow?['rgb('+Math.round(47+200*glow)+','+Math.round(111-40*glow)+','+Math.round(176-150*glow)+')','#7a3b20','#5a2a16']:['#2f6fb0','#255a91','#1d4a78'];
+    pz(0,0,bz+0.2,function(){if(!RUN||!charred||since<0.4){var sw=1+swell;if(cylS)cyl(g,0,0,bz,0.45*sw,bh*(1+swell*0.5),col,16);else box(g,0,0,bz,1.2*sw,0.62*sw,bh*(1+swell*0.5),col,false);}
+      else{box(g,0,0,bz,cylS?0.6:0.95,cylS?0.5:0.45,bh*0.5,col,false);}
+      if(glow>0.2){var q=P(0,0,bz+bh);var gr=g.createRadialGradient(q[0],q[1],0,q[0],q[1],sc*1.2);gr.addColorStop(0,'rgba(255,170,60,'+0.5*glow+')');gr.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gr;g.beginPath();g.arc(q[0],q[1],sc*1.2,0,7);g.fill();}});
+    /* 천장 장치: 연기 감지기(E8), 소화 노즐(E10) */
+    pz(-1.4,-1.2,CZ[1],function(){cyl(g,-1.4,-1.2,CZ[1]-0.15,0.22,0.15,['#f4f6f8','#dfe4ea','#c9d0d8'],10);var on=RUN&&y>=1&&s>T.sV;var q=P(-1.4,-1.2,CZ[1]-0.2);g.fillStyle=on&&Math.floor(t*4)%2?'#ff3b30':'#9aa3ad';g.beginPath();g.arc(q[0],q[1],3,0,7);g.fill();if(sel===7){g.strokeStyle=C.gfp;g.lineWidth=2;g.beginPath();g.arc(q[0],q[1],sc*0.4,0,7);g.stroke();}});
+    [-1.6,1.6].forEach(function(nx){pz(nx,1.4,CZ[1],function(){box(g,nx,1.4,CZ[1]-0.25,0.25,0.25,0.25,['#3567a8','#2a548a','#21436e'],sel===9?C.gfp:null);});});
+    /* 입자: 연기·불꽃·파편·물안개 */
+    var GLOW=[];PART.forEach(function(p){if(p.k==='flame'||p.k==='fire'||p.k==='spark'){GLOW.push(p);return;}parts.push({d:P(p.x,p.y,p.z)[2],f:function(){var q=P(p.x,p.y,p.z),u=p.a/p.L;
+      if(p.k==='smoke'||p.k==='bsmoke'){var r=sc*(p.r+u*0.9);g.fillStyle='rgba('+p.c+','+(p.k==='bsmoke'?0.42:0.4)*(1-u)+')';g.beginPath();g.arc(q[0],q[1],r,0,7);g.fill();}
+      else if(p.k==='flame'||p.k==='fire'){var r2=sc*p.r*(p.k==='fire'?1.4:1)*(1-u*0.6),gr=g.createRadialGradient(q[0],q[1],0,q[0],q[1],r2);gr.addColorStop(0,'rgba(255,250,210,'+(1-u)+')');gr.addColorStop(0.35,'rgba(255,190,60,'+0.9*(1-u)+')');gr.addColorStop(1,'rgba(230,70,20,0)');g.fillStyle=gr;g.beginPath();g.arc(q[0],q[1],r2,0,7);g.fill();}
+      else if(p.k==='spark'){var tl2=P(p.x-p.vx*0.03,p.y-p.vy*0.03,p.z-p.vz*0.03);g.strokeStyle='rgba(255,'+Math.round(220-120*u)+',80,'+(1-u)+')';g.lineWidth=2;g.beginPath();g.moveTo(tl2[0],tl2[1]);g.lineTo(q[0],q[1]);g.stroke();}
+      else if(p.k==='debris'){var sz=sc*p.sz;g.save();g.translate(q[0],q[1]);g.rotate(p.rot);g.fillStyle=p.vz===0?'#2a2422':'#3b3330';g.fillRect(-sz,-sz*0.6,sz*2,sz*1.2);g.fillStyle='rgba(255,140,60,'+Math.max(0,0.8-p.a*0.4)+')';g.fillRect(-sz*0.5,-sz*0.3,sz,sz*0.6);g.restore();}
+      else if(p.k==='spray'){g.fillStyle='rgba(200,225,250,'+0.7*(1-u)+')';g.beginPath();g.arc(q[0],q[1],sc*0.06+1,0,7);g.fill();}}});});
+    parts.sort(function(a2,b2){return b2.d-a2.d;}).forEach(function(it){it.f();});
+    /* 빛나는 것(화염·불꽃·불티)은 연기 위에 더해 그린다 */
+    g.save();g.globalCompositeOperation='lighter';GLOW.forEach(function(p){var q=P(p.x,p.y,p.z),u=p.a/p.L;
+      if(p.k==='spark'){var tl2=P(p.x-p.vx*0.035,p.y-p.vy*0.035,p.z-p.vz*0.035);g.strokeStyle='rgba(255,'+Math.round(220-120*u)+',80,'+(1-u)+')';g.lineWidth=2;g.beginPath();g.moveTo(tl2[0],tl2[1]);g.lineTo(q[0],q[1]);g.stroke();return;}
+      var r2=sc*p.r*(p.k==='fire'?1.6:1.25)*(1-u*0.5),gr=g.createRadialGradient(q[0],q[1],0,q[0],q[1],r2);gr.addColorStop(0,'rgba(255,245,200,'+0.95*(1-u)+')');gr.addColorStop(0.35,'rgba(255,170,50,'+0.8*(1-u)+')');gr.addColorStop(1,'rgba(220,60,10,0)');g.fillStyle=gr;g.beginPath();g.arc(q[0],q[1],r2,0,7);g.fill();});
+    if(RUN&&RUN.boom&&since<1.3){var q0=P(0,0,bz+0.6),R0=sc*(0.5+3.2*Math.min(1,since/0.4))*(since<0.4?1:1-0.2*(since-0.4)),al=since<0.4?1:Math.max(0,1-(since-0.4)/0.9);
+      var g0=g.createRadialGradient(q0[0],q0[1],0,q0[0],q0[1],R0);g0.addColorStop(0,'rgba(255,255,235,'+al+')');g0.addColorStop(0.3,'rgba(255,215,100,'+al+')');g0.addColorStop(0.7,'rgba(245,110,30,'+0.85*al+')');g0.addColorStop(1,'rgba(120,30,10,0)');g.fillStyle=g0;g.beginPath();g.arc(q0[0],q0[1],R0,0,7);g.fill();}
+    if(RUN&&RUN.boom&&since<8.5){var q1=P(0,0,bz+0.3),fl=sc*(1.3+0.25*Math.sin(t*23))*(since<5?1:(8.5-since)/3.5),g1=g.createRadialGradient(q1[0],q1[1],0,q1[0],q1[1],fl);g1.addColorStop(0,'rgba(255,200,90,.55)');g1.addColorStop(1,'rgba(255,90,20,0)');g.fillStyle=g1;g.beginPath();g.arc(q1[0],q1[1],fl,0,7);g.fill();}
+    g.restore();
+    /* 충격파 고리 (챔버 바닥) */
+    if(RUN&&RUN.boom&&since<0.9){var rad=Math.min(3.2,0.3+since*9),al2=1-since/0.9;g.strokeStyle='rgba(255,200,120,'+al2+')';g.lineWidth=3;g.beginPath();for(var k=0;k<=40;k++){var a=k/40*Math.PI*2,qx=clamp(Math.cos(a)*rad,CX[0],CX[1]),qy=clamp(Math.sin(a)*rad,CY[0],CY[1]),q=P(qx,qy,CZ[0]+0.02);k?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]);}g.stroke();}
+    /* 앞쪽 유리 면 + 금 */
+    fs.forEach(function(f){var n=f[0];if(n[0]*F[0]+n[1]*F[1]+n[2]*F[2]>=0||n[2]!==0)return;var pts=f[1].map(function(p){return P(p[0],p[1],p[2]);});poly(g,pts,'rgba(190,215,235,.16)','rgba(60,70,80,.6)',hl?2.4:1.4);
+      if(hl){poly(g,pts,null,hl,2.4);}
+      if(CRACK.length){var A=f[1][0],B=f[1][1],D=f[1][3];g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=1;CRACK.forEach(function(c){function L(u,v){return P(A[0]+(B[0]-A[0])*u+(D[0]-A[0])*v,A[1]+(B[1]-A[1])*u+(D[1]-A[1])*v,A[2]+(B[2]-A[2])*u+(D[2]-A[2])*v);}var p1=L(c[0],c[1]),p2=L(c[2],c[3]);g.beginPath();g.moveTo(p1[0],p1[1]);g.lineTo(p2[0],p2[1]);g.stroke();});}});
+    /* 강철 틀(모서리 기둥·띠) */
+    [[x0,y0],[x1,y0],[x1,y1],[x0,y1]].forEach(function(c){var a=P(c[0],c[1],CZ[0]),b=P(c[0],c[1],z1);g.strokeStyle='#4b525a';g.lineWidth=Math.max(2.5,sc*0.18);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();});
+    [CZ[0],z1].forEach(function(zz){g.strokeStyle='#4b525a';g.lineWidth=Math.max(2,sc*0.14);g.beginPath();[[x0,y0],[x1,y0],[x1,y1],[x0,y1],[x0,y0]].forEach(function(c,k){var q=P(c[0],c[1],zz);k?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]);});g.stroke();});
+    /* 지붕(반투명) + 경광등 */
+    if(F[2]<0){poly(g,fs[0][1].map(function(p){return P(p[0],p[1],p[2]);}),'rgba(160,172,186,.35)','rgba(60,70,80,.5)');}
+    var on=RUN&&y>=1&&s>T.sV&&s<(y===2?T.sX+11:T.sV+8);cyl(g,-2.4,-1.9,z1,0.2,0.35,on?(Math.floor(t*6)%2?['#ff6a5c','#ff3b30','#c9302c']:['#c9302c','#a32b23','#80201a']):['#e8b9b4','#dc9f99','#c98b85'],10);}
+
+  /* ── 조작 ── */
+  $('#pchips').innerHTML=EQ.map(function(e){return '<button type="button">'+e[0]+' '+e[1]+'</button>';}).join('');
   function pick(i){sel=i;$$('#pchips button').forEach(function(x,j){x.classList.toggle('on',j===sel);});}
-  $$('#pchips button').forEach(function(b,i){b.onclick=function(){pick(i);};});pick(5);
+  $$('#pchips button').forEach(function(b,i){b.onclick=function(){pick(i);};});pick(4);
+  var sb=$('#g-slow');if(sb)U.btns(sb,[[1,'보통'],[0.35,'느린 화면']],1,function(v){slow=v;});
   var drag=null;cv.style.touchAction='pan-y';cv.style.cursor='grab';
   cv.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,yaw:yaw,pitch:pitch,mv:false};cv.setPointerCapture(e.pointerId);});
-  cv.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4)drag.mv=true;if(drag.mv){yaw=drag.yaw+dx*0.008;pitch=clamp(drag.pitch+dy*0.006,0.15,1.5);}});
-  cv.addEventListener('pointerup',function(e){if(drag&&!drag.mv){var r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=-1,bd=900;P12.forEach(function(p,k){[p.h+0.5,p.h*0.5].forEach(function(z){var q=P(p.x,p.y,z),d=(q[0]-mx)*(q[0]-mx)+(q[1]-my)*(q[1]-my);if(d<bd){bd=d;best=k;}});});if(best>=0)pick(best);}drag=null;});
+  cv.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4)drag.mv=true;if(drag.mv){yaw=drag.yaw+dx*0.008;pitch=clamp(drag.pitch+dy*0.006,0.2,1.45);}});
+  cv.addEventListener('pointerup',function(e){if(drag&&!drag.mv){var r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,best=-1,bd=1600;EQ.forEach(function(q,k){[q[5]+0.35,q[5]*0.5].forEach(function(z){var p=P(q[3],q[4],z),d=(p[0]-mx)*(p[0]-mx)+(p[1]-my)*(p[1]-my);if(d<bd){bd=d;best=k;}});});if(best>=0)pick(best);}drag=null;});
   cv.addEventListener('pointercancel',function(){drag=null;});
-  cv.tabIndex=0;cv.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')yaw-=0.12;else if(e.key==='ArrowRight')yaw+=0.12;else if(e.key==='ArrowUp')pitch=clamp(pitch+0.1,0.15,1.5);else if(e.key==='ArrowDown')pitch=clamp(pitch-0.1,0.15,1.5);else return;e.preventDefault();});
-  U.reg(cv,function(dt){draw(U.reduce?0:dt);});
+  cv.addEventListener('wheel',function(e){if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();zoom=clamp(zoom*(e.deltaY<0?1.1:0.9),0.7,2.2);},{passive:false});
+  cv.tabIndex=0;cv.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')yaw-=0.12;else if(e.key==='ArrowRight')yaw+=0.12;else if(e.key==='ArrowUp')pitch=clamp(pitch+0.1,0.2,1.45);else if(e.key==='ArrowDown')pitch=clamp(pitch-0.1,0.2,1.45);else if(e.key==='+')zoom=clamp(zoom*1.1,0.7,2.2);else if(e.key==='-')zoom=clamp(zoom*0.9,0.7,2.2);else return;e.preventDefault();});
+  var vw=$('#g-view');if(vw)U.btns(vw,[['a','비스듬히'],['c','챔버 가까이'],['t','위에서'],['r','관제실에서']],'a',function(v){if(v==='a'){yaw=narrow?-0.32:-0.62;pitch=narrow?0.95:0.74;zoom=narrow?1.7:1.15;}else if(v==='c'){yaw=-0.35;pitch=0.55;zoom=1.9;}else if(v==='t'){yaw=0;pitch=1.4;zoom=1;}else{yaw=Math.PI/2-0.15;pitch=0.45;zoom=1.25;}});
+  U.reg(cv,function(dt){draw(U.reduce?(RUN?dt:0):dt);});
 })();
 
 /* ══ 점 4개의 함정 ══ */
@@ -152,7 +317,7 @@ upPolicy();
 U.dialogues({
  hero:[["doc","doc_board","부지를 하나 더 늘려 방폭 실험 랩을 세웁니다. 뉴스에 나온 압착 실험을 랩에서 다시, 여러 번 해 봅니다."],["asst","asst_report","뉴스 사례는 네 번: 100%는 화염, 70%는 연기, 50%와 30%는 변화 없음이었어요."],["robo","robo_calc","충전율로 딱 갈리네! 85% 넘으면 불, 아니면 안전. 모델 끝."],["fly","fly_magnify","네 번 해 보고 '딱 갈린다'고? 80%를 열 번 누르면 몇 번 불이 날지는 아무도 몰라."]],
  news:[["doc","doc_front","충전율만 바꾸고 나머지는 같게 했다는 점이 이 실험의 장점입니다. 원인을 하나로 좁힐 수 있죠."]],
- lab:[["sia","sia_explain","P3 지그에 원통형과 각형을 바꿔 끼울 수 있어요. 형태도 결과에 조금 영향을 줘요."],["moa","moa_report","P4 열화상 숫자가 빨갛게 되면 화염 단계예요. 연기 단계는 200 °C를 잘 안 넘어요."]],
+ lab:[["sia","sia_explain","E3 지그에 원통형과 각형을 바꿔 끼울 수 있어요. 끼운 다음에는 모두 관제실로 나와요. 시험 중엔 아무도 방에 없어요."],["moa","moa_report","E6 열화상 숫자가 빨갛게 되면 화염 단계예요. 연기 단계는 200 °C를 잘 안 넘어요."],["robo","robo_calc","폭발이 나도 파편은 챔버 유리 안에서 튕기기만 해. 그래도 내 손은 비상정지 버튼 위에!"]],
  sep:[["robo","robo_sigh","어… 학습을 더 돌릴수록 기울기가 계속 커져. 멈추질 않네."],["fly","fly_point","갈림길이 70%와 100% 사이 어딘지 점 4개는 말해 주지 않으니까."]],
  logit:[["asst","asst_report","곡선이 두 개예요. 주황은 연기 이상, 빨강은 화염. 기울기는 같이 쓰고 출발점만 달라요."]],
  policy:[["doc","doc_think","항공은 30% 이하로 묶는데 택배·창고는 기준이 없다는 게 사례의 지적입니다. 곡선은 그 차이를 숫자로 보여 줍니다."]],

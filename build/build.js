@@ -15,6 +15,9 @@ vm.createContext(ctx);vm.runInContext(kgx+';this.KGX=KGX;',ctx);
 const MK={head:['<!-- lab-kg:head -->','<!-- /lab-kg:head -->'],body:['<!-- lab-kg:body -->','<!-- /lab-kg:body -->'],script:['<!-- lab-kg:script -->','<!-- /lab-kg:script -->']};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const js=o=>JSON.stringify(o).replace(/<\//g,'<\\/');
+const EVALL=(()=>{const t=rd('hub_events_data.js');return JSON.parse(t.slice(t.indexOf('['),t.lastIndexOf(']')+1));})();
+// 공장 이벤트: 그 공장 페이지 안에서만, 조건이 맞을 때 뜬다 (fac_events.js). 첫 페이지는 안내표만.
+const evjs=fac=>'var FEV_FAC='+JSON.stringify(fac)+';var EVENTS='+js(fac==='hub'?EVALL:EVALL.filter(e=>e.fac===fac))+';\n'+rd('fac_events.js')+'\n';
 const sec=(i,t,sub,m)=>'<section class="kgx kgx-sec" id="'+i+'"><div class="kgx-wrap">\n<h2>'+t+'</h2>\n<p class="kgx-sub">'+sub+'</p>\n<div id="'+m+'"></div>\n</div></section>\n';
 function attach(H,kg,refs,meta){
   kg=JSON.parse(JSON.stringify(kg));kg.topicLabels={};BB.nodes.forEach(n=>{kg.topicLabels[n.id]=n.label.ko;});
@@ -33,40 +36,40 @@ function attach(H,kg,refs,meta){
   let i=H.lastIndexOf('<footer'),j=H.lastIndexOf('</body>'),p=(i>=0&&i<j)?i:j;H=H.slice(0,p)+body+H.slice(p);
   j=H.lastIndexOf('</body>');H=H.slice(0,j)+sc+H.slice(j);return H;}
 let H=rd('page.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
-  .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@EN@@*/',()=>en.replace("if(typeof module!=='undefined')module.exports=EN;",'')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_classifier.js'))?rd('fv_classifier.js'):'')+page);
+  .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@EN@@*/',()=>en.replace("if(typeof module!=='undefined')module.exports=EN;",'')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('classifier')+(fs.existsSync(path.join(B,'fv_classifier.js'))?rd('fv_classifier.js'):'')+page);
 if(fs.existsSync(path.join(B,'kg.json')))H=attach(H,JSON.parse(rd('kg.json')),JSON.parse(rd('refs.json')),JSON.parse(rd('meta.json')));
 fs.writeFileSync(path.join(R,'classifier.html'),H);console.log('classifier.html',(Buffer.byteLength(H)/1024).toFixed(0)+' KB');
 // 회귀 편: reg.src.html + engines_reg.js + reg.js → regression.html (kg_reg.json·refs_reg.json·meta_reg.json)
 if(fs.existsSync(path.join(B,'reg.src.html'))){const er=rd('engines_reg.js'),rj=rd('reg.js');
   let H2=rd('reg.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>')
-    .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@ER@@*/',()=>er.replace("if(typeof module!=='undefined')module.exports=ER;",'').replace("(typeof BM!=='undefined')?BM:require('./bm.js')",'BM')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_regression.js'))?rd('fv_regression.js'):'')+rj);
+    .replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@ER@@*/',()=>er.replace("if(typeof module!=='undefined')module.exports=ER;",'').replace("(typeof BM!=='undefined')?BM:require('./bm.js')",'BM')).replace('/*@@BM@@*/',()=>bm.replace("if(typeof module!=='undefined')module.exports=BM;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('regression')+(fs.existsSync(path.join(B,'fv_regression.js'))?rd('fv_regression.js'):'')+rj);
   if(fs.existsSync(path.join(B,'kg_reg.json')))H2=attach(H2,JSON.parse(rd('kg_reg.json')),JSON.parse(rd('refs_reg.json')),JSON.parse(rd('meta_reg.json')));
   fs.writeFileSync(path.join(R,'regression.html'),H2);console.log('regression.html',(Buffer.byteLength(H2)/1024).toFixed(0)+' KB');}
 
 // 3편 배터리 생산 공장: factory.src.html + fsim.js + factory.js → factory.html (kg_fac.json·refs_fac.json·meta_fac.json)
 if(fs.existsSync(path.join(B,'factory.src.html'))){const fsim=rd('fsim.js'),fj=rd('factory.js');
   let H3=rd('factory.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_factory.js'))?rd('fv_factory.js'):'')+fj);
+    .replace('/*@@FS@@*/',()=>fsim.replace("if(typeof module!=='undefined')module.exports=FS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('factory')+(fs.existsSync(path.join(B,'fv_factory.js'))?rd('fv_factory.js'):'')+fj);
   if(fs.existsSync(path.join(B,'kg_fac.json')))H3=attach(H3,JSON.parse(rd('kg_fac.json')),JSON.parse(rd('refs_fac.json')),JSON.parse(rd('meta_fac.json')));
   fs.writeFileSync(path.join(R,'factory.html'),H3);console.log('factory.html',(Buffer.byteLength(H3)/1024).toFixed(0)+' KB');}
 // 시제품 테스트 랩실: testlab.src.html + fish.json + testlab.js → testlab.html (kg_test.json·refs_test.json·meta_test.json)
 if(fs.existsSync(path.join(B,'testlab.src.html'))){const fd=rd('fish.json'),tj=rd('testlab.js');
   let H4=rd('testlab.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_testlab.js'))?rd('fv_testlab.js'):'')+tj);
+    .replace('/*@@FISH@@*/',()=>'var FD='+fd+';').replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('testlab')+(fs.existsSync(path.join(B,'fv_testlab.js'))?rd('fv_testlab.js'):'')+tj);
   if(fs.existsSync(path.join(B,'kg_test.json')))H4=attach(H4,JSON.parse(rd('kg_test.json')),JSON.parse(rd('refs_test.json')),JSON.parse(rd('meta_test.json')));
   fs.writeFileSync(path.join(R,'testlab.html'),H4);console.log('testlab.html',(Buffer.byteLength(H4)/1024).toFixed(0)+' KB');}
 // ④ 태양광 패널 셀 공장: solar.src.html + solar_sim.js + solar.js → solar.html (kg_solar.json·refs_solar.json·meta_solar.json)
 if(fs.existsSync(path.join(B,'solar.src.html'))){const ss=rd('solar_sim.js'),sj=rd('solar.js');
   let H5=rd('solar.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_solar.js'))?rd('fv_solar.js'):'')+sj);
+    .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('solar')+(fs.existsSync(path.join(B,'fv_solar.js'))?rd('fv_solar.js'):'')+sj);
   if(fs.existsSync(path.join(B,'kg_solar.json')))H5=attach(H5,JSON.parse(rd('kg_solar.json')),JSON.parse(rd('refs_solar.json')),JSON.parse(rd('meta_solar.json')));
   fs.writeFileSync(path.join(R,'solar.html'),H5);console.log('solar.html',(Buffer.byteLength(H5)/1024).toFixed(0)+' KB');}
 // ⑤ 배터리 열폭주 실험 랩: blast.src.html + blast_sim.js + blast.js → blast.html
 if(fs.existsSync(path.join(B,'blast.src.html'))){const bs=rd('blast_sim.js'),bj=rd('blast.js');
   let H6=rd('blast.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
-    .replace('/*@@BS@@*/',()=>bs.replace("if(typeof module!=='undefined')module.exports=BS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_blast.js'))?rd('fv_blast.js'):'')+bj);
+    .replace('/*@@BS@@*/',()=>bs.replace("if(typeof module!=='undefined')module.exports=BS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>evjs('blast')+(fs.existsSync(path.join(B,'fv_blast.js'))?rd('fv_blast.js'):'')+bj);
   if(fs.existsSync(path.join(B,'kg_blast.json')))H6=attach(H6,JSON.parse(rd('kg_blast.json')),JSON.parse(rd('refs_blast.json')),JSON.parse(rd('meta_blast.json')));
   fs.writeFileSync(path.join(R,'blast.html'),H6);console.log('blast.html',(Buffer.byteLength(H6)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
-if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common).replace('/*@@EVENTS@@*/',()=>(fs.existsSync(path.join(B,'hub_events_data.js'))?rd('hub_events_data.js')+rd('hub_events.js'):''));
+if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common).replace('/*@@EVENTS@@*/',()=>evjs('hub'));
   fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}

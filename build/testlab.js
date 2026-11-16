@@ -127,6 +127,7 @@ var Line={};
     var m=mini('','검수한 물고기',S.checked+' / '+NF)+mini('g','맞음',S.ok+'마리')+mini('r','다른 통조림으로',(S.checked-S.ok)+'마리')+mini(S.checked&&DEV.cv-S.ok/S.checked>0.05?'r':'a','지금까지 정확도 (랩 점수 '+pct(DEV.cv,0)+')',S.checked?pct(S.ok/S.checked):'—');
     if(selK===9)m=SP.map(function(s,j){return mini(S.wr[j]?'r':'',KO[j]+' 통',S.bins[j]+'캔'+(S.wr[j]?' (오답 '+S.wr[j]+')':''));}).join('');
     $('#line-minis').innerHTML=m;
+    if(typeof FEV!=='undefined')FEV.cond('labgap',S.checked===NF&&DEV.cv-S.ok/NF>0.05,{auto:true,text:'랩에서 '+pct(DEV.cv)+'를 받은 장비('+name(DEV)+')가 진짜 물고기 158마리 앞에서 '+pct(S.ok/NF)+'를 받았습니다. 주판봇의 엄지가 무색해졌어요.'});
     if(S.checked===NF){U.ins($('#i-line'),[[DEV.cv-S.ok/NF>0.05?'r':'a','시험 끝: 랩 점수 '+pct(DEV.cv)+'였던 장비가 진짜 물고기 앞에서 '+pct(S.ok/NF)+'을 받았습니다('+(NF-S.ok)+'마리 오답). 왜 차이가 나는지는 "랩 점수의 함정"에서 봅니다.']]);}
     else U.ins($('#i-line'),[['m','시험 중… 랩 점수 '+pct(DEV.cv)+'인 장비입니다. 끝까지 흘려 실제 점수를 확인하세요. 위에서 엔진·설정값·입력 변수를 바꾸면 처음부터 다시 시험합니다.']]);}
   Line.restart=function(){T=0;lastKey='';setPlay(!U.reduce);if(U.reduce)T=(NF-1)*GAP+TRAVEL+0.02;draw(0);};

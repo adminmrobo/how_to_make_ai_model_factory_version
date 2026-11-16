@@ -33,7 +33,7 @@ var LAMP={wait:['','대기'],run:['run','검사 중'],ok:['ok','합격'],ng:['ng
 function lamp(st){var l=LAMP[st]||LAMP.wait;return '<span class="lamp '+l[0]+'">'+l[1]+'</span>';}
 $('#boardgrid').innerHTML=WS.map(function(w){return '<a class="wst" href="#w'+w.n+'" id="bt'+w.n+'"><span class="no">작업장 '+w.n+' · 카드 '+w.card+'</span><b>'+w.name+'</b><span class="mv" id="bv'+w.n+'">'+w.m+'</span><span id="bl'+w.n+'">'+lamp('wait')+'</span></a>';}).join('');
 $('#sum-tb').innerHTML=WS.map(function(w){return '<tr id="sum-row'+w.n+'"><td>'+w.card+'</td><td><a href="#w'+w.n+'">'+w.n+' '+w.name+'</a></td><td>'+w.proc+'</td><td>'+w.m+' — '+w.crit+'</td><td>'+lamp('wait')+'</td></tr>';}).join('');
-function QC(n,st,val,note){QS[n]=st;var w=WS[n-1];$('#bl'+n).innerHTML=lamp(st);$('#bv'+n).textContent=w.m+(val?' · '+val:'');
+function QC(n,st,val,note){var prev=QS[n];QS[n]=st;var w=WS[n-1];if(st==='ng'&&prev!=='ng'&&typeof FEV!=='undefined')FEV.fire('qcfail',{text:'정비 작업장 '+n+' '+w.name+'에서 검사 불합격 램프가 켜졌습니다('+w.m+(val?' · '+val:'')+'). 기준: '+w.crit+'. 다시 손봅니다.'});$('#bl'+n).innerHTML=lamp(st);$('#bv'+n).textContent=w.m+(val?' · '+val:'');
   var q=$('#qc'+n);if(q)q.innerHTML='<span class="qn">검사 지표 · '+w.m+'</span><span class="qv">'+(val||'—')+'</span>'+lamp(st)+'<span class="qr">기준: '+w.crit+(note?' · '+note:'')+'</span>';
   var ok=0;WS.forEach(function(x){if(QS[x.n]==='ok')ok++;});$('#shipbar').style.width=(ok*10)+'%';$('#shiptxt').textContent='합격 '+ok+' / 10';$('#shipban').classList.toggle('on',ok===10);
   var r=$('#sum-row'+n);if(r)r.lastElementChild.innerHTML=lamp(st);}
@@ -82,7 +82,8 @@ function mount(){var e=EN.LIST.filter(function(x){return x.id===SEL;})[0],b=BENC
   $('#m-minis').innerHTML=mini(b.v.f1>=TGT.f1?'g':'','검증 F1',fmt(b.v.f1,3))+mini('','정확도 · 재현율',fmt(b.v.acc,3)+' · '+fmt(b.v.rec,3))+mini(b.tr.f1-b.v.f1>0.1?'r':'','훈련 F1 (차이)',fmt(b.tr.f1,3)+' ('+(b.tr.f1-b.v.f1>=0?'+':'')+fmt(b.tr.f1-b.v.f1,3)+')')+mini('m','저장 값 · 학습 시간',n0(b.size)+'개 · '+fmt(b.ms,0)+' ms');
   var gap=b.tr.f1-b.v.f1;U.ins($('#i-mount'),[[b.v.f1>=TGT.f1?'g':'a',e.name+' 엔진: 검증 F1 '+fmt(b.v.f1,3)+', 놓친 불량 '+b.v.fn+'개 · 헛경보 '+b.v.fp+'개.'],[gap>0.1?'r':'g',gap>0.1?'훈련 F1이 검증보다 '+fmt(gap,2)+' 높습니다. 훈련 셀을 외우는 경향이 있어요. 손잡이를 줄여 보세요(트리 깊이·수, k를 키우기, γ 낮추기 등).':'훈련과 검증의 차이가 크지 않습니다. 외우기보다 일반화에 가깝습니다.']]);
   costUI();prod();board();}
-$('#m-run').onclick=function(){fitEngine(SEL);mount();shelf();benchTable();};
+$('#m-run').onclick=function(){fitEngine(SEL);mount();shelf();benchTable();var b=BENCH[SEL],e=EN.LIST.filter(function(x){return x.id===SEL;})[0];
+  if(b&&typeof FEV!=='undefined')FEV.cond('qcfail',b.v.f1<TGT.f1,{text:e.name+' 엔진을 단 판정기가 벤치 시운전에서 검증 F1 '+fmt(b.v.f1,3)+'(기준 '+fmt(TGT.f1,2)+')으로 불합격 램프를 켰습니다. 손잡이를 바꾸거나 다른 엔진을 달아 보세요.'});};
 function drawMap(){var b=BENCH[SEL];if(!b)return;var R=U.setup(mapCv),g=R.g,w=R.w,h=R.h,L=40,T=12,Bm=28,W=w-L-8,Hh=h-T-Bm,n=46,xr=[-3,3],yr=[-3,3];
   for(var i=0;i<n;i++)for(var j=0;j<n;j++){var x=xr[0]+(xr[1]-xr[0])*(i+0.5)/n,y=yr[0]+(yr[1]-yr[0])*(j+0.5)/n,p=b.M.p([x,0,y,0]);
     g.fillStyle=p>=THR?'rgba(201,48,44,'+(0.15+0.3*Math.min(1,(p-THR)*2))+')':'rgba(143,163,184,'+(0.08+0.25*Math.min(1,(THR-p)*2))+')';g.fillRect(L+i*W/n,T+Hh-(j+1)*Hh/n,W/n+0.6,Hh/n+0.6);}

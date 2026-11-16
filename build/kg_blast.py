@@ -36,7 +36,7 @@ firth = node("lab:method/firth-correction", "Method", "Firth 보정", "Firth bia
 rep = node("lab:method/repeated-trials-near-boundary", "Method", "경계 근처 반복 실험", "Repeated trials near the boundary", "#lab", 1)
 ll = node("lab:metric/log-loss", "Metric", "로그 손실", "Log loss", "#duel", 2)
 pol = node("lab:concept/soc-storage-policy", "Concept", "보관·유통 충전율 기준 (항공 30% 이하)", "SOC limits for storage and shipping", "#policy", 1, "systems")
-s3d = node("lab:sim/blast-lab-3d", "Simulation", "3D 방폭 실험 랩 12칸", "3D crush-test lab", "#lab", 1, "systems")
+s3d = node("lab:sim/blast-lab-3d", "Simulation", "3D 방폭 시험실", "3D blast-proof test room", "#lab", 1, "systems")
 lim = node("lab:limitation/assumed-true-model", "Limitation", "참 모형은 뉴스 방향에 맞춘 가정", "Assumed true model", "#sum", 1)
 for r in REFS: node("lab:work/" + r["id"], "Work", r["title"][:40], r["title"], "#export", 2, "data")
 edge(q, "relatedTo", soc, "#top"); edge(case, "relatedTo", tr, "#news"); edge(case, "raises", sep, "#sep"); edge(lr, "relatedTo", odds, "#logit"); edge(sep, "relatedTo", lr, "#sep")

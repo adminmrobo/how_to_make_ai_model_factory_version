@@ -1,0 +1,5 @@
+trial_id,soc_pct,force_kg,shape,shape_code,ambient_c,result,result_label,onset_s,peak_c
+1,100,1300,both,0,25,2,fire,7.0,772
+2,70,1300,both,0,25,1,smoke,15.0,150
+3,50,1300,both,0,25,0,none,,30
+4,30,1300,both,0,25,0,none,,30

@@ -43,7 +43,10 @@ function upd(){var c=CFG,r=RAW[key(c)],s1=ESC1[key(c)],s2=SS.stats(c,v2t(c));dra
   else{it.push([s1.escDpmo>s2.escDpmo*2?'r':'a','이 조건('+cname(c)+')의 공정 시그마는 '+fmt(r.sigma,2)+'σ. 기준 조건 판정기(v1, 문턱 '+fmt(V1.t,2)+'%)를 그대로 쓰면 출하 불량 '+dp(s1.escDpmo)+' DPMO, 이 조건에 맞춘 문턱('+fmt(v2t(c),2)+'%)이면 '+dp(s2.escDpmo)+' DPMO입니다.']);
     if(s2.frRate>0.02)it.push(['a','대신 v2는 멀쩡한 셀의 '+pct(s2.frRate,1)+'를 버립니다. 판정기로는 6시그마를 살 수 없어요 — 이 조건은 공정을 고쳐야 합니다.']);}
   if(r.crack*1e6>r.pd*1e6*0.3)it.push(['m','이 조건 불량 '+dp(r.dpmo)+' DPMO 가운데 크랙이 '+dp(r.crack*1e6)+'입니다. 효율만 보면 Ppk가 1.5를 넘어도, 크랙을 더한 전체 불량으로 계산한 시그마 수준은 6에 못 미칠 수 있어요.']);
-  U.ins($('#i-control'),it);drawShift();hm();Plant.redraw&&Plant.redraw();labUpd();}
+  U.ins($('#i-control'),it);drawShift();hm();Plant.redraw&&Plant.redraw();labUpd();
+  /* 공장 이벤트: 조건이 거짓→참으로 바뀔 때 한 번 (fac_events.js) */
+  if(typeof FEV!=='undefined'){FEV.cond('defects',r.sigma<3.5,{text:'지금 조건('+cname(c)+')에서 공정이 '+fmt(r.sigma,2)+'σ까지 떨어졌습니다. 기준 조건 판정기 v1을 그대로 쓰면 약 '+n0(s1.escDpmo)+' DPMO가 샙니다.'});
+    FEV.cond('supplier',c.sup==='C',{text:'공급사 C의 광열화 시험 라벨이 아직 하나도 없습니다. 판정기가 C를 A처럼 보고 있어요(v1 판정 뒤 유출 '+n0(s1.escDpmo)+' DPMO). 첫 주가 제일 위험합니다.'});}}
 
 /* ══ 분포 사전 ══ */
 (function(){var D='https://adminmrobo.github.io/probability_distribution_dictionary/dictionary.html#';
@@ -64,7 +67,7 @@ function drawShift(){var c=CFG,ser=[2,3].map(function(sh){var cc=cond(c);cc.shif
 
 /* ══ 3D 공장 ══ */
 var Plant={};
-(function(){var cv=$('#cvPlant'),narrow=(cv.clientWidth||window.innerWidth)<600,yaw=narrow?-0.15:-0.5,pitch=narrow?1.2:0.82,play=!U.reduce,hr=6,spd=1.5,sel=-1,t=0;
+(function(){var cv=$('#cvPlant'),narrow=(cv.clientWidth||window.innerWidth)<600,yaw=narrow?-0.15:-0.5,pitch=narrow?1.2:0.82,play=!U.reduce,hr=6,spd=1.5,sel=-1,t=0,evH=-1;
   var PR=[['P1','웨이퍼 입고','원재료 수입처별 웨이퍼가 들어옵니다. 컨베이어 위 셀 색이 수입처입니다.','f'],['P2','세척·텍스처링','표면을 거칠게 만들어 빛을 덜 반사하게 합니다. 조수 하루가 시간대별 기록을 맡아요.','e'],['P3','확산 (PN 접합)','인을 확산시켜 접합을 만듭니다. 인턴 시아 담당.','e'],['P4','에칭·세정','가장자리 접합과 산화막을 걷어 냅니다. 인턴 모아 담당.','e'],['P5','반사방지막','질화규소 막을 입힙니다. 여름 습도에 민감합니다.','e'],['P6','전극 인쇄','은 페이스트를 인쇄합니다. 주판봇이 생산량을 챙겨요.','e'],['P7','소성','전극을 구워 붙입니다. 가동률을 올리면 온도 편차가 커집니다.','e'],
     ['P8','레이저 처리','후면 접촉을 엽니다. 초파리 연구원이 크랙을 의심해요.','e'],['P9','효율 측정 (IV)','빛을 비춰 출하 효율을 잽니다. 측정 잡음 0.03%p.','v'],['P10','EL 크랙 검사','미세 크랙을 97% 찾아냅니다(포아송으로 생긴 크랙).','v'],['P11','판정·등급 분류','간이 판정기가 문턱으로 합격·불합격을 정합니다. 박사가 기준을 승인합니다.','v'],['P12','출하','합격 셀을 모듈 공장으로 보냅니다. 광열화는 고객의 지붕 위에서 일어납니다.','f']];
   var WHO={1:['asst',0.9],2:['sia',0.88],3:['moa',0.86],5:['robo',0.72],7:['fly',0.41],10:['doc',1.0]},SHEET={doc:'D1',asst:'A1',sia:'S1',moa:'M1',fly:'F1',robo:'R1'};
@@ -83,6 +86,7 @@ var Plant={};
   function hourInfo(h){var c=CFG,p=SS.params(c)[h],prof=SS.PROF[c.shift][h],acc=0;var N=40;for(var k=0;k<N;k++){var z=-4+8*(k+0.5)/N,w=SS.phi(z)*8/N,e=p.mu+p.sd*z;acc+=w*(1-SS.Phi((V1.t-e)/K.sm));}
     return {p:p,tag:prof.tag,crew:SS.crew(c.shift,h),rej:1-acc,pd:SS.Phi((K.LSL-(p.mu-p.lid))/Math.sqrt(p.sd*p.sd+p.lsd*p.lsd))};}
   function draw(dt){if(play&&dt){t+=dt;hr+=dt*spd;if(hr>=24)hr=0;$('#r-time').value=Math.floor(hr);}else if(dt)t+=dt;
+    var hI=Math.floor(hr);if(hI!==evH){var was=evH;evH=hI;if(was>=0&&play&&typeof FEV!=='undefined'&&(CFG.shift===3?[6,14,22]:[8,20]).indexOf(hI)>=0)FEV.fire('handover',{cool:60000,text:'방금 '+hI+'시 교대 인계('+CFG.shift+'교대). 인계 직후 한 시간은 효율 분포의 꼬리가 두꺼워집니다. 인계 체크리스트를 다시 확인하세요.'});}
     var h=Math.floor(hr),I=hourInfo(h),Rr=U.setup(cv),g=Rr.g,w=Rr.w,hh=Rr.h;cx=w/2;cy=hh*0.56;sc=Math.min(w/31,hh/19);
     g.fillStyle=(h>=20||h<6)?'#f1f3f8':'#fbfcfd';g.fillRect(0,0,w,hh);
     g.strokeStyle='rgba(22,33,43,.07)';g.lineWidth=1;for(var x=-15;x<=15;x+=1.5){var a=P(x,-7.5,0),b=P(x,7.5,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}for(var y=-7.5;y<=7.5;y+=1.5){a=P(-15,y,0);b=P(15,y,0);g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}
