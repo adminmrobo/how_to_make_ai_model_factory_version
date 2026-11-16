@@ -1,0 +1,42 @@
+{
+ "title": "배터리 열폭주 실험 랩 — 충전율과 화재 확률을 로지스틱 모델로",
+ "series": "자율주행차 배터리 AI 공장",
+ "number": "05",
+ "creator": [
+  {
+   "name": "안상선",
+   "role": "author",
+   "affiliation": "(주)M-Robo"
+  }
+ ],
+ "contributor": [
+  {
+   "name": "AI 보조 제작",
+   "role": "assistant"
+  }
+ ],
+ "date": "2026-11-14",
+ "version": "1.0",
+ "language": [
+  "ko"
+ ],
+ "license": "",
+ "url": "https://adminmrobo.github.io/how_to_make_ai_model_factory_version/blast.html",
+ "about": [
+  "lab:concept/thermal-runaway",
+  "lab:model/ordinal-logistic",
+  "lab:concept/complete-separation",
+  "lab:concept/soc-storage-policy"
+ ],
+ "basedOn": [
+  "mbc2026thermalrunaway",
+  "mccullagh1980ordinal",
+  "albert1984existence",
+  "firth1993bias",
+  "feng2018thermal"
+ ],
+ "educationalLevel": "입문~중급",
+ "learningResourceType": "interactive explainer",
+ "registry": "KG_00_registry 0.2",
+ "suggestedCitation": "안상선 (2026). 배터리 열폭주 실험 랩 — 충전율과 화재 확률을 로지스틱 모델로. 자율주행차 배터리 AI 공장 05, v1.0."
+}

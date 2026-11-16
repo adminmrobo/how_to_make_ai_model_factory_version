@@ -1,0 +1,246 @@
+[
+ {
+  "id": "mbc2026thermalrunaway",
+  "type": "article-newspaper",
+  "title": "\"저 배터리는 불이 안 나네?\"‥실험으로 밝힌 '열폭주'의 비밀",
+  "author": [
+   {
+    "family": "이",
+    "given": "재인"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     16
+    ]
+   ]
+  },
+  "container-title": "MBC 뉴스데스크",
+  "URL": "https://v.daum.net/v/20261116204011953",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     17
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/mbc2026thermalrunaway",
+   "role": "background",
+   "supports": [
+    "lab:dataset/crush-test-news-case",
+    "lab:concept/soc-storage-policy"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "기사 페이지 확인(2026-11-17), 조건·결과만 사례로 사용"
+  }
+ },
+ {
+  "id": "mccullagh1980ordinal",
+  "type": "article-journal",
+  "title": "Regression models for ordinal data",
+  "author": [
+   {
+    "family": "McCullagh",
+    "given": "Peter"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1980
+    ]
+   ]
+  },
+  "container-title": "Journal of the Royal Statistical Society: Series B",
+  "volume": "42",
+  "issue": "2",
+  "page": "109-142",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     17
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/mccullagh1980ordinal",
+   "role": "background",
+   "supports": [
+    "lab:model/ordinal-logistic"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-17). 쪽 미대조"
+  }
+ },
+ {
+  "id": "albert1984existence",
+  "type": "article-journal",
+  "title": "On the existence of maximum likelihood estimates in logistic regression models",
+  "author": [
+   {
+    "family": "Albert",
+    "given": "A."
+   },
+   {
+    "family": "Anderson",
+    "given": "J. A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1984
+    ]
+   ]
+  },
+  "container-title": "Biometrika",
+  "volume": "71",
+  "issue": "1",
+  "page": "1-10",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     17
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/albert1984existence",
+   "role": "background",
+   "supports": [
+    "lab:concept/complete-separation"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-17). 쪽 미대조"
+  }
+ },
+ {
+  "id": "firth1993bias",
+  "type": "article-journal",
+  "title": "Bias reduction of maximum likelihood estimates",
+  "author": [
+   {
+    "family": "Firth",
+    "given": "David"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1993
+    ]
+   ]
+  },
+  "container-title": "Biometrika",
+  "volume": "80",
+  "issue": "1",
+  "page": "27-38",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     17
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/firth1993bias",
+   "role": "background",
+   "supports": [
+    "lab:method/firth-correction"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-17). 쪽 미대조"
+  }
+ },
+ {
+  "id": "feng2018thermal",
+  "type": "article-journal",
+  "title": "Thermal runaway mechanism of lithium ion battery for electric vehicles: A review",
+  "author": [
+   {
+    "family": "Feng",
+    "given": "Xuning"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "container-title": "Energy Storage Materials",
+  "volume": "10",
+  "page": "246-267",
+  "accessed": {
+   "date-parts": [
+    [
+     2026,
+     11,
+     17
+    ]
+   ]
+  },
+  "lab": {
+   "work": "lab:work/feng2018thermal",
+   "role": "background",
+   "supports": [
+    "lab:concept/thermal-runaway"
+   ],
+   "locs": [],
+   "verified": {
+    "title": true,
+    "author": true,
+    "year": true,
+    "container": true,
+    "doi": false,
+    "pages": false
+   },
+   "checkedBy": "저자의 기억과 일반 서지로 옮김(2026-11-17). 쪽 미대조"
+  }
+ }
+]

@@ -1,0 +1,508 @@
+{
+ "version": "1.0",
+ "page": "blast",
+ "nodes": [
+  {
+   "id": "lab:question/soc-fire-probability",
+   "type": "Question",
+   "label": {
+    "ko": "충전율에 따라 화재 확률은 어떻게 변하나?",
+    "en": "How does state of charge change fire probability?"
+   },
+   "page": "blast",
+   "anchor": "#top",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/thermal-runaway",
+   "type": "Concept",
+   "label": {
+    "ko": "열폭주",
+    "en": "Thermal runaway"
+   },
+   "page": "blast",
+   "anchor": "#news",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "충격·과열로 셀 안 반응이 스스로 열을 내며 온도가 급격히 오르는 현상."
+   }
+  },
+  {
+   "id": "lab:dataset/crush-test-news-case",
+   "type": "Dataset",
+   "label": {
+    "ko": "뉴스 사례: 1,300 kg 압착, 충전율 100·70·50·30%",
+    "en": "News case: crush test"
+   },
+   "page": "blast",
+   "anchor": "#news",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/state-of-charge",
+   "type": "Concept",
+   "label": {
+    "ko": "충전율 (SOC)",
+    "en": "State of charge"
+   },
+   "page": "blast",
+   "anchor": "#news",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:model/ordinal-logistic",
+   "type": "Model",
+   "label": {
+    "ko": "비례 오즈 로지스틱 (없음<연기<화염)",
+    "en": "Proportional-odds logistic model"
+   },
+   "page": "blast",
+   "anchor": "#logit",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "models",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/odds-ratio",
+   "type": "Concept",
+   "label": {
+    "ko": "오즈와 오즈 배수",
+    "en": "Odds and odds ratio"
+   },
+   "page": "blast",
+   "anchor": "#logit",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/complete-separation",
+   "type": "Concept",
+   "label": {
+    "ko": "완전 분리",
+    "en": "Complete separation"
+   },
+   "page": "blast",
+   "anchor": "#sep",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "statistics",
+   "domain": [
+    "ai"
+   ],
+   "match": [],
+   "definition": {
+    "ko": "입력으로 결과가 완벽히 갈려 최대우도 기울기가 무한대가 되는 상황."
+   }
+  },
+  {
+   "id": "lab:method/l2-regularization",
+   "type": "Method",
+   "label": {
+    "ko": "L2 규제",
+    "en": "L2 regularization"
+   },
+   "page": "blast",
+   "anchor": "#sep",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/firth-correction",
+   "type": "Method",
+   "label": {
+    "ko": "Firth 보정",
+    "en": "Firth bias reduction"
+   },
+   "page": "blast",
+   "anchor": "#sep",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:method/repeated-trials-near-boundary",
+   "type": "Method",
+   "label": {
+    "ko": "경계 근처 반복 실험",
+    "en": "Repeated trials near the boundary"
+   },
+   "page": "blast",
+   "anchor": "#lab",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:metric/log-loss",
+   "type": "Metric",
+   "label": {
+    "ko": "로그 손실",
+    "en": "Log loss"
+   },
+   "page": "blast",
+   "anchor": "#duel",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:concept/soc-storage-policy",
+   "type": "Concept",
+   "label": {
+    "ko": "보관·유통 충전율 기준 (항공 30% 이하)",
+    "en": "SOC limits for storage and shipping"
+   },
+   "page": "blast",
+   "anchor": "#policy",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:sim/blast-lab-3d",
+   "type": "Simulation",
+   "label": {
+    "ko": "3D 방폭 실험 랩 12칸",
+    "en": "3D crush-test lab"
+   },
+   "page": "blast",
+   "anchor": "#lab",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "systems",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:limitation/assumed-true-model",
+   "type": "Limitation",
+   "label": {
+    "ko": "참 모형은 뉴스 방향에 맞춘 가정",
+    "en": "Assumed true model"
+   },
+   "page": "blast",
+   "anchor": "#sum",
+   "level": 1,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "evaluation",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/mbc2026thermalrunaway",
+   "type": "Work",
+   "label": {
+    "ko": "\"저 배터리는 불이 안 나네?\"‥실험으로 밝힌 '열폭주'의 비밀",
+    "en": "\"저 배터리는 불이 안 나네?\"‥실험으로 밝힌 '열폭주'의 비밀"
+   },
+   "page": "blast",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/mccullagh1980ordinal",
+   "type": "Work",
+   "label": {
+    "ko": "Regression models for ordinal data",
+    "en": "Regression models for ordinal data"
+   },
+   "page": "blast",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/albert1984existence",
+   "type": "Work",
+   "label": {
+    "ko": "On the existence of maximum likelihood e",
+    "en": "On the existence of maximum likelihood estimates in logistic regression models"
+   },
+   "page": "blast",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/firth1993bias",
+   "type": "Work",
+   "label": {
+    "ko": "Bias reduction of maximum likelihood est",
+    "en": "Bias reduction of maximum likelihood estimates"
+   },
+   "page": "blast",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  },
+  {
+   "id": "lab:work/feng2018thermal",
+   "type": "Work",
+   "label": {
+    "ko": "Thermal runaway mechanism of lithium ion",
+    "en": "Thermal runaway mechanism of lithium ion battery for electric vehicles: A review"
+   },
+   "page": "blast",
+   "anchor": "#export",
+   "level": 2,
+   "status": "known",
+   "confidence": "high",
+   "coverage": "explained",
+   "family": "data",
+   "domain": [
+    "ai"
+   ],
+   "match": []
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:question/soc-fire-probability",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/state-of-charge",
+   "anchor": "#top",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/crush-test-news-case",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/thermal-runaway",
+   "anchor": "#news",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/crush-test-news-case",
+   "p": "lab:raises",
+   "o": "lab:concept/complete-separation",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/ordinal-logistic",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/odds-ratio",
+   "anchor": "#logit",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/complete-separation",
+   "p": "lab:relatedTo",
+   "o": "lab:model/ordinal-logistic",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/l2-regularization",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/complete-separation",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/firth-correction",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/complete-separation",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/repeated-trials-near-boundary",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/complete-separation",
+   "anchor": "#lab",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:sim/blast-lab-3d",
+   "p": "lab:demonstratedBy",
+   "o": "lab:method/repeated-trials-near-boundary",
+   "anchor": "#lab",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/ordinal-logistic",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/log-loss",
+   "anchor": "#duel",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/soc-storage-policy",
+   "p": "lab:relatedTo",
+   "o": "lab:model/ordinal-logistic",
+   "anchor": "#policy",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/state-of-charge",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/thermal-runaway",
+   "anchor": "#news",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/ordinal-logistic",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/assumed-true-model",
+   "anchor": "#sum",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:dataset/crush-test-news-case",
+   "p": "lab:assertedIn",
+   "o": "lab:work/mbc2026thermalrunaway",
+   "anchor": "#news",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/soc-storage-policy",
+   "p": "lab:assertedIn",
+   "o": "lab:work/mbc2026thermalrunaway",
+   "anchor": "#policy",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:model/ordinal-logistic",
+   "p": "lab:assertedIn",
+   "o": "lab:work/mccullagh1980ordinal",
+   "anchor": "#logit",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/complete-separation",
+   "p": "lab:assertedIn",
+   "o": "lab:work/albert1984existence",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/firth-correction",
+   "p": "lab:assertedIn",
+   "o": "lab:work/firth1993bias",
+   "anchor": "#sep",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/thermal-runaway",
+   "p": "lab:assertedIn",
+   "o": "lab:work/feng2018thermal",
+   "anchor": "#sum",
+   "confidence": "high"
+  }
+ ]
+}

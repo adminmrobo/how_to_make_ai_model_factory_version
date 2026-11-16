@@ -21,6 +21,8 @@ EV = [
       text="랩에서 99.2%를 받은 생선 분류 장비가 진짜 물고기 앞에서 89.9%를 받았습니다. 주판봇의 엄지가 무색해졌어요.", link="testlab.html#gap", go="랩실 함정 보러 가기"),
  dict(key="qcfail", fac="classifier", lv="r", fx="xlamp", who=("sia", "P14"), title="시운전 QC 불합격 램프",
       text="엔진을 단 판정기가 벤치 시운전에서 불합격 램프를 켰습니다. 정비 작업장으로 돌려보내 다시 손봅니다.", link="classifier.html#factory", go="① 판정기 공장 보러 가기"),
+ dict(key="runaway", fac="blast", lv="r", fx="fire", who=("jupanbot", "P06"), title="열폭주 경보 — 충전율 100% 셀 압착",
+      text="방폭 챔버에서 완충 셀이 7초 만에 불꽃을 냈습니다(뉴스 사례: 772 °C). 주판봇이 비상정지! 70%는 연기만, 50% 이하는 변화가 없었어요.", link="blast.html#lab", go="⑤ 열폭주 실험 랩 보러 가기"),
  dict(key="kiln", fac="cement", lv="a", fx="smoke", who=("doctor", "P13"), title="이웃 시멘트 공장 — 킬른 37분 지연",
       text="옆 공장의 킬른이 37분 늦어졌다는 소식입니다. 박사가 방열복을 입고 지원 나갑니다.", link="https://adminmrobo.github.io/smart_factory_world/cement/", go="시멘트 공장 보러 가기"),
 ]

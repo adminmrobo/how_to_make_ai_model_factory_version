@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배터리 열폭주 실험 랩 — 충전율과 화재 확률을 로지스틱 모델로</title>
+<meta name="description" content="리튬이온 배터리 압착 시험 뉴스 사례(충전율 100%만 화염, 70% 연기, 50·30% 변화 없음)를 출발점으로, 3D 방폭 실험 랩에서 반복 실험을 하고 연기·화염 확률을 로지스틱 모델로 추정한다. 점 4개로는 기울기가 끝없이 커지는 완전 분리 문제도 직접 본다.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!--@@CSS@@-->
+<!--@@PSTYLE@@-->
+<style>
+.lb{width:100%;border-collapse:collapse;font-size:13.5px}
+.lb td,.lb th{border-bottom:1px solid var(--rule);padding:5px 7px;text-align:left;font-variant-numeric:tabular-nums}
+.lb th{color:var(--muted);font-weight:500;font-size:12.5px}
+.lb tr.me td{background:var(--gfp-soft)}
+.ctrl2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px 18px;margin:6px 0 10px}
+.ctrl2 .group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hud{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.timebar input{flex:1;min-width:160px}
+.hm{border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.hm td,.hm th{border:1px solid #fff;padding:3px 4px;text-align:center;min-width:42px}
+.hm th{font-weight:500;color:var(--muted);background:var(--panel)}
+.hm td{cursor:pointer}
+.hm td.me{outline:2.5px solid var(--text);outline-offset:-2px}
+.dev{border:2px solid #2b3a4a;border-radius:16px;background:linear-gradient(180deg,#f7fafc,#eef3f7);padding:14px 16px;max-width:860px}
+.dev .dhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;border-bottom:2px dashed #b9c4cf;padding-bottom:6px;margin-bottom:10px}
+.dev .dhead b{font-size:16px;letter-spacing:.02em}
+.dev .dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 14px}
+.dev label{font-size:13px;color:var(--muted);display:block;margin-bottom:2px}
+.dev select,.dev input[type=number]{width:100%;font:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:12px}
+.verdict{border-radius:12px;padding:10px 12px;background:#fff;border:2px solid var(--rule)}
+.verdict .vt{font-size:12.5px;color:var(--muted)}
+.verdict .vv{font-size:22px;font-weight:700;margin:2px 0}
+.verdict.ok{border-color:#9fd3ae}.verdict.ok .vv{color:#1d6b35}
+.verdict.ng{border-color:#e8b1ad}.verdict.ng .vv{color:#9b1c18}
+.verdict.hold{border-color:#ecc98f}.verdict.hold .vv{color:#7a4b00}
+.verdict .pb{height:8px;border-radius:4px;background:#eef1f5;overflow:hidden;margin:4px 0}.verdict .pb i{display:block;height:100%}
+.distc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}
+.distc a{border:1px solid var(--rule);border-radius:12px;padding:10px 12px;background:#fff;text-decoration:none;color:var(--text)}
+.distc a:hover{border-color:var(--info)}
+.distc b{display:block;font-size:15px}.distc span{font-size:13px;color:var(--muted)}.distc p{margin:4px 0 0;font-size:13.5px}
+.sw{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:4px}
+.lb tr.bad td{background:#fff3e0}
+.tag2{display:inline-block;border-radius:6px;padding:0 6px;font-size:12px;border:1px solid var(--rule);margin-left:4px}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="섹션 바로가기"><div class="row">
+  <a class="logo" href="#top">배터리 열폭주 실험 랩 <i>⑤ 로지스틱 모델</i></a>
+  <div class="links">
+    <a href="./index.html">공장 목록</a><a href="#news">뉴스 사례</a><a href="#lab">3D 실험 랩</a><a href="#sep">점 4개의 함정</a><a href="#logit">로지스틱 모델</a><a href="#policy">충전율 기준</a><a href="#duel">대결</a><a href="#sum">정리</a>
+  </div>
+</div></nav>
+
+<!-- lab-cover -->
+<div class="cover" id="cover" data-img="cover_06"><div class="frame">
+  <canvas id="cvCover" aria-hidden="true"></canvas>
+  <span class="cap">표지 그림 자리 · cover_06 (그림을 받으면 바뀝니다)</span>
+  <div class="cast4"><img data-mood="fly_magnify" alt="" aria-hidden="true" class="s"><img data-mood="doc_board" alt="" aria-hidden="true"><img data-mood="asst_report" alt="" aria-hidden="true"><img data-mood="robo_calc" alt="" aria-hidden="true"></div>
+  <span class="cover-chip">⑤ 배터리 열폭주 실험 랩 · 로지스틱 모델</span>
+</div></div>
+<!-- /lab-cover -->
+
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">자율주행차 배터리 AI 공장 · ⑤ 배터리 열폭주 실험 랩 · <a href="./index.html">공장 목록</a></div>
+  <h1>배터리 열폭주 실험 랩 — 충전율과 화재 확률을 로지스틱 모델로</h1>
+  <p class="question">같은 배터리를 같은 힘으로 눌렀는데, 왜 100% 충전한 것만 불이 났을까? 80%면 몇 %의 확률로 불이 날까?</p>
+  <p class="lead">공장 부지를 하나 더 늘려 <b>방폭 실험 랩</b>을 세웁니다. 출발점은 소방 당국의 압착 실험을 다룬 뉴스 사례입니다. 1,300 kg으로 눌렀더니 충전율 100% 배터리만 불꽃과 검은 연기를 내며 772 °C까지 올랐고, 70%는 회색 연기만, 50%와 30%는 변화가 없었습니다[1]. 결과는 "변화 없음 · 연기 · 화염" 세 단계이고, 충전율이 오를수록 위 단계로 갈 확률이 커집니다. 이 관계를 <span class="g" data-g="로지스틱 회귀">로지스틱 모델</span>로 세우되, 뉴스의 점 4개만으로 맞추면 무슨 일이 생기는지, 랩에서 실험을 반복하면 모델이 어떻게 자리를 잡는지 3D로 봅니다.</p>
+  <p class="byline">제작 · 안상선 ((주)M-Robo 대표) · <a href="https://www.ahnboat.xyz">개인 소개 페이지 · www.ahnboat.xyz</a> · 2026-11-17 · v1.0</p>
+  <div class="three"><b>세 줄로 먼저</b><ol>
+    <li>충전율이 높을수록 배터리 안에 쌓인 에너지가 많아, 같은 충격에도 연기 → 화염으로 넘어갈 확률이 커진다.</li>
+    <li>뉴스의 점 4개는 "불난 것"과 "안 난 것"이 충전율로 완벽히 갈려서, 로지스틱 모델의 기울기가 끝없이 커진다(완전 분리). 점 4개로는 확률을 말할 수 없다.</li>
+    <li>실험을 반복하고 약한 규제를 걸면 확률 곡선이 자리를 잡는다. 그 곡선으로 보관·유통 충전율 기준을 따져 볼 수 있다.</li></ol></div>
+  <div class="kpis" aria-label="숫자 요약">
+    <div class="kpi r"><b>772 °C</b><span>100% 충전 배터리를 1,300 kg으로 눌렀을 때 최고 온도 (뉴스 사례)[1]</span></div>
+    <div class="kpi a"><b>7초</b><span>누른 뒤 불꽃이 튈 때까지 (뉴스 사례)[1]</span></div>
+    <div class="kpi m"><b>30% 이하</b><span>항공 화물 국제 기준 충전율 (뉴스 사례)[1]</span></div>
+    <div class="kpi g"><b><span id="k-p80">—</span></b><span>80% 충전·1,300 kg에서 화염 확률 (이 페이지의 가정 모형)<sup>①</sup></span></div>
+  </div>
+  <p class="muted" style="font-size:13px">① 뉴스의 결과에 맞춰 이 페이지가 정한 설명용 가정 모형의 값입니다. 실제 배터리의 화재 확률이 아닙니다. 기사 문장을 옮기지 않고, 실험 조건과 결과만 사례로 썼습니다.</p>
+  <div data-dlg="hero"></div>
+</div></header>
+
+<main>
+<section class="sec" id="cast" aria-labelledby="h-cast"><div class="wrap">
+  <h2 id="h-cast">등장인물과 이 페이지 사용법</h2>
+  <div class="cast" id="castgrid"></div>
+  <div class="secret"><button class="bt" id="secretbtn" type="button" aria-expanded="false">방청석 보기 (미공개 식구)</button><div class="row" id="secretrow" hidden></div></div>
+  <div class="steps four" style="margin-top:16px">
+    <div class="step"><b>실험 한 번</b>충전율·압력·형태·온도를 고르고 압착 버튼을 누르면 3D 챔버에서 결과와 온도 곡선이 나옵니다.</div>
+    <div class="step"><b>실험 여러 번</b>"20회 더"를 누르면 실험 기록이 쌓이고, 로지스틱 모델이 다시 맞춰집니다.</div>
+    <div class="step"><b>곡선 읽기</b>충전율에 따른 연기·화염 확률 곡선과, 참 곡선(가정)을 견줍니다.</div>
+    <div class="step"><b>안전 수칙</b>이 페이지는 교육용 계산입니다. 배터리를 누르거나 찌르는 실험을 따라 하지 마세요.</div>
+  </div>
+</div></section>
+
+<section class="sec" id="why" aria-labelledby="h-why"><div class="wrap">
+  <h2 id="h-why">왜 열폭주 실험 랩을 세우나</h2>
+  <div class="steps">
+    <div class="step"><b>1. 공장 밖의 위험</b>③ 공장에서 만든 셀은 창고·택배·차량으로 갑니다. 그 길에서 충격을 받을 때의 위험은 공장 안 판정기로는 안 보입니다.</div>
+    <div class="step"><b>2. 결과가 세 단계</b>"불이 났다/안 났다"만이 아니라 "연기"라는 중간 단계가 있습니다. 순서가 있는 결과에 맞는 로지스틱 모델을 씁니다.</div>
+    <div class="step"><b>3. 점이 적을 때의 함정</b>뉴스 사례처럼 시험 몇 번으로는 확률 모델이 서지 않습니다. 실험을 몇 번 해야 하는지 직접 봅니다.</div>
+  </div>
+  <div class="explain"><h4>학습 목표 — 이 페이지를 마치면</h4><ol>
+    <li>충전율·압력이 연기·화염 확률을 바꾸는 관계를 로지스틱 함수(오즈와 기울기)로 설명할 수 있다.</li>
+    <li>점 몇 개가 완벽히 갈릴 때 생기는 완전 분리와, 규제·반복 실험으로 그것을 푸는 법을 말할 수 있다.</li>
+    <li>모델의 확률 곡선으로 보관·유통 충전율 기준(30%·50%·80%)을 비교하고, 그 한계를 말할 수 있다.</li></ol></div>
+</div></section>
+
+<section class="sec" id="news" aria-labelledby="h-news"><div class="wrap">
+  <h2 id="h-news">뉴스 사례 — 소방 당국의 압착 실험</h2>
+  <p class="lead">2026년 11월 16일 MBC 뉴스데스크가 서울소방재난본부의 실험을 보도했습니다[1]. 이 페이지는 기사 문장이 아니라 실험 조건과 결과만 사례로 씁니다.</p>
+  <div class="tblwrap"><table class="lb" id="tb-news"></table></div>
+  <div class="explain"><h4>사례에서 읽을 것</h4><ol>
+    <li>힘(1,300 kg)과 방식(압착)은 같고 <b>충전율만</b> 바꿨습니다. 그래서 충전율의 효과를 볼 수 있습니다.</li>
+    <li>결과는 세 단계로 순서가 있습니다: 변화 없음 &lt; 연기 &lt; 화염.</li>
+    <li>충전율마다 한 번씩(형태는 두 가지)만 했습니다. 같은 조건을 다시 하면 결과가 달라질 수도 있습니다 — 확률로 봐야 하는 까닭입니다.</li></ol>
+    <div class="lim">뉴스에는 배터리 종류·용량·제조사가 나오지 않습니다. 이 페이지의 모델은 사례의 방향만 따른 가정입니다.</div></div>
+  <div data-dlg="news"></div>
+</div></section>
+
+<section class="sec" id="lab" aria-labelledby="h-lab"><div class="wrap">
+  <h2 id="h-lab">큰 그림 — 3D 방폭 실험 랩 12칸</h2>
+  <p class="lead">배치는 다른 공장과 같은 12칸, 캐릭터 자리도 같습니다. P1 시료 보관 → P2 충전 스테이션(충전율 맞추기) → P5 압착 프레스 → P6 방폭 챔버 → P7~P10 열화상·연기 감지·소화·기록 → P11 판정실. 식구들은 <a href="https://adminmrobo.github.io/fruitfly-lab-expressions/factory.html">공장 복장·동작 벡터</a>의 고온 공정 보호구(U03)와 관리자(U06) 차림입니다.</p>
+  <div class="panel">
+    <div class="ptitle">압착 시험 — 조건을 고르고 "압착"을 누르세요. 끌어서 돌리기, 칸을 누르면 설명</div>
+    <div class="ctrl2">
+      <div class="group"><label class="glabel" for="r-soc">충전율</label><input type="range" id="r-soc" min="0" max="100" step="10" value="100"><b id="v-soc">100%</b></div>
+      <div class="group"><span class="glabel">압력</span><span id="g-F"></span></div>
+      <div class="group"><span class="glabel">형태</span><span id="g-shape"></span></div>
+      <div class="group"><span class="glabel">주변 온도</span><span id="g-T"></span></div>
+    </div>
+    <div class="fac">
+      <div><div class="cwrap"><canvas id="cvLab" aria-label="12칸 방폭 실험 랩의 3D 그림. 가운데 방폭 챔버에서 프레스가 배터리를 누르고, 결과에 따라 연기나 불꽃이 난다"></canvas><span class="hint">끌어서 돌리기 · 칸 누르기</span></div></div>
+      <div class="pcard" aria-live="polite">
+        <div class="pc-no" id="pc-no">—</div><h3 id="pc-name">—</h3><p id="pc-desc">—</p>
+        <div class="minis" id="lab-minis"></div>
+      </div>
+    </div>
+    <div class="pchips" id="pchips" role="group" aria-label="칸 고르기"></div>
+    <div class="timebar"><button class="bt primary" id="b-press" type="button">압착 1회</button><button class="bt" id="b-20" type="button">같은 조건 20회 더</button><button class="bt" id="b-mix" type="button">여러 조건 섞어 60회</button><button class="bt" id="b-clear" type="button">기록 지우기</button><span class="hud" id="hud">—</span></div>
+    <div class="cwrap"><canvas id="cvTemp" aria-label="방금 실험의 시간에 따른 셀 표면 온도"></canvas></div>
+    <div class="insight" id="i-lab"></div>
+  </div>
+  <div class="lim">이 랩의 결과는 참 모형(가정)에서 확률로 뽑습니다. 같은 조건을 눌러도 결과가 달라지는 것이 정상입니다. 온도 곡선의 모양도 설명용입니다.</div>
+  <div data-dlg="lab"></div>
+</div></section>
+
+<section class="sec" id="sep" aria-labelledby="h-sep"><div class="wrap">
+  <h2 id="h-sep">점 4개의 함정 — 완전 분리</h2>
+  <p class="lead">뉴스의 점 4개(30·50·70·100%)로만 로지스틱 모델을 맞춰 봅니다. 화염은 100%에서만, 연기 이상은 70% 이상에서만 났으니, 충전율 하나로 결과가 <b>완벽하게</b> 갈립니다. 이럴 때는 기울기를 키울수록 손실이 계속 줄어서, 학습을 오래 할수록 기울기가 끝없이 커집니다[3].</p>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">규제 (L2)</span><span id="g-lam"></span></div></div>
+    <div class="twin"><div class="cwrap"><canvas id="cvSep1" aria-label="학습 반복 횟수에 따른 기울기 변화"></canvas></div><div class="cwrap"><canvas id="cvSep2" aria-label="점 4개로 맞춘 화염 확률 곡선"></canvas></div></div>
+    <div class="insight" id="i-sep"></div>
+  </div>
+  <div class="explain"><h4>어떻게 푸나</h4><ol>
+    <li><b>규제</b>: 기울기가 너무 커지지 않게 벌점을 줍니다(L2). 곡선이 계단에서 언덕으로 바뀝니다. 다만 언덕의 모양은 벌점 크기에 달려 있습니다.</li>
+    <li><b>Firth 보정</b>: 작은 표본의 편향을 줄이는 방법으로, 완전 분리에서도 유한한 추정을 줍니다[4].</li>
+    <li><b>반복 실험</b>: 경계 근처(70~90%)에서 실험을 늘리면, 같은 조건에서 결과가 갈리는 사례가 생겨 분리가 풀립니다. 이것이 가장 근본적인 해법입니다.</li></ol></div>
+  <div data-dlg="sep"></div>
+  <div class="quiz" data-quiz="sep"></div>
+</div></section>
+
+<section class="sec" id="logit" aria-labelledby="h-logit"><div class="wrap">
+  <h2 id="h-logit">로지스틱 모델 — 실험 기록으로 맞춘 확률 곡선</h2>
+  <p class="lead">위 랩에서 쌓은 실험 기록으로 모델을 맞춥니다. 결과가 세 단계라 곡선이 두 개입니다: <b>연기 이상이 날 확률</b>과 <b>화염이 날 확률</b>. 두 곡선은 기울기를 함께 쓰고 출발점만 다릅니다(비례 오즈)[2].</p>
+  <div class="panel">
+    <div class="ptitle" id="lg-title">—</div>
+    <div class="ctrl"><div class="group"><span class="glabel">곡선 조건 · 압력</span><span id="g-cF"></span></div><div class="group"><span class="glabel">참 곡선(가정)</span><span id="g-truth"></span></div></div>
+    <div class="cwrap tall"><canvas id="cvLogit" aria-label="충전율에 따른 연기 이상 확률과 화염 확률 곡선, 실험 기록 점"></canvas></div>
+    <div class="minis" id="lg-minis"></div>
+    <div class="insight" id="i-logit"></div>
+  </div>
+  <div class="explain"><h4>모델 식 읽기</h4><ol>
+    <li>η = b × (충전율 − 70) ÷ 10 + c × ln(압력 ÷ 1,300) + d × 형태 + e × (온도 − 25) ÷ 10</li>
+    <li>P(연기 이상) = 1 ÷ (1 + e<sup>−(a<sub>연기</sub> + η)</sup>), P(화염) = 1 ÷ (1 + e<sup>−(a<sub>화염</sub> + η)</sup>)</li>
+    <li><b>b의 뜻</b>: 충전율이 10%p 오를 때 오즈가 e<sup>b</sup>배가 됩니다. 아래 미니 칸의 "오즈 배수"가 그것입니다.</li></ol>
+    <div class="lim">이 페이지는 비례 오즈 모형을 "연기 이상"과 "화염" 두 이진 로지스틱의 합으로 근사해 맞춥니다. 정식 순서형 로지스틱과 숫자가 조금 다를 수 있습니다.</div></div>
+  <div data-dlg="logit"></div>
+  <div class="quiz" data-quiz="logit"></div>
+</div></section>
+
+<section class="sec" id="policy" aria-labelledby="h-policy"><div class="wrap">
+  <h2 id="h-policy">충전율 기준 — 30%, 50%, 80%를 견주면</h2>
+  <p class="lead">뉴스 사례에 따르면 항공 화물은 국제 기준으로 충전율 30% 이하로 낮춰야 하지만 국내 보관·유통에는 제한이 없고, 전자제품은 보통 80% 이상 충전해 판매합니다[1]. 위 모델(실험 기록이 적으면 가정 모형)로 충전율별 확률을 계산하고, 하루 택배 10만 개 중 강한 충격을 받는 비율(예시값)을 곱해 봅니다.</p>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">강한 충격 비율 (예시)</span><span id="g-hit"></span></div><div class="group"><span class="glabel">충격 세기</span><span id="g-pF"></span></div></div>
+    <div class="tblwrap"><table class="lb" id="tb-policy"></table></div>
+    <div class="insight" id="i-policy"></div>
+  </div>
+  <div class="lim">택배 충격은 1,300 kg 압착과 같지 않습니다. 충격 비율·세기는 비교를 위한 예시값이고, 실제 기준은 표준 시험과 사고 통계로 정해야 합니다.</div>
+  <div data-dlg="policy"></div>
+  <div class="quiz" data-quiz="policy"></div>
+</div></section>
+
+<section class="sec" id="duel" aria-labelledby="h-duel"><div class="wrap">
+  <h2 id="h-duel">대결 — 뉴스 4점 모델 vs 반복 실험 모델</h2>
+  <p class="lead">주판봇은 뉴스의 점 4개로 규제 없이 모델을 맞춥니다("데이터가 완벽하게 갈리잖아!"). 초파리 연구원은 랩에서 여러 조건으로 60회 실험하고 약한 규제를 겁니다. 판정은 아무도 보지 않은 <b>새 실험 300회</b>(1,300 kg)에서의 로그 손실 — 확률을 얼마나 정직하게 맞혔나입니다.</p>
+  <div class="duel">
+    <div class="side l"><div class="head"><img id="d-fly" data-mood="fly_point" alt="" aria-hidden="true"><div><b style="color:var(--c-fly)">초파리 연구원 · 반복 실험 60회</b><br><span class="muted">경계 근처를 더 눌러 봐야 해.</span></div></div><div data-dlg="dfly"></div></div>
+    <div class="vs">VS</div>
+    <div class="side r"><div class="head"><img id="d-robo" data-mood="robo_calc" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">주판봇 · 뉴스 4점</b><br><span class="muted">완벽히 갈리니 완벽한 모델이지.</span></div></div><div data-dlg="drobo"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ctrl"><div class="group"><span class="glabel">먼저 맞혀 보기</span><button class="bt" data-pred="fly" type="button" aria-pressed="false">초파리가 이길 것 같다</button><button class="bt" data-pred="robo" type="button" aria-pressed="false">주판봇이 이길 것 같다</button></div>
+      <div class="group"><button class="bt primary" data-go type="button">결과 보기</button><button class="bt" data-close type="button" hidden>다시 닫기</button></div></div>
+    <div class="duel-res" hidden><div id="d-bars"></div><div id="d-say"></div><div class="score"><span id="d-score"></span><span id="d-pred"></span></div></div>
+  </div>
+  <div class="quiz" data-quiz="duel"></div>
+</div></section>
+
+<section class="sec" id="sum" aria-labelledby="h-sum"><div class="wrap">
+  <h2 id="h-sum">정리</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th>단계</th><th>하는 일</th><th>이 페이지에서</th></tr></thead><tbody>
+    <tr><td>1. 사례 읽기</td><td>조건 하나만 바꾼 실험인지, 결과에 순서가 있는지 본다</td><td>뉴스 사례</td></tr>
+    <tr><td>2. 점이 갈리는지 확인</td><td>완벽히 갈리면 최대우도 추정이 없다 — 규제·보정·추가 실험</td><td>점 4개의 함정</td></tr>
+    <tr><td>3. 경계 근처를 더 실험</td><td>결과가 갈리는 구간(이 랩에서는 70~90%)에 실험을 모은다</td><td>3D 실험 랩</td></tr>
+    <tr><td>4. 곡선으로 기준 비교</td><td>충전율별 확률 × 노출량으로 기준의 효과를 따진다</td><td>충전율 기준</td></tr>
+  </tbody></table></div>
+  <h3>비유의 한계</h3>
+  <ul><li>실제 열폭주는 셀 화학(NCM·LFP 등), 용량, 노화, 결함에 크게 좌우됩니다[5]. 이 모델은 충전율·압력·형태·온도만 봅니다.</li><li>뉴스 사례는 한 번씩의 시험입니다. 이 페이지의 확률은 그 방향에 맞춘 가정입니다.</li><li>이 페이지는 위험을 이해하기 위한 계산입니다. 배터리를 일부러 누르거나 찌르는 실험은 전문 시설 밖에서 하면 안 됩니다.</li></ul>
+  <div class="next"><a href="./index.html"><b>공장 목록</b><br>자율주행차 배터리 AI 공장 전체</a><a href="factory.html"><b>③ 배터리 생산 공장</b><br>이 셀을 만드는 곳</a><a href="classifier.html"><b>① 불량품 판정기</b><br>분류 모델을 만드는 공장</a><a href="https://adminmrobo.github.io/probability_distribution_dictionary/"><b>확률분포 딕셔너리</b><br>베르누이·이항과 로지스틱</a></div>
+</div></section>
+
+<section class="sec" id="outro" aria-labelledby="h-outro"><div class="wrap"><h2 id="h-outro">아웃트로</h2><div data-dlg="outro"></div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <h3>출처</h3>
+  <table><thead><tr><th>#</th><th>자료</th><th>이 페이지에서 쓴 곳</th></tr></thead><tbody>
+    <tr><td>[1]</td><td>이재인 (2026-11-16). "저 배터리는 불이 안 나네?"‥실험으로 밝힌 '열폭주'의 비밀. MBC 뉴스데스크 (자료 제공: 서울소방재난본부). <a href="https://v.daum.net/v/20261116204011953">다음 뉴스</a></td><td>뉴스 사례 — 1,300 kg 압착, 충전율별 결과, 772 °C·7초, 항공 30% 기준, 판매 80% 이상 (조건·결과만 사례로 씀)</td></tr>
+    <tr><td>[2]</td><td>McCullagh, P. (1980). Regression models for ordinal data. Journal of the Royal Statistical Society B 42(2), 109–142.</td><td>로지스틱 모델 — 비례 오즈</td></tr>
+    <tr><td>[3]</td><td>Albert, A., Anderson, J. A. (1984). On the existence of maximum likelihood estimates in logistic regression models. Biometrika 71(1), 1–10.</td><td>점 4개의 함정 — 완전 분리</td></tr>
+    <tr><td>[4]</td><td>Firth, D. (1993). Bias reduction of maximum likelihood estimates. Biometrika 80(1), 27–38.</td><td>점 4개의 함정 — Firth 보정</td></tr>
+    <tr><td>[5]</td><td>Feng, X. 외 (2018). Thermal runaway mechanism of lithium ion battery for electric vehicles: A review. Energy Storage Materials 10, 246–267.</td><td>비유의 한계 — 열폭주 요인</td></tr>
+  </tbody></table>
+  <h3>예시값·설명용 모형인 것</h3>
+  <ul><li>참 모형의 계수(충전율 기울기 2.04/10%p, 압력 1.5, 형태 ±0.3, 온도 0.5/10 °C) — 뉴스 사례의 방향에 맞춘 가정</li><li>온도 곡선의 모양, 연기 단계의 온도 — 설명용</li><li>택배 강한 충격 비율, 충격 세기 — 비교용 예시값</li></ul>
+  <p>저작권: 캐릭터 이름·설정·그림은 저작권자 안상선의 허락 없이 사용할 수 없습니다. 뉴스 기사의 문장·영상은 이 페이지에 싣지 않았습니다.</p>
+  <p>제작 · 안상선 ((주)M-Robo 대표) · <a href="https://www.ahnboat.xyz">개인 소개 페이지 · www.ahnboat.xyz</a> · <a href="./index.html">공장 목록</a></p>
+</div></footer>
+
+<script>
+/*@@SPRITES@@*/
+/*@@BS@@*/
+/*@@COMMON@@*/
+/*@@PAGE@@*/
+</script>
+</body>
+</html>

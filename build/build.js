@@ -61,6 +61,12 @@ if(fs.existsSync(path.join(B,'solar.src.html'))){const ss=rd('solar_sim.js'),sj=
     .replace('/*@@SS@@*/',()=>ss.replace("if(typeof module!=='undefined')module.exports=SS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_solar.js'))?rd('fv_solar.js'):'')+sj);
   if(fs.existsSync(path.join(B,'kg_solar.json')))H5=attach(H5,JSON.parse(rd('kg_solar.json')),JSON.parse(rd('refs_solar.json')),JSON.parse(rd('meta_solar.json')));
   fs.writeFileSync(path.join(R,'solar.html'),H5);console.log('solar.html',(Buffer.byteLength(H5)/1024).toFixed(0)+' KB');}
+// ⑤ 배터리 열폭주 실험 랩: blast.src.html + blast_sim.js + blast.js → blast.html
+if(fs.existsSync(path.join(B,'blast.src.html'))){const bs=rd('blast_sim.js'),bj=rd('blast.js');
+  let H6=rd('blast.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('/*@@SPRITES@@*/',()=>sprites+'\n'+motion).replace('<!--@@PSTYLE@@-->',()=>pst)
+    .replace('/*@@BS@@*/',()=>bs.replace("if(typeof module!=='undefined')module.exports=BS;",'')).replace('/*@@COMMON@@*/',()=>common).replace('/*@@PAGE@@*/',()=>(fs.existsSync(path.join(B,'fv_blast.js'))?rd('fv_blast.js'):'')+bj);
+  if(fs.existsSync(path.join(B,'kg_blast.json')))H6=attach(H6,JSON.parse(rd('kg_blast.json')),JSON.parse(rd('refs_blast.json')),JSON.parse(rd('meta_blast.json')));
+  fs.writeFileSync(path.join(R,'blast.html'),H6);console.log('blast.html',(Buffer.byteLength(H6)/1024).toFixed(0)+' KB');}
 // 공장 목록(허브): hub.src.html + common.css + 캐릭터 그림 → index.html
 if(fs.existsSync(path.join(B,'hub.src.html'))){let H0=rd('hub.src.html').replace('<!--@@CSS@@-->',()=>'<style>\n'+css+'\n</style>').replace('<!--@@PSTYLE@@-->',()=>pst).replace('/*@@SPRITES@@*/',()=>sprites).replace('/*@@COMMON@@*/',()=>common).replace('/*@@EVENTS@@*/',()=>(fs.existsSync(path.join(B,'hub_events_data.js'))?rd('hub_events_data.js')+rd('hub_events.js'):''));
   fs.writeFileSync(path.join(R,'index.html'),H0);console.log('index.html (hub)',(Buffer.byteLength(H0)/1024).toFixed(0)+' KB');}

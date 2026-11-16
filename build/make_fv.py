@@ -9,6 +9,7 @@ KEY = {"doc": "doctor", "asst": "haru", "sia": "sia", "moa": "moa", "robo": "jup
 PICK = {  # 페이지 → 캐릭터 → 복장(U)·동작(P) ID
  "classifier": {"asst": "P11", "sia": "P03", "moa": "P05", "robo": "P08", "fly": "P04", "doc": "P15"},
  "regression": {"asst": "P02", "sia": "P13", "moa": "P05", "robo": "P08", "fly": "P04", "doc": "P10"},
+ "blast": {"asst": "P05", "sia": "U03", "moa": "P02", "robo": "P06", "fly": "P13", "doc": "P13"},
  "factory": {"asst": "P02", "sia": "P03", "moa": "P07", "robo": "P08", "fly": "P04", "doc": "P09"},
  "solar":   {"asst": "P12", "sia": "U02", "moa": "U02", "robo": "U02", "fly": "U02", "doc": "P10"},
  "testlab": {"asst": "P03", "sia": "P04", "moa": "P16", "robo": "P14", "fly": "U05", "doc": "P15"},
